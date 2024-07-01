@@ -1,0 +1,76 @@
+@startuml
+
+!define SHOW_NOTE ' 노트 표시 여부 ( 비활성화 시 주석 처리 )
+Title [Product] product detail / Sequence Diagram\n\
+상품 상세조회 API
+
+'---------------------------------------------------
+' 객체 정의
+'---------------------------------------------------
+actor "Client" as Client
+participant "ProductController" as ProductController
+participant "ProductMapper" as ProductMapper
+participant "ProductService" as ProductService
+participant "ControllerAdvice" as ControllerAdvice
+participant "ProductRepository" as ProductRepository
+database "DB" as DB
+
+'---------------------------------------------------
+' Product List API Sequence Diagram
+'---------------------------------------------------
+
+Client -> ProductController : * Method: <color blue><b>GET \n\
+* API : /products/{productId}
+activate ProductController
+
+ProductController -> ProductService : getProduct(productId)
+    activate ProductService
+        ProductService -> ProductRepository : findById(productId)
+            activate ProductRepository
+                ProductRepository -> DB : Select Product from DB
+                    activate DB
+                    return Return Product Entity
+                return Product
+
+        alt#Gold  #LightBlue Product.isEmpty == true
+            ProductService -> ProductService: throw ResourceNotFoundException()
+            note bottom: msg: 상품 정보 미존재
+
+            ProductController -> ControllerAdvice : handle(ResourceNotFoundException)
+            ControllerAdvice -> Client: 404 Not Found
+            !ifdef (SHOW_NOTE)
+                note bottom
+                -- Response Body --
+                {
+                    "code": "404",
+                    "desc": "상품 정보 미존재",
+                    "data": null
+                }
+                end note
+            !endif
+        end alt
+    return Product
+
+    ProductController -> ProductMapper : ProductMapper.toProductDTO(Product)
+        ACTIVATE ProductMapper
+        return ProductDTO
+
+return ApiResponse
+    !ifdef (SHOW_NOTE)
+        note bottom
+            -- Response Body --
+            {
+                "code": "200",
+                "desc": "요청 성공",
+                "data": {
+                     "product": {
+                        "id": 1,
+                        "name": "Adererror Donald Duck t-shirt 01",
+                        "price": 140000,
+                        "stock_count": 30
+                     }
+                }
+            }
+        end note
+    !endif
+@enduml

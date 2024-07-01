@@ -1,0 +1,80 @@
+@startuml
+
+!define SHOW_NOTE ' 노트 표시 여부 ( 비활성화 시 주석 처리 )
+Title [Amount] charge / Sequence Diagram\n\
+잔액 충전/조회 API
+
+'---------------------------------------------------
+' 객체 정의
+'---------------------------------------------------
+actor "Client" as Client
+participant "AmountController" as AmountController
+participant "AmountMapper" as AmountMapper
+participant "AmountService" as AmountService
+participant "AmountRepository" as AmountRepository
+database "DB" as DB
+
+'---------------------------------------------------
+' Amount Charge API Sequence Diagram
+'---------------------------------------------------
+
+Client -> AmountController : * Method: <color blue><b>POST \n\
+* API : /amounts/charge
+!ifdef (SHOW_NOTE)
+    note right
+    --Request Body--
+    {
+      "user_id": 1,
+      "amount": 10000,
+    }
+    end note
+!endif
+ACTIVATE AmountController
+
+AmountController -> AmountService : charge(userId, amount)
+    ACTIVATE AmountService
+        AmountService -> AmountRepository : findByUserId(userId)
+            ACTIVATE AmountRepository
+                AmountRepository -> DB : Select Amount from DB
+                    ACTIVATE DB
+                    return Return Amount Entity
+                return Amount
+
+        alt#Gold  #LightBlue Amount.isEmpty == true
+            AmountService -> AmountRepository : Amount.save(createAmount(userId, 0))
+                ACTIVATE AmountRepository
+                    AmountRepository -> DB : Save Amount from DB
+                        ACTIVATE DB
+                        return Return Amount Entity
+                    return Amount
+        end alt
+
+        alt#Gold  #LightBlue amount != null or 0
+            AmountService -> AmountRepository : Amount.setAmount(amountSum(userAmount, amount))
+                ACTIVATE AmountRepository
+                    AmountRepository -> DB : Update Amount from DB
+                        ACTIVATE DB
+                        return Return Amount Entity
+                    return Amount
+        end alt
+    return Amount
+
+    AmountController -> AmountMapper : AmountMapper.toAmountDTO(Amount)
+        ACTIVATE AmountMapper
+        return AmountDTO
+
+return ApiResponse
+    !ifdef (SHOW_NOTE)
+        note bottom
+            -- Response Body --
+            {
+                "code": "200",
+                "desc": "요청 성공",
+                "data": {
+                     "userId": 1,
+                     "amount": 10000
+                }
+            }
+        end note
+    !endif
+@enduml
