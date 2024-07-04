@@ -1,0 +1,3 @@
+### 장바구니 삭제
+DELETE localhost:8081/carts/item
+Content-Type: application/json
