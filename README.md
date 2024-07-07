@@ -54,3 +54,5 @@ e-커머스 서비스
 ## 설계 문서 Info
 1. 마일스톤: https://github.com/users/wldyd2214/projects/1/views/1
 2. 시퀀스 다이어그램: https://github.com/wldyd2214/e-commerce/tree/feature/step05/design/sequence
+3. DB ERD 문서: https://github.com/wldyd2214/e-commerce/blob/feature/step06/design/db/DB_ERD.png
+4. API 명세서: https://jiyong.gitbook.io/e/
