@@ -1,0 +1,3 @@
+### 상품 목록 조회
+GET localhost:8081/products
+Content-Type: application/json
