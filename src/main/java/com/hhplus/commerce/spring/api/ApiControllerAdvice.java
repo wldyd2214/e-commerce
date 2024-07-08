@@ -19,4 +19,13 @@ public class ApiControllerAdvice {
         );
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ApiResponse<Object> IllegalArgumentException(IllegalArgumentException e) {
+        return ApiResponse.of(
+            HttpStatus.BAD_REQUEST,
+            e.getMessage(),
+            null
+        );
+    }
 }

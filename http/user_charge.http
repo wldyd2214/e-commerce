@@ -1,7 +1,7 @@
 ### 사용자 잔액 충전/조회
-POST localhost:8081/users/1000/charge
+POST localhost:8081/users/1/charge
 Content-Type: application/json
 
 {
-  "chargeAmount": 10000
+  "chargePoint": 1000
 }
