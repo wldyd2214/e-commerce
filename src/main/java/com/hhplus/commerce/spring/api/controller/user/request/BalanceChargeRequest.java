@@ -10,5 +10,5 @@ import lombok.*;
 public class BalanceChargeRequest {
 
     @Positive(message = "충전 액수는 0보다 커야 합니다.")
-    private Long chargeAmount;
+    private int chargePoint;
 }

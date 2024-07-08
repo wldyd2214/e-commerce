@@ -23,9 +23,7 @@ public class UserController {
     @PostMapping("/{userId}/charge")
     public ApiResponse<Object> userBalanceCharge(@PathVariable Long userId,
                                                  @RequestBody @Valid BalanceChargeRequest reqDTO) {
-
-        userService.userBalanceCharge(userId, reqDTO.getChargeAmount());
-
-        return ApiResponse.ok(UserDTOMapper.createDummyBalanceChargeResponse(userId, reqDTO.getChargeAmount()));
+        return ApiResponse.ok(UserDTOMapper.toBalanceChargeResponse(
+            userService.userBalanceCharge(userId, reqDTO.getChargePoint())));
     }
 }

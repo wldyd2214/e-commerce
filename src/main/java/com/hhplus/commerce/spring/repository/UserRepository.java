@@ -1,6 +1,6 @@
-package com.hhplus.commerce.spring.domain.user.repository;
+package com.hhplus.commerce.spring.repository;
 
-import com.hhplus.commerce.spring.domain.user.User;
+import com.hhplus.commerce.spring.model.User;
 import java.util.Optional;
 
 public interface UserRepository {

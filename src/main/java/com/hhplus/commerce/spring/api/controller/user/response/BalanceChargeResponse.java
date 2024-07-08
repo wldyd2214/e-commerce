@@ -8,5 +8,5 @@ import lombok.Getter;
 public class BalanceChargeResponse {
 
     private Long userId;
-    private Long balanceAmount;
+    private int userPoint;
 }

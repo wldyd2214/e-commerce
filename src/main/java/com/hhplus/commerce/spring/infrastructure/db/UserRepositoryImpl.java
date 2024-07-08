@@ -1,6 +1,7 @@
-package com.hhplus.commerce.spring.domain.user.repository;
+package com.hhplus.commerce.spring.infrastructure.db;
 
-import com.hhplus.commerce.spring.domain.user.User;
+import com.hhplus.commerce.spring.model.User;
+import com.hhplus.commerce.spring.repository.UserRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
