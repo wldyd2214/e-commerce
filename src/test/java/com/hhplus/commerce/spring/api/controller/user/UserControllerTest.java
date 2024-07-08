@@ -1,5 +1,6 @@
 package com.hhplus.commerce.spring.api.controller.user;
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -7,7 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.api.controller.user.request.BalanceChargeRequest;
+import com.hhplus.commerce.spring.api.controller.user.response.BalanceChargeResponse;
 import com.hhplus.commerce.spring.api.service.UserService;
+import com.hhplus.commerce.spring.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +37,14 @@ class UserControllerTest {
     void userBalanceCharge() throws Exception {
         // given
         Long userId = 1000L;
-        Long chargeAmount = 100000L;
+        int chargePoint = 100000;
+
+        User user = createUser(userId, "박지용", chargePoint);
+
+        given(userService.userBalanceCharge(userId, chargePoint)).willReturn(user);
 
         BalanceChargeRequest request = BalanceChargeRequest.builder()
-                                                           .chargeAmount(chargeAmount)
+                                                           .chargePoint(chargePoint)
                                                            .build();
 
         // when // then
@@ -52,7 +59,7 @@ class UserControllerTest {
                    jsonPath("$.status").value("OK"),
                    jsonPath("$.message").value("OK"),
                    jsonPath("$.data.userId").value(userId),
-                   jsonPath("$.data.balanceAmount").value(chargeAmount)
+                   jsonPath("$.data.userPoint").value(chargePoint)
                );
     }
 
@@ -61,10 +68,10 @@ class UserControllerTest {
     void userBalanceChargePositive() throws Exception {
         // given
         Long userId = 1000L;
-        Long chargeAmount = -10L;
+        int chargePoint = -10;
 
         BalanceChargeRequest request = BalanceChargeRequest.builder()
-                                                           .chargeAmount(chargeAmount)
+                                                           .chargePoint(chargePoint)
                                                            .build();
 
         // when // then
@@ -80,5 +87,20 @@ class UserControllerTest {
                    jsonPath("$.message").value("충전 액수는 0보다 커야 합니다."),
                    jsonPath("$.data").isEmpty()
                );
+    }
+
+    private BalanceChargeResponse createBalanceChargeResponse(Long userId, int userPoint) {
+        return BalanceChargeResponse.builder()
+                                    .userId(userId)
+                                    .userPoint(userPoint)
+                                    .build();
+    }
+
+    private User createUser(Long userId, String userName, int userPoint) {
+        return User.builder()
+                   .id(userId)
+                   .userName(userName)
+                   .userPoint(userPoint)
+                   .build();
     }
 }
