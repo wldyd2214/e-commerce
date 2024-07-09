@@ -2,7 +2,9 @@ package com.hhplus.commerce.spring.api.controller.product.dto;
 
 import com.hhplus.commerce.spring.api.controller.product.response.ProductsResponse;
 
+import com.hhplus.commerce.spring.model.Product;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductDTOMapper {
 
@@ -26,6 +28,25 @@ public class ProductDTOMapper {
                          .name(name)
                          .consumerPrice(price)
                          .stockCount(count)
+                         .build();
+    }
+
+    public static ProductsResponse toProductsResponse(List<Product> products) {
+        return ProductsResponse.builder()
+                               .products(
+                                   products.stream()
+                                           .map(ProductDTOMapper::toProductDTO)
+                                           .collect(Collectors.toList())
+                               )
+                               .build();
+    }
+
+    public static ProductDTO toProductDTO(Product product) {
+        return ProductDTO.builder()
+                         .id(product.getId())
+                         .name(product.getProductName())
+                         .consumerPrice(product.getProductPrice())
+                         .stockCount(product.getProductCount())
                          .build();
     }
 }

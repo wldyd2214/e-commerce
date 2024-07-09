@@ -3,7 +3,7 @@ package com.hhplus.commerce.spring.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,9 +18,9 @@ public abstract class BaseEntity {
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
-    private LocalDate createdDateTime;
+    private LocalDateTime createdDateTime;
 
     @LastModifiedDate
-    private LocalDate modifiedDateTime;
+    private LocalDateTime modifiedDateTime;
 
 }
