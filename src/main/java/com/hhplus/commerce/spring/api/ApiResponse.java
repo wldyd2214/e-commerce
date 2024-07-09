@@ -1,13 +1,17 @@
 package com.hhplus.commerce.spring.api;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
 public class ApiResponse<T> {
 
+    @Schema(description = "응답 코드")
     private int code;
+    @Schema(description = "HttpStatus")
     private HttpStatus status;
+    @Schema(description = "HttpMessage")
     private String message;
     private T data;
 
