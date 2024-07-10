@@ -3,7 +3,7 @@ package com.hhplus.commerce.spring.api.controller.product;
 import com.hhplus.commerce.spring.api.ApiResponse;
 import com.hhplus.commerce.spring.api.controller.product.dto.ProductDTOMapper;
 import com.hhplus.commerce.spring.api.controller.product.response.ProductsResponse;
-import com.hhplus.commerce.spring.api.service.ProductService;
+import com.hhplus.commerce.spring.api.service.product.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

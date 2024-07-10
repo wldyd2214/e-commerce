@@ -1,6 +1,7 @@
-package com.hhplus.commerce.spring.api.service;
+package com.hhplus.commerce.spring.api.service.user;
 
-import com.hhplus.commerce.spring.model.User;
+import com.hhplus.commerce.spring.api.service.payment.PaymentService;
+import com.hhplus.commerce.spring.model.entity.User;
 import com.hhplus.commerce.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-    private final PayService payService;
+    private final PaymentService paymentService;
 
     private final UserRepository userRepository;
 
@@ -22,7 +23,7 @@ public class UserService {
         User user = userRepository.findById(userId)
                                   .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
 
-        boolean payResult = payService.sendPayment(String.valueOf(userId), chargePoint);
+        boolean payResult = paymentService.sendPayment(String.valueOf(userId), chargePoint);
 
         if (!payResult) {
             throw new IllegalArgumentException("결제 시스템 결제 실패!");

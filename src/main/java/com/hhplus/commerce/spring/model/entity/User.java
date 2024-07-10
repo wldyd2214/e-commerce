@@ -1,5 +1,6 @@
-package com.hhplus.commerce.spring.model;
+package com.hhplus.commerce.spring.model.entity;
 
+import com.hhplus.commerce.spring.model.BaseEntity;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -47,5 +48,12 @@ public class User extends BaseEntity {
         this.id = id;
         this.userName = userName;
         this.userPoint = userPoint;
+    }
+
+    public void UserPointDeduction(int price) {
+        if (this.userPoint < price) {
+            throw new IllegalArgumentException("사용자 잔액 부족");
+        }
+        this.userPoint = this.userPoint - price;
     }
 }

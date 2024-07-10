@@ -1,5 +1,6 @@
-package com.hhplus.commerce.spring.model;
+package com.hhplus.commerce.spring.model.entity;
 
+import com.hhplus.commerce.spring.model.BaseEntity;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -51,5 +52,16 @@ public class Product extends BaseEntity {
         this.productDesc = productDesc;
         this.productPrice = productPrice;
         this.productCount = productCount;
+    }
+
+    public boolean isQuantityLessThan(int quantity) {
+        return this.productCount < quantity;
+    }
+
+    public void deductQuantity(int quantity) {
+        if (isQuantityLessThan(quantity)) {
+            throw new IllegalArgumentException("차감할 재고 수량이 없습니다.");
+        }
+        this.productCount -= quantity;
     }
 }

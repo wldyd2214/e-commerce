@@ -3,7 +3,7 @@ package com.hhplus.commerce.spring.api.controller.user;
 import com.hhplus.commerce.spring.api.ApiResponse;
 import com.hhplus.commerce.spring.api.controller.user.dto.UserDTOMapper;
 import com.hhplus.commerce.spring.api.controller.user.request.BalanceChargeRequest;
-import com.hhplus.commerce.spring.api.service.UserService;
+import com.hhplus.commerce.spring.api.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

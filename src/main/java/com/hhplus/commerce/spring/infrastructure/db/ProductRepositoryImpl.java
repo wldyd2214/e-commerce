@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.infrastructure.db;
 
-import com.hhplus.commerce.spring.model.Product;
+import com.hhplus.commerce.spring.model.entity.Product;
 import com.hhplus.commerce.spring.repository.ProductRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,5 +15,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<Product> findAllByOrderByIdDesc() {
         return jpaRepository.findAllByOrderByIdDesc();
+    }
+
+    @Override
+    public List<Product> findAllByIdIn(List<Long> productKeys) {
+        return jpaRepository.findAllByIdIn(productKeys);
     }
 }

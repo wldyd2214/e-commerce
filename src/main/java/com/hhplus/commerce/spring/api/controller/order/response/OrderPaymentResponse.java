@@ -1,6 +1,7 @@
 package com.hhplus.commerce.spring.api.controller.order.response;
 
 import com.hhplus.commerce.spring.api.controller.order.dto.OrderDTO;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,6 @@ import java.util.List;
 @Builder
 public class OrderPaymentResponse {
 
-    private Long userId;
-    private Integer balanceAmount;
+    @Schema(description = "주문 목록")
     private List<OrderDTO> orderItems;
 }

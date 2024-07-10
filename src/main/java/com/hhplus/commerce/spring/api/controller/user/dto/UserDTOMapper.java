@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.api.controller.user.dto;
 
 import com.hhplus.commerce.spring.api.controller.user.response.BalanceChargeResponse;
-import com.hhplus.commerce.spring.model.User;
+import com.hhplus.commerce.spring.model.entity.User;
 
 public class UserDTOMapper {
 

@@ -1,6 +1,6 @@
-package com.hhplus.commerce.spring.api.service;
+package com.hhplus.commerce.spring.api.service.product;
 
-import com.hhplus.commerce.spring.model.Product;
+import com.hhplus.commerce.spring.model.entity.Product;
 import com.hhplus.commerce.spring.repository.ProductRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
