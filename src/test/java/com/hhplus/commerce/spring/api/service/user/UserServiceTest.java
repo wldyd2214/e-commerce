@@ -1,10 +1,12 @@
-package com.hhplus.commerce.spring.api.service;
+package com.hhplus.commerce.spring.api.service.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
-import com.hhplus.commerce.spring.model.User;
+import com.hhplus.commerce.spring.api.service.payment.PaymentService;
+import com.hhplus.commerce.spring.api.service.user.UserService;
+import com.hhplus.commerce.spring.model.entity.User;
 import com.hhplus.commerce.spring.repository.UserRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +23,7 @@ class UserServiceTest {
     UserRepository userRepository;
 
     @Mock
-    PayService payService;
+    PaymentService paymentService;
 
     @InjectMocks
     UserService userService;
@@ -67,7 +69,7 @@ class UserServiceTest {
         given(userRepository.findById(userId)).willReturn(
             Optional.ofNullable(createUser(userId, userName, userPoint)));
 
-        given(payService.sendPayment(String.valueOf(userId), chargePoint))
+        given(paymentService.sendPayment(String.valueOf(userId), chargePoint))
             .willReturn(false);
 
         // when // then
@@ -88,7 +90,7 @@ class UserServiceTest {
         given(userRepository.findById(userId)).willReturn(
             Optional.ofNullable(createUser(userId, userName, userPoint)));
 
-        given(payService.sendPayment(String.valueOf(userId), chargePoint))
+        given(paymentService.sendPayment(String.valueOf(userId), chargePoint))
             .willReturn(true);
 
         // when // then
