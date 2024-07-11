@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.infrastructure.db;
 
-import com.hhplus.commerce.spring.model.Product;
+import com.hhplus.commerce.spring.model.entity.Product;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
