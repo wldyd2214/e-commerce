@@ -5,7 +5,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 import com.hhplus.commerce.spring.api.service.payment.PaymentService;
-import com.hhplus.commerce.spring.api.service.user.UserService;
 import com.hhplus.commerce.spring.model.entity.User;
 import com.hhplus.commerce.spring.repository.UserRepository;
 import java.util.Optional;
