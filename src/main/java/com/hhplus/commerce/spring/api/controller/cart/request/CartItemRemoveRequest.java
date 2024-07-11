@@ -1,5 +1,6 @@
 package com.hhplus.commerce.spring.api.controller.cart.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,5 +14,6 @@ import java.util.List;
 @Builder
 public class CartItemRemoveRequest {
 
+    @Schema(description = "장바구니 아이템 아이디", example = "1, 2, 3")
     private List<Long> cartItemIds;
 }
