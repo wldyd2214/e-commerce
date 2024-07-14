@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderPaymentResponse {
+public class CreateOrderResponse {
 
-    @Schema(description = "주문 목록")
-    private List<OrderDTO> orderItems;
+    @Schema(description = "주문 정보")
+    private OrderDTO order;
 }

@@ -1,12 +1,12 @@
 package com.hhplus.commerce.spring.api.controller.order.dto;
 
-import com.hhplus.commerce.spring.api.controller.order.request.OrderPaymentRequest;
-import com.hhplus.commerce.spring.api.controller.order.response.OrderPaymentResponse;
+import com.hhplus.commerce.spring.api.controller.order.request.CreateOrderRequest;
+import com.hhplus.commerce.spring.api.controller.order.response.CreateOrderResponse;
 import com.hhplus.commerce.spring.api.controller.product.dto.ProductDTO;
-import com.hhplus.commerce.spring.api.controller.product.dto.ProductDTOMapper;
 
-import com.hhplus.commerce.spring.api.service.order.request.OrderPaymentServiceRequest;
+import com.hhplus.commerce.spring.api.service.order.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.service.order.request.OrderServiceRequest;
+import com.hhplus.commerce.spring.model.entity.Order;
 import com.hhplus.commerce.spring.model.entity.OrderItem;
 import com.hhplus.commerce.spring.model.entity.Product;
 import java.util.List;
@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 
 public class OrderDTOMapper {
 
-    public static OrderPaymentServiceRequest toOrderPaymentServiceRequest(OrderPaymentRequest request) {
-        return OrderPaymentServiceRequest.builder()
-                                         .userId(request.getUserId())
-                                         .orders(request.getOrderItems()
+    public static CreateOrderServiceRequest toCreateOrderServiceRequest(CreateOrderRequest request) {
+        return CreateOrderServiceRequest.builder()
+                                        .userId(request.getUserId())
+                                        .orders(request.getOrderItems()
                                                         .stream()
                                                         .map(OrderDTOMapper::toOrderServiceRequest)
                                                         .collect(Collectors.toList()))
-                                         .build();
+                                        .build();
     }
 
     public static OrderServiceRequest toOrderServiceRequest(OrderPaymentDTO dto) {
@@ -31,30 +31,29 @@ public class OrderDTOMapper {
                                   .build();
     }
 
-    public static OrderPaymentResponse toOrderPaymentResponse(List<OrderItem> orderPayment) {
-        return OrderPaymentResponse.builder()
-                                   .orderItems(
-                                       orderPayment.stream()
-                                                   .map(OrderDTOMapper::toOrderDTO)
-                                                   .collect(Collectors.toList()))
-                                   .build();
+    public static CreateOrderResponse toOrderPaymentResponse(Order order) {
+        return CreateOrderResponse.builder()
+                                  .order(toOrderDTO(order))
+                                  .build();
     }
 
-    public static OrderDTO toOrderDTO(OrderItem orderItem) {
+    public static OrderDTO toOrderDTO(Order order) {
         return OrderDTO.builder()
-                       .orderId(orderItem.getOrder().getId())
-                       .sellPrice(orderItem.getOrderProductPrice())
-                       .orderCount(orderItem.getOrderProductCount())
-                       .product(toProductDTO(orderItem.getProduct()))
+                       .id(order.getId())
+                       .userId(order.getUser().getId())
+                       .orderItems(order.getOrderItem()
+                                        .stream()
+                                        .map(OrderDTOMapper::toOrderItemDTO)
+                                        .collect(Collectors.toList()))
                        .build();
     }
 
-    public static ProductDTO toProductDTO(Product product) {
-        return ProductDTO.builder()
-                         .id(product.getId())
-                         .name(product.getProductName())
-                         .consumerPrice(product.getProductPrice())
-                         .stockCount(product.getProductCount())
-                         .build();
+    public static OrderItemDTO toOrderItemDTO(OrderItem orderItem) {
+        return OrderItemDTO.builder()
+                           .id(orderItem.getId())
+                           .orderProductName(orderItem.getOrderProductName())
+                           .orderProductPrice(orderItem.getOrderProductPrice())
+                           .orderProductCount(orderItem.getOrderProductCount())
+                           .build();
     }
 }

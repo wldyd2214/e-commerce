@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderPaymentServiceRequest {
+public class CreateOrderServiceRequest {
 
     private Long userId;
     private List<OrderServiceRequest> orders;

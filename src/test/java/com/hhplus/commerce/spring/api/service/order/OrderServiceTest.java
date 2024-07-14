@@ -9,7 +9,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 import com.hhplus.commerce.spring.api.service.data.DataPlatformService;
-import com.hhplus.commerce.spring.api.service.order.request.OrderPaymentServiceRequest;
+import com.hhplus.commerce.spring.api.service.order.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.service.order.request.OrderServiceRequest;
 import com.hhplus.commerce.spring.api.service.payment.PaymentService;
 import com.hhplus.commerce.spring.model.entity.Order;
@@ -61,7 +61,7 @@ class OrderServiceTest {
         int orderCount = 1;
 
         OrderServiceRequest order = createOrderServiceRequest(productId, orderCount);
-        OrderPaymentServiceRequest request = createOrderPaymentServiceRequest(userId, order);
+        CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, order);
 
         given(userRepository.findById(anyLong()))
             .willThrow(new IllegalArgumentException("존재하지 않은 사용자"));
@@ -92,7 +92,7 @@ class OrderServiceTest {
         int orderCount = 1;
 
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
-        OrderPaymentServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
+        CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
 
         given(userRepository.findById(anyLong())).willReturn(
             Optional.ofNullable(user));
@@ -126,7 +126,7 @@ class OrderServiceTest {
         int orderCount = 1;
 
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
-        OrderPaymentServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
+        CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
 
         given(userRepository.findById(anyLong())).willReturn(
             Optional.ofNullable(user));
@@ -160,7 +160,7 @@ class OrderServiceTest {
         int orderCount = 1;
 
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
-        OrderPaymentServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
+        CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
 
         given(userRepository.findById(anyLong())).willReturn(
             Optional.ofNullable(user));
@@ -204,7 +204,7 @@ class OrderServiceTest {
         int orderCount = 1;
 
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
-        OrderPaymentServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
+        CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
 
         given(userRepository.findById(anyLong())).willReturn(
             Optional.ofNullable(user));
@@ -235,11 +235,11 @@ class OrderServiceTest {
                                   .build();
     }
 
-    private OrderPaymentServiceRequest createOrderPaymentServiceRequest(long userId, OrderServiceRequest order) {
-        return OrderPaymentServiceRequest.builder()
-                                         .userId(userId)
-                                         .orders(List.of(order))
-                                         .build();
+    private CreateOrderServiceRequest createOrderPaymentServiceRequest(long userId, OrderServiceRequest order) {
+        return CreateOrderServiceRequest.builder()
+                                        .userId(userId)
+                                        .orders(List.of(order))
+                                        .build();
     }
 
     private User createUser(long userId, String userName, Integer userPoint) {

@@ -1,6 +1,8 @@
 package com.hhplus.commerce.spring.api.service.payment;
 
 import com.hhplus.commerce.spring.infrastructure.payment.PaymentSystemClient;
+import com.hhplus.commerce.spring.model.entity.Order;
+import com.hhplus.commerce.spring.model.entity.Payment;
 import com.hhplus.commerce.spring.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,23 @@ public class PaymentService {
         return false;
     }
 
-    public boolean pointPayment(long userId, int userPoint, int payMoney) {
-        boolean result = paymentSystemClient.pointPayment(userId, userPoint, payMoney);
+    public Payment paymentUserPoint(Long userId, int payMoney, Order order) {
 
-        if (result) {
-            return true;
+        boolean extResult = paymentSystemClient.paymentUserPoint(userId, payMoney);
+
+        Payment payment = Payment.create(order, payMoney);
+
+        if (!extResult) {
+            payment.paymentStatusFailed();
+            paymentRepository.save(payment);
+
+            order.orderStatusPaymentFail();
+            throw new IllegalArgumentException("결제 실패");
         }
 
-        return false;
+        payment.paymentStatusCompleted();
+        paymentRepository.save(payment);
+
+        return payment;
     }
 }

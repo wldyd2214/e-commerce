@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.api.controller.order.dto.OrderPaymentDTO;
-import com.hhplus.commerce.spring.api.controller.order.request.OrderPaymentRequest;
+import com.hhplus.commerce.spring.api.controller.order.request.CreateOrderRequest;
 import com.hhplus.commerce.spring.api.service.order.OrderService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -39,10 +39,10 @@ class OrderControllerTest {
         OrderPaymentDTO orderPayment1 = createOrderPaymentDTO(1, 1);
         OrderPaymentDTO orderPayment2 = createOrderPaymentDTO(1, 2);
 
-        OrderPaymentRequest request = OrderPaymentRequest.builder()
-                                                         .userId(userId)
-                                                         .orderItems(List.of(orderPayment1, orderPayment2))
-                                                         .build();
+        CreateOrderRequest request = CreateOrderRequest.builder()
+                                                       .userId(userId)
+                                                       .orderItems(List.of(orderPayment1, orderPayment2))
+                                                       .build();
 
         mockMvc.perform(
                    post("/orders/payment")

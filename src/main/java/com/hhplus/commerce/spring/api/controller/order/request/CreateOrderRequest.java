@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderPaymentRequest {
+public class CreateOrderRequest {
 
     @Schema(description = "사용자 아이디", example = "1")
     @Positive

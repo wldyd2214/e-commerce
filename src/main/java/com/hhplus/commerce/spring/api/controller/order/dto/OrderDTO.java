@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.api.controller.order.dto;
 
-import com.hhplus.commerce.spring.api.controller.product.dto.ProductDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 public class OrderDTO {
 
     @Schema(description = "주문 아이디", example = "1")
-    private Long orderId;
-    @Schema(description = "주문 금액", example = "100000")
-    private Integer sellPrice;
-    @Schema(description = "주문 갯수", example = "2")
-    private Integer orderCount;
-    @Schema(description = "주문 상품 정보")
-    private ProductDTO product;
+    private Long id;
+
+    @Schema(description = "주문 사용자 아이디", example = "1")
+    private Long userId;
+
+    @Schema(description = "주문 목록 정보")
+    private List<OrderItemDTO> orderItems;
 }

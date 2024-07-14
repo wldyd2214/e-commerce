@@ -42,7 +42,6 @@ public class User extends BaseEntity {
         return this.userPoint += chargeAmount;
     }
 
-    // TODO: 테스트 코드에서 사용할 빌더를 이런 식으로 선언해서 사용해도 되는지? (Q&A)
     @Builder
     public User(Long id, String userName, Integer userPoint) {
         this.id = id;
@@ -50,10 +49,10 @@ public class User extends BaseEntity {
         this.userPoint = userPoint;
     }
 
-    public void UserPointDeduction(int price) {
-        if (this.userPoint < price) {
+    public void UserPointDeduction(int pointDeduction) {
+        if (this.userPoint < pointDeduction) {
             throw new IllegalArgumentException("사용자 잔액 부족");
         }
-        this.userPoint = this.userPoint - price;
+        this.userPoint = this.userPoint - pointDeduction;
     }
 }

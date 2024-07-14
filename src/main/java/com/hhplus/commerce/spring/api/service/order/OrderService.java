@@ -1,17 +1,15 @@
 package com.hhplus.commerce.spring.api.service.order;
 
 import com.hhplus.commerce.spring.api.service.data.DataPlatformService;
-import com.hhplus.commerce.spring.api.service.order.request.OrderPaymentServiceRequest;
+import com.hhplus.commerce.spring.api.service.order.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.service.order.request.OrderServiceRequest;
 import com.hhplus.commerce.spring.api.service.payment.PaymentService;
 import com.hhplus.commerce.spring.model.entity.Order;
 import com.hhplus.commerce.spring.model.entity.OrderItem;
-import com.hhplus.commerce.spring.model.entity.Payment;
 import com.hhplus.commerce.spring.model.entity.Product;
 import com.hhplus.commerce.spring.model.entity.User;
 import com.hhplus.commerce.spring.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.repository.OrderRepository;
-import com.hhplus.commerce.spring.repository.PaymentRepository;
 import com.hhplus.commerce.spring.repository.ProductRepository;
 import com.hhplus.commerce.spring.repository.UserRepository;
 import java.util.ArrayList;
@@ -35,59 +33,51 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
-    private final PaymentRepository paymentRepository;
 
+    // TODO: 결제와 재고차감과 데이터플랫폼으로 주문데이터 전송은 주문 생성의 하나의 로직이라고 볼 수 있다.
     @Transactional
-    public List<OrderItem> orderPayment(OrderPaymentServiceRequest request) {
+    public Order createOrder(CreateOrderServiceRequest request) {
 
         User user = userRepository.findById(request.getUserId())
                                   .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
 
-        List<Long> productKeys = extractStockProductNumbers(request.getOrders());
+        List<Long> productIds = extractProductIds(request.getOrders());
 
-        Map<Long, Product> productMap = createStockMapBy(productKeys);
-        Map<Long, OrderServiceRequest> orderMap = createCountingMapBy(request.getOrders());
+        Map<Long, Product> productMap = createProductMap(productIds);
+        Map<Long, OrderServiceRequest> orderMap = createOrderServieMap(request.getOrders());
 
-        int payMoney = deductStockQuantities(productKeys, productMap, orderMap);
+        int totalPrice = productTotalPrice(productIds, productMap);
 
-        if (user.getUserPoint() < payMoney) {
-            throw new IllegalArgumentException("사용자 잔액 부족");
-        }
+        deductProductQuantities(productIds, productMap, orderMap);
 
-        Order order = Order.create(user);
-        Order saveOrder = orderRepository.save(order);
+        Order saveOrder = orderRepository.save(Order.create(user));
+        List<OrderItem> orderItems = createOrderItems(saveOrder, productIds, productMap, orderMap);
+        saveOrder.getOrderItem().addAll(orderItems);
 
-        List<OrderItem> orderItems = createOrderItems(order, productKeys, productMap, orderMap);
+        paymentService.paymentUserPoint(user.getId(), totalPrice, saveOrder);
+        user.UserPointDeduction(totalPrice);
 
-        boolean payResult = paymentService.pointPayment(user.getId(), user.getUserPoint(), payMoney);
+        boolean dataResult = dataPlatformService.sendOrderData(user.getId(), saveOrder.getId());
 
-        Payment payment = Payment.create(order, payMoney);
+        log.info(String.format("데이터 플랫폼 전송 결과 : %s ", dataResult));
 
-        if (!payResult) {
-            payment.paymentStatusFailed();
-            paymentRepository.save(payment);
-
-            saveOrder.orderStatusPaymentFail();
-            throw new IllegalArgumentException("결제 실패");
-        }
-
-        payment.paymentStatusCompleted();
-        paymentRepository.save(payment);
-
-        user.UserPointDeduction(payMoney);
-
-        boolean platformResult = dataPlatformService.sendOrderData(user.getId(), order.getId());
-
-        if (!platformResult) {
-            log.info("데이터 플랫폼 전송 실패!");
-        }
-
-        return orderItems;
+        return saveOrder;
     }
 
-    private int deductStockQuantities(List<Long> productKeys, Map<Long, Product> productMap,
+    private int productTotalPrice(List<Long> productKeys, Map<Long, Product> productMap) {
+        int totalPrice = 0;
+
+        for (Long productId : new HashSet<>(productKeys)) {
+            Product product = productMap.get(productId);
+
+            totalPrice += product.getProductPrice();
+        }
+
+        return totalPrice;
+    }
+
+    private void deductProductQuantities(List<Long> productKeys, Map<Long, Product> productMap,
         Map<Long, OrderServiceRequest> orderMap) {
-        Integer payMoney = 0;
 
         for (Long productId : new HashSet<>(productKeys)) {
             Product product = productMap.get(productId);
@@ -97,27 +87,23 @@ public class OrderService {
                 throw new IllegalArgumentException("재고가 부족한 상품이 있습니다.");
             }
 
-            payMoney += product.getProductPrice() * quantity;
-
             product.deductQuantity(quantity);
         }
-
-        return payMoney;
     }
 
-    private List<Long> extractStockProductNumbers(List<OrderServiceRequest> orders) {
+    private List<Long> extractProductIds(List<OrderServiceRequest> orders) {
         return orders.stream()
                      .map(o -> o.getProductId())
                      .collect(Collectors.toList());
     }
 
-    private Map<Long, Product> createStockMapBy(List<Long> productKeys) {
+    private Map<Long, Product> createProductMap(List<Long> productKeys) {
         List<Product> products = productRepository.findAllByIdIn(productKeys);
         return products.stream()
                        .collect(Collectors.toMap(product -> product.getId(), p -> p));
     }
 
-    private Map<Long, OrderServiceRequest> createCountingMapBy(List<OrderServiceRequest> orders) {
+    private Map<Long, OrderServiceRequest> createOrderServieMap(List<OrderServiceRequest> orders) {
         return orders.stream()
                      .collect(Collectors.toMap(order -> order.getProductId(), o -> o));
     }

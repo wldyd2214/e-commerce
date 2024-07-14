@@ -2,8 +2,8 @@ package com.hhplus.commerce.spring.api.controller.order;
 
 import com.hhplus.commerce.spring.api.ApiResponse;
 import com.hhplus.commerce.spring.api.controller.order.dto.OrderDTOMapper;
-import com.hhplus.commerce.spring.api.controller.order.request.OrderPaymentRequest;
-import com.hhplus.commerce.spring.api.controller.order.response.OrderPaymentResponse;
+import com.hhplus.commerce.spring.api.controller.order.request.CreateOrderRequest;
+import com.hhplus.commerce.spring.api.controller.order.response.CreateOrderResponse;
 import com.hhplus.commerce.spring.api.service.order.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -21,12 +21,12 @@ public class OrderController {
     private final OrderService orderService;
 
     @Operation(
-        summary = "상품 주문/결제 API",
-        description = "상품을 주문/결제 합니다."
+        summary = "상품 주문 API",
+        description = "상품을 주문합니다."
     )
-    @PostMapping(value = "/payment")
-    public ApiResponse<OrderPaymentResponse> orderPayment(@RequestBody @Valid OrderPaymentRequest request) {
+    @PostMapping(value = "")
+    public ApiResponse<CreateOrderResponse> createOrder(@RequestBody @Valid CreateOrderRequest request) {
         return ApiResponse.ok(OrderDTOMapper.toOrderPaymentResponse(
-            orderService.orderPayment(OrderDTOMapper.toOrderPaymentServiceRequest(request))));
+            orderService.createOrder(OrderDTOMapper.toCreateOrderServiceRequest(request))));
     }
 }
