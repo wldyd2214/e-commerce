@@ -1,5 +1,6 @@
-package com.hhplus.commerce.spring.model;
+package com.hhplus.commerce.spring.model.entity;
 
+import com.hhplus.commerce.spring.model.BaseEntity;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -23,33 +24,29 @@ import lombok.NoArgsConstructor;
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "product")
-public class Product extends BaseEntity {
+@Table(name = "user")
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long id;
 
-    @Column(name = "product_name", nullable = false)
-    private String productName;
+    @Column(name = "user_name", nullable = false)
+    private String userName;
 
-    @Column(name = "product_desc", nullable = false)
-    private String productDesc;
+    @Column(name = "user_balance_amount", nullable = false)
+    private Integer userPoint;
 
-    @Column(name = "product_price", nullable = false)
-    private Integer productPrice;
+    public Integer pointCharge(int chargeAmount) {
+        return this.userPoint += chargeAmount;
+    }
 
-    @Column(name = "product_count", nullable = false)
-    private Integer productCount;
-
+    // TODO: 테스트 코드에서 사용할 빌더를 이런 식으로 선언해서 사용해도 되는지? (Q&A)
     @Builder
-    public Product(Long id, String productName, String productDesc, Integer productPrice,
-        Integer productCount) {
+    public User(Long id, String userName, Integer userPoint) {
         this.id = id;
-        this.productName = productName;
-        this.productDesc = productDesc;
-        this.productPrice = productPrice;
-        this.productCount = productCount;
+        this.userName = userName;
+        this.userPoint = userPoint;
     }
 }

@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhplus.commerce.spring.api.controller.user.UserController;
 import com.hhplus.commerce.spring.api.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +40,23 @@ class ProductControllerTest {
                    jsonPath("$.status").value("OK"),
                    jsonPath("$.message").value("OK"),
                    jsonPath("$.data").isNotEmpty()
+               );
+    }
+
+    @DisplayName("상위 상품 목록을 조회한다.")
+    @Test
+    void getProductPopulars() throws Exception {
+        // given
+
+        // when // then
+        mockMvc.perform(get("/products/popular"))
+               .andDo(print())
+               .andExpectAll(
+                       status().isOk(),
+                       jsonPath("$.code").value("200"),
+                       jsonPath("$.status").value("OK"),
+                       jsonPath("$.message").value("OK"),
+                       jsonPath("$.data").isNotEmpty()
                );
 
     }

@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.BDDMockito.given;
 
-import com.hhplus.commerce.spring.model.Product;
+import com.hhplus.commerce.spring.model.entity.Product;
+import com.hhplus.commerce.spring.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,9 @@ class ProductServiceTest {
 
     @Mock
     ProductRepository productRepository;
+
+    @Mock
+    OrderItemRepository orderItemRepository;
 
     @InjectMocks
     ProductService productService;
@@ -48,6 +52,32 @@ class ProductServiceTest {
                                 tuple(4L, "4번 제품 이름", "4번 제품 내용", 100000, 50),
                                 tuple(5L, "5번 제품 이름", "5번 제품 내용", 100000, 50)
                             );
+    }
+
+    @DisplayName("상위 상품 목록을 조회한다.")
+    @Test
+    void getPopulars() {
+        int productLength = 5;
+
+        List<Product> products = createProducts(productLength);
+
+        // given
+        given(orderItemRepository.selectPopularOrderItems())
+                .willReturn(products);
+
+        // when // then
+        List<Product> resProducts = orderItemRepository.selectPopularOrderItems();
+
+        assertThat(resProducts).isNotNull();
+        assertThat(resProducts).hasSize(productLength)
+                               .extracting("id", "productName", "productDesc", "productPrice", "productCount")
+                               .containsExactlyInAnyOrder(
+                                       tuple(1L, "1번 제품 이름", "1번 제품 내용", 100000, 50),
+                                       tuple(2L, "2번 제품 이름", "2번 제품 내용", 100000, 50),
+                                       tuple(3L, "3번 제품 이름", "3번 제품 내용", 100000, 50),
+                                       tuple(4L, "4번 제품 이름", "4번 제품 내용", 100000, 50),
+                                       tuple(5L, "5번 제품 이름", "5번 제품 내용", 100000, 50)
+                               );
     }
 
     private List<Product> createProducts(int num) {

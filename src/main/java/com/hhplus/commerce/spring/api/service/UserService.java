@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.service;
 
-import com.hhplus.commerce.spring.model.User;
+import com.hhplus.commerce.spring.model.entity.User;
 import com.hhplus.commerce.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
