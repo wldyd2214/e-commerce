@@ -7,11 +7,11 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ApiResponse<T> {
 
-    @Schema(description = "응답 코드")
+    @Schema(description = "응답 코드", example = "200")
     private int code;
-    @Schema(description = "HttpStatus")
+    @Schema(description = "HttpStatus", example = "OK")
     private HttpStatus status;
-    @Schema(description = "HttpMessage")
+    @Schema(description = "HttpMessage", example = "OK")
     private String message;
     private T data;
 

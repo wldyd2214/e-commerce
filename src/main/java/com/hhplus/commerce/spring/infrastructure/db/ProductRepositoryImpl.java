@@ -3,6 +3,8 @@ package com.hhplus.commerce.spring.infrastructure.db;
 import com.hhplus.commerce.spring.model.entity.Product;
 import com.hhplus.commerce.spring.repository.ProductRepository;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
