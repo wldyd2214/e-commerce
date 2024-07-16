@@ -6,9 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhplus.commerce.spring.api.controller.order.dto.OrderPaymentDTO;
-import com.hhplus.commerce.spring.api.controller.order.request.CreateOrderRequest;
-import com.hhplus.commerce.spring.api.service.order.OrderService;
+import com.hhplus.commerce.spring.api.order.controller.OrderController;
+import com.hhplus.commerce.spring.api.order.controller.dto.OrderPaymentDTO;
+import com.hhplus.commerce.spring.api.order.controller.request.CreateOrderRequest;
+import com.hhplus.commerce.spring.api.order.service.OrderService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
