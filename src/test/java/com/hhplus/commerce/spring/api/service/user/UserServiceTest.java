@@ -4,9 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
-import com.hhplus.commerce.spring.api.service.payment.PaymentService;
-import com.hhplus.commerce.spring.model.entity.User;
-import com.hhplus.commerce.spring.repository.UserRepository;
+import com.hhplus.commerce.spring.api.order.service.PaymentService;
+import com.hhplus.commerce.spring.api.user.service.UserService;
+import com.hhplus.commerce.spring.api.user.model.User;
+import com.hhplus.commerce.spring.api.user.repository.UserRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

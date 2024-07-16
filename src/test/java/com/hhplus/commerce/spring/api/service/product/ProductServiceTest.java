@@ -4,9 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.BDDMockito.given;
 
-import com.hhplus.commerce.spring.model.entity.Product;
-import com.hhplus.commerce.spring.repository.OrderItemRepository;
-import com.hhplus.commerce.spring.repository.ProductRepository;
+import com.hhplus.commerce.spring.api.product.service.ProductService;
+import com.hhplus.commerce.spring.api.product.model.Product;
+import com.hhplus.commerce.spring.api.order.repository.OrderItemRepository;
+import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

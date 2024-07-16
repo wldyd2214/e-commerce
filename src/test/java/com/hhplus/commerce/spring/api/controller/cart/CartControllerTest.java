@@ -1,10 +1,11 @@
 package com.hhplus.commerce.spring.api.controller.cart;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhplus.commerce.spring.api.controller.cart.request.CartItemRegisterRequest;
-import com.hhplus.commerce.spring.api.controller.cart.request.CartItemRemoveRequest;
-import com.hhplus.commerce.spring.api.controller.cart.request.CartItemsRegisterRequest;
-import com.hhplus.commerce.spring.api.service.cart.CartService;
+import com.hhplus.commerce.spring.api.cart.controller.CartController;
+import com.hhplus.commerce.spring.api.cart.controller.request.CartItemRegisterRequest;
+import com.hhplus.commerce.spring.api.cart.controller.request.CartItemRemoveRequest;
+import com.hhplus.commerce.spring.api.cart.controller.request.CartItemsRegisterRequest;
+import com.hhplus.commerce.spring.api.cart.service.CartService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
