@@ -32,8 +32,7 @@ public class ProductController {
     )
     @GetMapping(value = "/popular")
     public ApiResponse<ProductsResponse> getPopulars() {
-        //return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productService.getPopulars()));
-        return ApiResponse.ok(ProductDTOMapper.createDummyProductsResponse());
+        return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productService.getPopulars()));
     }
 
 }
