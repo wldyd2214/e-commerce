@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.order.model;
 
-import com.hhplus.commerce.spring.api.domain.common.infrastructure.BaseEntity;
+import com.hhplus.commerce.spring.api.common.infrasture.database.BaseEntity;
 import com.hhplus.commerce.spring.api.product.model.Product;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -68,6 +68,15 @@ public class OrderItem extends BaseEntity {
     public static OrderItem create(Order order, Product product, int orderCount) {
         return OrderItem.builder()
                         .order(order)
+                        .product(product)
+                        .orderProductName(product.getProductName())
+                        .orderProductPrice(product.getProductPrice())
+                        .orderProductCount(orderCount)
+                        .build();
+    }
+
+    public static OrderItem create(Product product, int orderCount) {
+        return OrderItem.builder()
                         .product(product)
                         .orderProductName(product.getProductName())
                         .orderProductPrice(product.getProductPrice())

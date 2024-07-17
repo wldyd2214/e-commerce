@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.cart.model;
 
-import com.hhplus.commerce.spring.api.domain.common.infrastructure.BaseEntity;
+import com.hhplus.commerce.spring.api.common.infrasture.database.BaseEntity;
 import com.hhplus.commerce.spring.api.user.model.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

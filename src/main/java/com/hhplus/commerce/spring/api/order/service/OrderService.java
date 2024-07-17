@@ -118,9 +118,9 @@ public class OrderService {
             orderItems.add(OrderItem.create(order, product, orderCount));
         }
 
-        if (orderItems.size() > 0) {
-            return orderItemRepository.saveAll(orderItems);
-        }
+//        if (orderItems.size() > 0) {
+//            return orderItemRepository.saveAll(orderItems);
+//        }
 
         return orderItems;
     }

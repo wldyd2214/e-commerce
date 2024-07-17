@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class CreateOrderRequest {
 
     @Schema(description = "사용자 아이디", example = "1")
-    @Positive
+    @Positive(message = "사용자 아이디 값은 양수여야 합니다.")
     private Long userId;
 
     @Schema(description = "주문 정보 목록")

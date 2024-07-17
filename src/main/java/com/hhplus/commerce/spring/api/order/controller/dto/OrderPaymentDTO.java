@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 public class OrderPaymentDTO {
 
     @Schema(description = "상품 아이디", example = "1")
-    @Positive
+    @Positive(message = "상품 아이디는 양수여야 합니다.")
     private Long productId;
 
     @Schema(description = "상품 주문 갯수", example = "2")
-    @Positive
+    @Positive(message = "상품 주문 갯수는 양수여야 합니다.")
     private Integer orderCount;
 }
