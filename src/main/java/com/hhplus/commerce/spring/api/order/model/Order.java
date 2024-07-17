@@ -72,4 +72,8 @@ public class Order extends BaseEntity {
     public void orderStatusPaymentFail() {
         this.orderStatus = OrderStatus.PAYMENT_FAILED;
     }
+
+    public void orderStatusPaymentCompleted() {
+        this.orderStatus = OrderStatus.COMPLETED;
+    }
 }

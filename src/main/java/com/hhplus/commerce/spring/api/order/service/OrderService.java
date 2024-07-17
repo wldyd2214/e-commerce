@@ -1,5 +1,6 @@
 package com.hhplus.commerce.spring.api.order.service;
 
+import com.hhplus.commerce.spring.api.order.model.type.OrderStatus;
 import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.model.Order;
@@ -56,9 +57,9 @@ public class OrderService {
         user.UserPointDeduction(totalPrice);
 
         boolean dataResult = dataPlatformService.sendOrderData(user.getId(), saveOrder.getId());
-
         log.info(String.format("데이터 플랫폼 전송 결과 : %s ", dataResult));
 
+        saveOrder.orderStatusPaymentCompleted();
         return saveOrder;
     }
 

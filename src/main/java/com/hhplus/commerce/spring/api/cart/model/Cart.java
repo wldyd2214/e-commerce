@@ -3,6 +3,8 @@ package com.hhplus.commerce.spring.api.cart.model;
 import com.hhplus.commerce.spring.api.common.infrasture.database.BaseEntity;
 import com.hhplus.commerce.spring.api.user.model.User;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +31,9 @@ public class Cart extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
+
+    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @Builder
     public Cart(User user) {

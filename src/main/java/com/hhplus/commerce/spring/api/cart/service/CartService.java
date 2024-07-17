@@ -26,27 +26,21 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
 
-    public List<CartItem> getCartItems(Long userId) {
+    public Cart getCart(Long userId) {
 
         User user = userRepository.findById(userId)
                                   .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
 
-        Cart cart = cartRepository.findByUser(user)
-                                  .orElseThrow(() -> new IllegalArgumentException("장바구니 목록 비어있음."));
-
-        List<CartItem> cartItems = cartItemRepository.findAllByCart(cart);
-
-        return cartItems;
+        return cartRepository.findByUser(user)
+                             .orElseThrow(() -> new IllegalArgumentException("장바구니 목록 비어있음."));
     }
 
-    public List<CartItem> addCartItems(Long userId, CartRegisterRequest cartRegisterRequest) {
+    public Cart addCart(Long userId, CartRegisterRequest cartRegisterRequest) {
 
         User user = userRepository.findById(userId)
                                   .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
 
-        Cart cart = cartRepository.findByUser(user)
-                                  .orElse(Cart.create(user));
-
+        Cart cart = cartRepository.findByUser(user).orElse(Cart.create(user));
         cartRepository.save(cart);
 
         List<CartItem> cartItems = new ArrayList<>();
@@ -61,7 +55,8 @@ public class CartService {
             cartItems.add(cartItem);
         }
 
-        return cartItems;
+        cart.getCartItems().addAll(cartItems);
+        return cart;
     }
 
     @Transactional
