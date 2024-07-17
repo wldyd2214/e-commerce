@@ -60,29 +60,9 @@ public class CartServiceTest {
         given(cartItemRepository.findAllByCart(any()))
                 .willReturn(List.of(createCartItem()));
 
-        List<CartItem> cartItems = cartService.getCartItems(userId);
+        Cart result = cartService.getCart(userId);
 
-        assertThat(cartItems).isNotNull();
-    }
-
-    private User createUser(long userId, String userName, int userPoint) {
-        return User.builder()
-                   .id(userId)
-                   .userName(userName)
-                   .userPoint(userPoint)
-                   .build();
-    }
-
-    private Cart createCart(User user) {
-        return Cart.builder()
-                   .user(user)
-                   .build();
-    }
-
-    private CartItem createCartItem() {
-        return CartItem.builder()
-                       .cartItemProductCount(1)
-                       .build();
+        assertThat(result).isNotNull();
     }
 
     @DisplayName("장바구니에 정보를 추가한다.")
@@ -112,8 +92,28 @@ public class CartServiceTest {
                                                                                          .orderCount(1)
                                                                                          .build())).build();
 
-        List<CartItem> cartItems = cartService.addCartItems(userId, request);
+        Cart cart = cartService.addCart(userId, request);
 
-        assertThat(cartItems).isNotNull();
+        assertThat(cart).isNotNull();
+    }
+
+    private User createUser(long userId, String userName, int userPoint) {
+        return User.builder()
+                   .id(userId)
+                   .userName(userName)
+                   .userPoint(userPoint)
+                   .build();
+    }
+
+    private Cart createCart(User user) {
+        return Cart.builder()
+                   .user(user)
+                   .build();
+    }
+
+    private CartItem createCartItem() {
+        return CartItem.builder()
+                       .cartItemProductCount(1)
+                       .build();
     }
 }

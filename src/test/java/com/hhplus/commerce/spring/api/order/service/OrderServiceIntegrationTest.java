@@ -1,17 +1,14 @@
 package com.hhplus.commerce.spring.api.order.service;
 
 import com.hhplus.commerce.spring.api.order.model.Order;
-import com.hhplus.commerce.spring.api.order.repository.OrderRepository;
 import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
 import com.hhplus.commerce.spring.api.product.infrastructure.database.ProductJpaRepository;
 import com.hhplus.commerce.spring.api.product.model.Product;
-import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.api.user.infrastructure.client.PaymentSystemClient;
 import com.hhplus.commerce.spring.api.user.infrastructure.database.UserJpaRepository;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -21,10 +18,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
+import static com.hhplus.commerce.spring.api.order.model.type.OrderStatus.COMPLETED;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 public class OrderServiceIntegrationTest {
@@ -40,13 +37,6 @@ public class OrderServiceIntegrationTest {
 
     @Autowired
     private OrderService orderService;
-
-    @AfterEach
-    void tearDown() {
-        userJpaRepository.deleteAllInBatch();
-//        productRepository.deleteAllInBatch();
-//        orderRepository.deleteAllInBatch();
-    }
 
     @DisplayName("유효하지 않은 사용자의 경우 주문에 실패한다.")
     @Test
@@ -69,7 +59,7 @@ public class OrderServiceIntegrationTest {
     @Test
     void lockOfUserPointOrderPayment() {
         // given
-        String userName = "박지용";
+        String userName = "잔액 부족 사용자";
         int userPoint = 0;
 
         long productId = 1;
@@ -85,6 +75,8 @@ public class OrderServiceIntegrationTest {
         assertThatThrownBy(() -> orderService.createOrder(request))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("사용자 잔액 부족");
+
+        userJpaRepository.deleteById(saveUser.getId());
     }
 
     @DisplayName("상품 재고가 부족한 경우 주문에 실패한다.")
@@ -112,6 +104,7 @@ public class OrderServiceIntegrationTest {
                 .hasMessage("재고가 부족한 상품이 있습니다.");
 
         productJpaRepository.deleteById(productId);
+        userJpaRepository.deleteById(saveUser.getId());
     }
 
     @DisplayName("결제가 실패하는 경우 상품 주문에 실패한다.")
@@ -142,6 +135,7 @@ public class OrderServiceIntegrationTest {
                 .hasMessage("결제 실패");
 
         productJpaRepository.deleteById(productId);
+        userJpaRepository.deleteById(saveUser.getId());
     }
 
     @DisplayName("상품 주문을 성공한다.")
@@ -170,6 +164,8 @@ public class OrderServiceIntegrationTest {
         Order order = orderService.createOrder(request);
 
         assertThat(order).isNotNull();
+        assertThat(order).extracting("id", "orderStatus")
+            .contains(order.getId(), COMPLETED);
     }
 
     private OrderServiceRequest createOrderServiceRequest(long productId, int orderCount) {
