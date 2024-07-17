@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.api.service.cart;
+package com.hhplus.commerce.spring.api.cart.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,11 +10,11 @@ import com.hhplus.commerce.spring.api.cart.service.request.CartItemRegister;
 import com.hhplus.commerce.spring.api.cart.service.request.CartRegisterRequest;
 import com.hhplus.commerce.spring.api.cart.model.Cart;
 import com.hhplus.commerce.spring.api.cart.model.CartItem;
-import com.hhplus.commerce.spring.model.Product;
-import com.hhplus.commerce.spring.model.User;
 import com.hhplus.commerce.spring.api.cart.repository.CartItemRepository;
 import com.hhplus.commerce.spring.api.cart.repository.CartRepository;
+import com.hhplus.commerce.spring.api.product.model.Product;
 import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
+import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

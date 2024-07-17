@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.api.service.user;
+package com.hhplus.commerce.spring.api.user.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;

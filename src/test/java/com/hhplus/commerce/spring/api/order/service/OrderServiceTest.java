@@ -1,25 +1,16 @@
-package com.hhplus.commerce.spring.api.service.order;
+package com.hhplus.commerce.spring.api.order.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
-import com.hhplus.commerce.spring.api.order.service.DataPlatformService;
-import com.hhplus.commerce.spring.api.order.service.OrderService;
 import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
-import com.hhplus.commerce.spring.api.order.service.PaymentService;
 import com.hhplus.commerce.spring.api.order.model.Order;
-import com.hhplus.commerce.spring.api.order.model.OrderItem;
 import com.hhplus.commerce.spring.api.product.model.Product;
 import com.hhplus.commerce.spring.api.user.model.User;
-import com.hhplus.commerce.spring.api.order.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.api.order.repository.OrderRepository;
-import com.hhplus.commerce.spring.api.user.repository.PaymentRepository;
 import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
 import java.util.List;
@@ -31,9 +22,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
-
     @Mock
     UserRepository userRepository;
     @Mock
@@ -41,14 +32,9 @@ class OrderServiceTest {
     @Mock
     OrderRepository orderRepository;
     @Mock
-    OrderItemRepository orderItemRepository;
-    @Mock
-    PaymentRepository paymentRepository;
-
+    PaymentService paymentService;
     @Mock
     DataPlatformService dataPlatformService;
-    @Mock
-    PaymentService paymentService;
     @InjectMocks
     OrderService orderService;
 
@@ -68,7 +54,7 @@ class OrderServiceTest {
             .willThrow(new IllegalArgumentException("존재하지 않은 사용자"));
 
         // when // then
-        assertThatThrownBy(() -> orderService.orderPayment(request))
+        assertThatThrownBy(() -> orderService.createOrder(request))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("존재하지 않은 사용자");
     }
@@ -101,8 +87,15 @@ class OrderServiceTest {
         given(productRepository.findAllByIdIn(anyList())).willReturn(
             List.of(product));
 
+        given(productRepository.findAllByIdIn(anyList())).willReturn(
+                List.of(product));
+
+        Order order = Order.create(user);
+        order.setId(1L);
+        given(orderRepository.save(any())).willReturn(order);
+
         // when // then
-        assertThatThrownBy(() -> orderService.orderPayment(request))
+        assertThatThrownBy(() -> orderService.createOrder(request))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("사용자 잔액 부족");
     }
@@ -136,14 +129,14 @@ class OrderServiceTest {
             List.of(product));
 
         // when // then
-        assertThatThrownBy(() -> orderService.orderPayment(request))
+        assertThatThrownBy(() -> orderService.createOrder(request))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("재고가 부족한 상품이 있습니다.");
     }
 
     @DisplayName("결제가 실패하는 경우 상품 주문에 실패한다.")
     @Test
-    void OrderPaymentFail() {
+    void orderPaymentFail() {
 
         // given
         long userId = 1;
@@ -173,14 +166,11 @@ class OrderServiceTest {
         order.setId(1L);
         given(orderRepository.save(any())).willReturn(order);
 
-        OrderItem orderItem = new OrderItem( order, product, product.getProductName(), product.getProductPrice(), orderCount);
-        orderItem.setId(1L);
-        given(orderItemRepository.saveAll(any())).willReturn(List.of(orderItem));
-
-        given(paymentService.pointPayment(anyLong(), anyInt(), anyInt())).willReturn(false);
+        given(paymentService.paymentUserPoint(anyLong(), anyInt(), any()))
+                .willThrow(new IllegalArgumentException("결제 실패"));
 
         // when // then
-        assertThatThrownBy(() -> orderService.orderPayment(request))
+        assertThatThrownBy(() -> orderService.createOrder(request))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("결제 실패");
     }
@@ -217,16 +207,10 @@ class OrderServiceTest {
         order.setId(1L);
         given(orderRepository.save(any())).willReturn(order);
 
-        OrderItem orderItem = new OrderItem( order, product, product.getProductName(), product.getProductPrice(), orderCount);
-        orderItem.setId(1L);
-        given(orderItemRepository.saveAll(any())).willReturn(List.of(orderItem));
+        given(dataPlatformService.sendOrderData(any(), any())).willReturn(true);
 
-        given(paymentService.pointPayment(anyLong(), anyInt(), anyInt())).willReturn(true);
-
-        List<OrderItem> orderItems = orderService.orderPayment(request);
-
-        assertThat(orderItems).isNotEmpty();
-        assertThat(orderItems).hasSize(1);
+        Order resultOrder = orderService.createOrder(request);
+        assertThat(resultOrder).isNotNull();
     }
 
     private OrderServiceRequest createOrderServiceRequest(long productId, int orderCount) {

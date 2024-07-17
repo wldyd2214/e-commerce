@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.api.service.product;
+package com.hhplus.commerce.spring.api.product.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
