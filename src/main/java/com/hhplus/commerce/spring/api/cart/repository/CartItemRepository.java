@@ -10,5 +10,5 @@ public interface CartItemRepository {
 
     CartItem save(CartItem cartItem);
 
-    void removeAllByIdIn(List<Long> cartItemKeys);
+    void deleteAllByIdInBatch(List<Long> cartItemKeys);
 }

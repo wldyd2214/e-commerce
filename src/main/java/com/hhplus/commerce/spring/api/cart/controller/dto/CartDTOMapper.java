@@ -4,6 +4,9 @@ import com.hhplus.commerce.spring.api.cart.controller.request.CartItemRegisterRe
 import com.hhplus.commerce.spring.api.cart.controller.request.CartItemsRegisterRequest;
 import com.hhplus.commerce.spring.api.cart.controller.response.CartResponse;
 import com.hhplus.commerce.spring.api.cart.model.Cart;
+import com.hhplus.commerce.spring.api.cart.service.response.CartItemProductRes;
+import com.hhplus.commerce.spring.api.cart.service.response.CartItemServiceRes;
+import com.hhplus.commerce.spring.api.cart.service.response.CartServiceRes;
 import com.hhplus.commerce.spring.api.product.controller.dto.ProductDTO;
 import com.hhplus.commerce.spring.api.cart.service.request.CartItemRegister;
 import com.hhplus.commerce.spring.api.cart.service.request.CartRegisterRequest;
@@ -58,5 +61,35 @@ public class CartDTOMapper {
                                .productId(cartItemRegisterRequest.getProductId())
                                .orderCount(cartItemRegisterRequest.getOrderCount())
                                .build();
+    }
+
+    public static CartResponse toCartResponse(CartServiceRes cartServiceRes){
+        return CartResponse.builder()
+                           .cart(toCartDTO(cartServiceRes))
+                           .build();
+    }
+
+    public static CartDTO toCartDTO(CartServiceRes cartServiceRes) {
+        return CartDTO.builder()
+                      .id(cartServiceRes.getId())
+                      .cartItems(cartServiceRes.getCartItems().stream().map(CartDTOMapper::toCartItemDTO).collect(Collectors.toList()))
+                      .build();
+    }
+
+    public static CartItemDTO toCartItemDTO(CartItemServiceRes cartItemServiceRes) {
+        return CartItemDTO.builder()
+                          .id(cartItemServiceRes.getId())
+                          .product(toProductDTO(cartItemServiceRes.getProduct()))
+                          .orderCount(cartItemServiceRes.getAddProductCount())
+                          .build();
+    }
+
+    public static ProductDTO toProductDTO(CartItemProductRes cartItemProductRes) {
+        return ProductDTO.builder()
+                         .id(cartItemProductRes.getId())
+                         .name(cartItemProductRes.getName())
+                         .consumerPrice(cartItemProductRes.getPrice())
+                         .stockCount(cartItemProductRes.getCount())
+                         .build();
     }
 }

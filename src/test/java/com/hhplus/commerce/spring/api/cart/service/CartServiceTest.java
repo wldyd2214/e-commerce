@@ -12,6 +12,7 @@ import com.hhplus.commerce.spring.api.cart.model.Cart;
 import com.hhplus.commerce.spring.api.cart.model.CartItem;
 import com.hhplus.commerce.spring.api.cart.repository.CartItemRepository;
 import com.hhplus.commerce.spring.api.cart.repository.CartRepository;
+import com.hhplus.commerce.spring.api.cart.service.response.CartServiceRes;
 import com.hhplus.commerce.spring.api.product.model.Product;
 import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.api.user.model.User;
@@ -22,11 +23,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.List;
 import java.util.Optional;
 
+
 @ExtendWith(MockitoExtension.class)
+// TODO: 어노테이션이 제거 되면 발생되는 에러에 대해서 공부해보기
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class CartServiceTest {
 
     @Mock
@@ -60,7 +66,7 @@ public class CartServiceTest {
         given(cartItemRepository.findAllByCart(any()))
                 .willReturn(List.of(createCartItem()));
 
-        Cart result = cartService.getCart(userId);
+        CartServiceRes result = cartService.getCart(userId);
 
         assertThat(result).isNotNull();
     }

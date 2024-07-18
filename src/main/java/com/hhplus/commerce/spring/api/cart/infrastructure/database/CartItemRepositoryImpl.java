@@ -24,7 +24,7 @@ public class CartItemRepositoryImpl implements CartItemRepository {
     }
 
     @Override
-    public void removeAllByIdIn(List<Long> cartItemKeys) {
-        jpaRepository.removeAllByIdIn(cartItemKeys);
+    public void deleteAllByIdInBatch(List<Long> cartItemKeys) {
+        jpaRepository.deleteAllByIdInBatch(cartItemKeys);
     }
 }

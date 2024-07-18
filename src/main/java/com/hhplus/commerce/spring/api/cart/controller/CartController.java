@@ -45,11 +45,11 @@ public class CartController {
             description = "사용자의 장바구니 목록 정보를 삭제 합니다."
     )
     @DeleteMapping(value = "/{userId}/item")
-    public ApiResponse<CartResponse> deleteCartItems(
+    public ApiResponse<CartResponse> removeCartItems(
             @PathVariable @Valid @Positive Long userId,
             @RequestBody CartItemRemoveRequest cartItemRemoveRequest
     ) {
-        cartService.removeCartItems(cartItemRemoveRequest.getCartItemIds());
-        return ApiResponse.ok(null);
+        return ApiResponse.ok(CartDTOMapper.toCartResponse(
+                cartService.removeCartItems(userId, cartItemRemoveRequest.getCartItemIds())));
     }
 }

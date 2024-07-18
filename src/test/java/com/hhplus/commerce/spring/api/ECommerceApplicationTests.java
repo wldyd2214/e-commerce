@@ -1,4 +1,4 @@
-package com.hhplus.commerce;
+package com.hhplus.commerce.spring.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
