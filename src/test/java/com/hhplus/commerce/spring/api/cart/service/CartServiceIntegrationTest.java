@@ -1,6 +1,5 @@
 package com.hhplus.commerce.spring.api.cart.service;
 
-import static com.hhplus.commerce.spring.api.order.model.type.OrderStatus.COMPLETED;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.hhplus.commerce.spring.api.cart.infrastructure.database.CartItemJpaRepository;
@@ -24,9 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.groups.Tuple.tuple;
-import static org.mockito.ArgumentMatchers.*;
 
 @SpringBootTest
 public class CartServiceIntegrationTest {
