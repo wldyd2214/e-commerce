@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.api.controller.cart;
+package com.hhplus.commerce.spring.api.cart.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.api.cart.controller.CartController;

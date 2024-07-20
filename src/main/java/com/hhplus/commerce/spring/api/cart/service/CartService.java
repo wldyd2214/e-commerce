@@ -6,6 +6,7 @@ import com.hhplus.commerce.spring.api.cart.model.Cart;
 import com.hhplus.commerce.spring.api.cart.model.CartItem;
 import com.hhplus.commerce.spring.api.cart.repository.CartItemRepository;
 import com.hhplus.commerce.spring.api.cart.repository.CartRepository;
+import com.hhplus.commerce.spring.api.cart.service.response.CartServiceRes;
 import com.hhplus.commerce.spring.api.product.model.Product;
 import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.api.user.model.User;
@@ -14,8 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -26,7 +27,8 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
 
-    public List<CartItem> getCartItems(Long userId) {
+    @Transactional
+    public CartServiceRes getCart(Long userId) {
 
         User user = userRepository.findById(userId)
                                   .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
@@ -34,38 +36,69 @@ public class CartService {
         Cart cart = cartRepository.findByUser(user)
                                   .orElseThrow(() -> new IllegalArgumentException("장바구니 목록 비어있음."));
 
-        List<CartItem> cartItems = cartItemRepository.findAllByCart(cart);
-
-        return cartItems;
+        return CartServiceRes.toCartServiceRes(cart);
     }
 
-    public List<CartItem> addCartItems(Long userId, CartRegisterRequest cartRegisterRequest) {
+    @Transactional
+    public Cart addCart(Long userId, CartRegisterRequest cartRegRequest) {
 
         User user = userRepository.findById(userId)
                                   .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
 
-        Cart cart = cartRepository.findByUser(user)
-                                  .orElse(Cart.create(user));
-
+        Cart cart = cartRepository.findByUser(user).orElse(Cart.create(user));
         cartRepository.save(cart);
 
+        List<CartItem> cartItems = insertCartItem(cart, cartRegRequest);
+        cart.getCartItems().addAll(cartItems);
+
+        return cart;
+    }
+
+    private List<CartItem> insertCartItem(Cart cart, CartRegisterRequest cartRegRequest) {
         List<CartItem> cartItems = new ArrayList<>();
 
-        for (CartItemRegister cartItemRegister : cartRegisterRequest.getCartItems()) {
-            Product product = productRepository.findById(cartItemRegister.getProductId())
-                                               .orElseThrow(() -> new IllegalArgumentException("미존재 상품 정보"));
+        for (CartItemRegister cartItemRegister : cartRegRequest.getCartItems()) {
+            Product product =
+                productRepository.findById(cartItemRegister.getProductId())
+                                 .orElseThrow(() -> new IllegalArgumentException("미존재 상품 정보"));
 
             CartItem cartItem = CartItem.create(cart, product, cartItemRegister.getOrderCount());
-            cartItemRepository.save(cartItem);
-
             cartItems.add(cartItem);
         }
 
-        return cartItems;
+        return cartItemRepository.saveAll(cartItems);
     }
 
     @Transactional
-    public void removeCartItems(List<Long> cartItemKeys) {
-        cartItemRepository.removeAllByIdIn(cartItemKeys);
+    public CartServiceRes removeCartItems(Long userId, List<Long> cartItemKeys) {
+
+        User user = userRepository.findById(userId)
+                                  .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
+
+        List<CartItem> cartItems = cartItemRepository.findAllById(cartItemKeys);
+        sameUserCheck(user, cartItems, cartItemKeys);
+
+        cartItemRepository.deleteAllByIdInBatch(cartItemKeys);
+
+        Cart cart = cartRepository.findByUser(user)
+                                  .orElseThrow(() -> new IllegalArgumentException("장바구니 목록 비어있음."));
+
+        return CartServiceRes.toCartServiceRes(cart);
+    }
+
+    private void sameUserCheck(User user, List<CartItem> cartItems, List<Long> cartItemKeys) {
+        Map<Long, CartItem> cartItemMap = createProductMap(cartItems);
+        for (Long cartItemKey : new HashSet<>(cartItemKeys)) {
+            CartItem cartItem = cartItemMap.get(cartItemKey);
+
+            if (Objects.isNull(cartItem) || cartItem.getCart().getUser().getId() != user.getId()) {
+                throw new IllegalArgumentException("사용자의 장바구니 목록이 아님.");
+            }
+        }
+    }
+
+    private Map<Long, CartItem> createProductMap(List<CartItem> cartItems) {
+        return cartItems.stream()
+                        .collect(Collectors.toMap(item -> item.getId(), i -> i));
     }
 }

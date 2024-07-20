@@ -31,10 +31,6 @@ public class PaymentService {
         Payment payment = Payment.create(order, payMoney);
 
         if (!extResult) {
-            payment.paymentStatusFailed();
-            paymentRepository.save(payment);
-
-            order.orderStatusPaymentFail();
             throw new IllegalArgumentException("결제 실패");
         }
 

@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.api.controller.user;
+package com.hhplus.commerce.spring.api.user.controller;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

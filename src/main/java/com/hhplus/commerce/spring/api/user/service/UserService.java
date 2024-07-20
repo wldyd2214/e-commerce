@@ -4,9 +4,11 @@ import com.hhplus.commerce.spring.api.order.service.PaymentService;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -26,6 +28,7 @@ public class UserService {
         boolean payResult = paymentService.sendPayment(String.valueOf(userId), chargePoint);
 
         if (!payResult) {
+            log.error("결제 시스템 결제 실패!");
             throw new IllegalArgumentException("결제 시스템 결제 실패!");
         }
 

@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.order.model;
 
-import com.hhplus.commerce.spring.api.domain.common.infrastructure.BaseEntity;
+import com.hhplus.commerce.spring.api.common.infrasture.database.BaseEntity;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.order.model.type.OrderStatus;
 import jakarta.persistence.AttributeOverride;
@@ -22,11 +22,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 @Getter
 @Setter
@@ -37,6 +34,7 @@ import lombok.Setter;
     @AttributeOverride(name = "createdDateTime", column = @Column(name = "reg_date")),
     @AttributeOverride(name = "modifiedDateTime", column = @Column(name = "mod_date"))
 })
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "product_order")
@@ -73,5 +71,9 @@ public class Order extends BaseEntity {
 
     public void orderStatusPaymentFail() {
         this.orderStatus = OrderStatus.PAYMENT_FAILED;
+    }
+
+    public void orderStatusPaymentCompleted() {
+        this.orderStatus = OrderStatus.COMPLETED;
     }
 }
