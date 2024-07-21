@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.order.model;
 
-import com.hhplus.commerce.spring.api.common.infrasture.database.BaseEntity;
+import com.hhplus.commerce.spring.api.common.infrastructure.database.BaseEntity;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.order.model.type.OrderStatus;
 import jakarta.persistence.AttributeOverride;

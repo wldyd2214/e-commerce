@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.api.user.model;
 
 import com.hhplus.commerce.spring.api.order.model.Order;
-import com.hhplus.commerce.spring.api.common.infrasture.database.BaseEntity;
+import com.hhplus.commerce.spring.api.common.infrastructure.database.BaseEntity;
 import com.hhplus.commerce.spring.api.user.model.type.PaymentStatus;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;

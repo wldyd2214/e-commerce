@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.order.controller;
 
-import com.hhplus.commerce.spring.api.ApiResponse;
+import com.hhplus.commerce.spring.api.common.response.ApiResponse;
 import com.hhplus.commerce.spring.api.order.controller.dto.OrderDTOMapper;
 import com.hhplus.commerce.spring.api.order.controller.request.CreateOrderRequest;
 import com.hhplus.commerce.spring.api.order.controller.response.CreateOrderResponse;

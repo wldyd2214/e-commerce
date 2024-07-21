@@ -1,11 +1,12 @@
 package com.hhplus.commerce.spring.api.user.service;
 
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.NotFoundErrorCode.USER_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomNotFoundException;
 import com.hhplus.commerce.spring.api.order.service.PaymentService;
-import com.hhplus.commerce.spring.api.user.service.UserService;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
 import java.util.Optional;
@@ -40,8 +41,8 @@ class UserServiceTest {
 
         // when // then
         assertThatThrownBy(() -> userService.userBalanceCharge(userId, chargePoint))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("존재하지 않은 사용자");
+            .isInstanceOf(CustomNotFoundException.class)
+            .hasMessage(USER_NOT_FOUND.getMessage());
     }
 
     @DisplayName("음수를 충전하는 경우 예외가 발생한다.")

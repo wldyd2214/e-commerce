@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.api.common.infrasture.database;
+package com.hhplus.commerce.spring.api.common.infrastructure.database;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

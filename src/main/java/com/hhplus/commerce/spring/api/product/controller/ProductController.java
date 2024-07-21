@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.product.controller;
 
-import com.hhplus.commerce.spring.api.ApiResponse;
+import com.hhplus.commerce.spring.api.common.response.ApiResponse;
 import com.hhplus.commerce.spring.api.product.controller.dto.ProductDTOMapper;
 import com.hhplus.commerce.spring.api.product.controller.response.ProductsResponse;
 import com.hhplus.commerce.spring.api.product.service.ProductService;

@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.user.controller;
 
-import com.hhplus.commerce.spring.api.ApiResponse;
+import com.hhplus.commerce.spring.api.common.response.ApiResponse;
 import com.hhplus.commerce.spring.api.user.controller.dto.UserDTOMapper;
 import com.hhplus.commerce.spring.api.user.controller.request.BalanceChargeRequest;
 import com.hhplus.commerce.spring.api.user.service.UserService;

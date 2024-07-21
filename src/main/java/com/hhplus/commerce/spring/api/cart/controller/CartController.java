@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.cart.controller;
 
-import com.hhplus.commerce.spring.api.ApiResponse;
+import com.hhplus.commerce.spring.api.common.response.ApiResponse;
 import com.hhplus.commerce.spring.api.cart.controller.dto.CartDTOMapper;
 import com.hhplus.commerce.spring.api.cart.controller.request.CartItemRemoveRequest;
 import com.hhplus.commerce.spring.api.cart.controller.request.CartItemsRegisterRequest;

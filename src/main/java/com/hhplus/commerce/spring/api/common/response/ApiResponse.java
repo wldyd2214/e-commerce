@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.api;
+package com.hhplus.commerce.spring.api.common.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

@@ -50,7 +50,7 @@ public class OrderService {
 
         int totalPrice = productTotalPrice(productIds, productMap);
         paymentService.paymentUserPoint(user.getId(), totalPrice, saveOrder);
-        user.UserPointDeduction(totalPrice);
+        user.deductUserPoint(totalPrice);
 
         boolean dataResult = dataPlatformService.sendOrderData(user.getId(), saveOrder.getId());
         log.info(String.format("데이터 플랫폼 전송 결과 : %s ", dataResult));

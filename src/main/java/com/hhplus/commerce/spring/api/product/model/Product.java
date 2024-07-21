@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.product.model;
 
-import com.hhplus.commerce.spring.api.common.infrasture.database.BaseEntity;
+import com.hhplus.commerce.spring.api.common.infrastructure.database.BaseEntity;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;

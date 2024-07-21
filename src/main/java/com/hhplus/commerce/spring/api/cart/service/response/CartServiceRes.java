@@ -3,6 +3,7 @@ package com.hhplus.commerce.spring.api.cart.service.response;
 import com.hhplus.commerce.spring.api.cart.model.Cart;
 import com.hhplus.commerce.spring.api.cart.model.CartItem;
 import com.hhplus.commerce.spring.api.product.model.Product;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

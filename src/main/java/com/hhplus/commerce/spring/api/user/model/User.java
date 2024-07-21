@@ -1,6 +1,9 @@
 package com.hhplus.commerce.spring.api.user.model;
 
-import com.hhplus.commerce.spring.api.common.infrasture.database.BaseEntity;
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.INSUFFICIENT_BALANCE;
+
+import com.hhplus.commerce.spring.api.common.infrastructure.database.BaseEntity;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -13,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.coyote.BadRequestException;
 
 @Getter
 @AttributeOverrides({
@@ -49,10 +53,10 @@ public class User extends BaseEntity {
         this.userPoint = userPoint;
     }
 
-    public void UserPointDeduction(int pointDeduction) {
-        if (this.userPoint < pointDeduction) {
-            throw new IllegalArgumentException("사용자 잔액 부족");
+    public void deductUserPoint(int deductionPoint) {
+        if (this.userPoint < deductionPoint) {
+            throw new CustomBadRequestException(INSUFFICIENT_BALANCE);
         }
-        this.userPoint = this.userPoint - pointDeduction;
+        this.userPoint = this.userPoint - deductionPoint;
     }
 }

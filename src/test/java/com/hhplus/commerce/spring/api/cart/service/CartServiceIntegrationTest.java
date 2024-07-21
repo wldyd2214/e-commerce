@@ -1,5 +1,6 @@
 package com.hhplus.commerce.spring.api.cart.service;
 
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.NotFoundErrorCode.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.hhplus.commerce.spring.api.cart.infrastructure.database.CartItemJpaRepository;
@@ -9,6 +10,7 @@ import com.hhplus.commerce.spring.api.cart.model.CartItem;
 import com.hhplus.commerce.spring.api.cart.service.request.CartItemRegister;
 import com.hhplus.commerce.spring.api.cart.service.request.CartRegisterRequest;
 import com.hhplus.commerce.spring.api.cart.service.response.CartServiceRes;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomNotFoundException;
 import com.hhplus.commerce.spring.api.product.model.Product;
 import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.api.user.infrastructure.database.UserJpaRepository;
@@ -47,8 +49,8 @@ public class CartServiceIntegrationTest {
 
         // when // then
         assertThatThrownBy(() -> cartService.getCart(userId))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("존재하지 않은 사용자");
+            .isInstanceOf(CustomNotFoundException.class)
+            .hasMessage(USER_NOT_FOUND.getMessage());
     }
 
     @DisplayName("장바구니가 비어있는 경우 목록 조회시 예외가 발생한다.")
@@ -63,8 +65,8 @@ public class CartServiceIntegrationTest {
 
         // when // then
         assertThatThrownBy(() -> cartService.getCart(saveUser.getId()))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("장바구니 목록 비어있음.");
+            .isInstanceOf(CustomNotFoundException.class)
+            .hasMessage(CART_NOT_FOUND.getMessage());
 
         userJpaRepository.deleteById(saveUser.getId());
     }
@@ -123,8 +125,8 @@ public class CartServiceIntegrationTest {
 
         // when // then
         assertThatThrownBy(() -> cartService.addCart(userId, request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않은 사용자");
+                .isInstanceOf(CustomNotFoundException.class)
+                .hasMessage(USER_NOT_FOUND.getMessage());
     }
 
     @DisplayName("미존재 상품 정보의 경우 장바구니 정보 추가에 실패한다.")
@@ -150,8 +152,8 @@ public class CartServiceIntegrationTest {
 
         // then
         assertThatThrownBy(() -> cartService.addCart(saveUser.getId(), request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("미존재 상품 정보");
+                .isInstanceOf(CustomNotFoundException.class)
+                .hasMessage(PRODUCT_NOT_FOUND.getMessage());
 
         userJpaRepository.deleteById(saveUser.getId());
     }
