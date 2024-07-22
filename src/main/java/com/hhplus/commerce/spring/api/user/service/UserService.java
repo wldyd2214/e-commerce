@@ -23,8 +23,14 @@ public class UserService {
 
         if (chargePoint < 0) throw new IllegalArgumentException("충전 액수는 0보다 커야 합니다.");
 
-        User user = userRepository.findByIdWithPessimisticLock(userId)
+//        User user = userRepository.findById(userId)
+//                                  .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
+
+        User user = userRepository.findByIdWithLock(userId)
                                   .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
+
+//        User user = userRepository.findByIdWithPessimisticLock(userId)
+//                                  .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
 
         user.pointCharge(chargePoint);
         //        for(int i = 0; i < 3; i++) {

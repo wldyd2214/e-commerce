@@ -6,14 +6,15 @@ import com.hhplus.commerce.spring.api.common.infrastructure.database.BaseEntity;
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Version;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AttributeOverrides({
     /**
      * 공통 BaseTimeEntity의 각 필드를 테이블별로 다른 컬럼명으로 사용하기 위한 설정.
@@ -37,8 +38,8 @@ public class User extends BaseEntity {
     @Column(name = "user_balance_amount", nullable = false)
     private Integer userPoint;
 
-//    @Version
-//    private Long version;
+    @Version
+    private Long version;
 
     public Integer pointCharge(int chargeAmount) {
         return this.userPoint += chargeAmount;
