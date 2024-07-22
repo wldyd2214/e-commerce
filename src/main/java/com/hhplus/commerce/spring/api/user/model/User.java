@@ -4,19 +4,14 @@ import static com.hhplus.commerce.spring.api.common.presentation.exception.code.
 
 import com.hhplus.commerce.spring.api.common.infrastructure.database.BaseEntity;
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
+import jakarta.persistence.Version;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.coyote.BadRequestException;
 
 @Getter
 @AttributeOverrides({
@@ -41,6 +36,9 @@ public class User extends BaseEntity {
 
     @Column(name = "user_balance_amount", nullable = false)
     private Integer userPoint;
+
+//    @Version
+//    private Long version;
 
     public Integer pointCharge(int chargeAmount) {
         return this.userPoint += chargeAmount;

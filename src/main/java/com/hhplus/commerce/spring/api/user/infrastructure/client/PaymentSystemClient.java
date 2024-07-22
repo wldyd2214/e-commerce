@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class PaymentSystemClient {
 
     public boolean sendPayment(String cardNo, int money) {
-        log.info("결제 요청");
+        log.info("carNo: {} {}원 결제 요청", cardNo, money);
         return true;
     }
 

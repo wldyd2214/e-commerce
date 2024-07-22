@@ -3,6 +3,7 @@ package com.hhplus.commerce.spring.api.user.service;
 import com.hhplus.commerce.spring.api.order.service.PaymentService;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,20 @@ public class UserService {
 
         if (chargePoint < 0) throw new IllegalArgumentException("충전 액수는 0보다 커야 합니다.");
 
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByIdWithPessimisticLock(userId)
                                   .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
+
+        user.pointCharge(chargePoint);
+        //        for(int i = 0; i < 3; i++) {
+//            try {
+//                user.pointCharge(chargePoint);
+//            } catch (OptimisticLockException e) {
+//                if (i == 2) {
+//                    log.error("실패!");
+//                    throw e;
+//                }
+//            }
+//        }
 
         boolean payResult = paymentService.sendPayment(String.valueOf(userId), chargePoint);
 
@@ -31,8 +44,6 @@ public class UserService {
             log.error("결제 시스템 결제 실패!");
             throw new IllegalArgumentException("결제 시스템 결제 실패!");
         }
-
-        user.pointCharge(chargePoint);
 
         return user;
     }
