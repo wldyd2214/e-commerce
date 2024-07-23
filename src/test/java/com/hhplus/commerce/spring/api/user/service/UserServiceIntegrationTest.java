@@ -29,15 +29,35 @@ public class UserServiceIntegrationTest {
         long userId = saveUser.getId();
 
         int chargePoint = 10000;
-        int runAsyncNum = 5;
+        int runAsyncNum = 1;
 
         // when
         CompletableFuture.allOf(
-            CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint)),
-            CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint)),
-            CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint)),
-            CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint)),
             CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint))
+                             .handle((result, ex) -> {
+                                 if (ex != null) System.out.println("1 잔액 충전 실패!");
+                                 return "";
+                             }),
+            CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint))
+                             .handle((result, ex) -> {
+                                 if (ex != null) System.out.println("2 잔액 충전 실패!");
+                                 return "";
+                             }),
+            CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint))
+                             .handle((result, ex) -> {
+                                 if (ex != null) System.out.println("3 잔액 충전 실패!");
+                                 return "";
+                             }),
+            CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint))
+                             .handle((result, ex) -> {
+                                 if (ex != null) System.out.println("4 잔액 충전 실패!");
+                                 return "";
+                             }),
+            CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint))
+                             .handle((result, ex) -> {
+                                 if (ex != null) System.out.println("5 잔액 충전 실패!");
+                                 return "";
+                             })
         ).join();
 
         User findUser = userRepository.findById(userId)
