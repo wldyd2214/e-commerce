@@ -9,6 +9,7 @@ import com.hhplus.commerce.spring.api.user.infrastructure.client.PaymentSystemCl
 import com.hhplus.commerce.spring.api.user.infrastructure.database.UserJpaRepository;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
+import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.hhplus.commerce.spring.api.order.model.type.OrderStatus.COMPLETED;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -168,6 +170,43 @@ public class OrderServiceIntegrationTest {
             .contains(order.getId(), COMPLETED);
     }
 
+    @DisplayName("주문 동시성 테스트")
+    @Test
+    @Transactional
+    void createOrderAsync() {
+        // given
+//        User user1 = userJpaRepository.save(createUser("유저1", 10000000));
+//        User user2 = userJpaRepository.save(createUser("유저2", 10000000));
+
+        Product saveProduct = productJpaRepository.save(createTenStockProduct());
+
+        int orderCount = 6;
+        OrderServiceRequest orderServiceRequest = createOrderServiceRequest(saveProduct.getId(), orderCount);
+
+        CreateOrderServiceRequest request1 = createOrderPaymentServiceRequest(88, orderServiceRequest);
+        CreateOrderServiceRequest request2 = createOrderPaymentServiceRequest(89, orderServiceRequest);
+
+        // when
+        CompletableFuture.allOf(
+            CompletableFuture.runAsync(() -> orderService.createOrder(request1))
+                             .handle((result, ex) -> {
+                                 if (ex != null) System.out.println("1 주문 실패! : " + ex.getMessage());
+                                 return "";
+                             }),
+            CompletableFuture.runAsync(() -> orderService.createOrder(request2))
+                             .handle((result, ex) -> {
+                                 if (ex != null) System.out.println("2 주문 실패! : " + ex.getMessage());
+                                 return "";
+                             })
+        ).join();
+
+        Product product = productJpaRepository.findById(saveProduct.getId())
+                                              .orElseThrow(() -> new IllegalArgumentException("미존재 상품"));
+
+        // then
+        assertThat(product.getProductCount()).isEqualTo(saveProduct.getProductCount() - orderCount);
+    }
+
     private OrderServiceRequest createOrderServiceRequest(long productId, int orderCount) {
         return OrderServiceRequest.builder()
                                   .productId(productId)
@@ -204,6 +243,15 @@ public class OrderServiceIntegrationTest {
                       .productDesc("통합 테스트를 위한 상품 정보")
                       .productPrice(1000)
                       .productCount(100)
+                      .build();
+    }
+
+    private Product createTenStockProduct() {
+        return Product.builder()
+                      .productName("통합 테스트 상품")
+                      .productDesc("통합 테스트를 위한 상품 정보")
+                      .productPrice(10)
+                      .productCount(10)
                       .build();
     }
 }
