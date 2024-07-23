@@ -31,7 +31,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     // TODO: 결제와 재고차감과 데이터플랫폼으로 주문데이터 전송은 주문 생성의 하나의 로직이라고 볼 수 있다.
-    @Transactional
+    // 보상 트랜잭션 어디까지 롤백?
+    @Transactional()
     public Order createOrder(CreateOrderServiceRequest request) {
 
         User user = userRepository.findById(request.getUserId())
@@ -42,6 +43,12 @@ public class OrderService {
         Map<Long, Product> productMap = createProductMap(productIds);
         Map<Long, OrderServiceRequest> orderMap = createOrderServieMap(request.getOrders());
 
+        /**
+         * 재고 감소 -> 동시성 고민
+         * optimistic lock / pessimistic lock / ...
+         * 동시의 여러개의 주문이 들어오는 경우
+         * 재고 10개 <- 1번 주문 재고 9개 구매, 2번 주문 재고 2개 구매인 경우
+         */
         deductProductQuantities(productIds, productMap, orderMap);
 
         Order saveOrder = orderRepository.save(Order.create(user));
@@ -78,9 +85,9 @@ public class OrderService {
             Product product = productMap.get(productId);
             int quantity = orderMap.get(productId).getOrderCount();
 
-            if (product.isQuantityLessThan(quantity)) {
-                throw new IllegalArgumentException("재고가 부족한 상품이 있습니다.");
-            }
+//            if (product.isQuantityLessThan(quantity)) {
+//                throw new IllegalArgumentException("재고가 부족한 상품이 있습니다.");
+//            }
 
             product.deductQuantity(quantity);
         }

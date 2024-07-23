@@ -60,7 +60,7 @@ public class Product extends BaseEntity {
 
     public void deductQuantity(int quantity) {
         if (isQuantityLessThan(quantity)) {
-            throw new IllegalArgumentException("차감할 재고 수량이 없습니다.");
+            throw new IllegalArgumentException("재고가 부족한 상품이 있습니다.");
         }
         this.productCount -= quantity;
     }
