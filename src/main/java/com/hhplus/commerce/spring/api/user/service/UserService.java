@@ -32,19 +32,6 @@ public class UserService {
 //        User user = userRepository.findByIdWithPessimisticLock(userId)
 //                                  .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
 
-//        user.pointCharge(chargePoint);
-
-//        for(int i = 0; i < 3; i++) {
-//            try {
-//                user.pointCharge(chargePoint);
-//            } catch (OptimisticLockException e) {
-//                if (i == 2) {
-//                    log.error("실패!");
-//                    throw new IllegalArgumentException("실패!");
-//                }
-//            }
-//        }
-
         try {
             user.pointCharge(chargePoint);
         } catch (OptimisticLockException e) {

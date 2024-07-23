@@ -9,6 +9,7 @@ import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.order.repository.OrderRepository;
 import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
+import jakarta.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +38,9 @@ public class OrderService {
 
         User user = userRepository.findById(request.getUserId())
                                   .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
+        // 사용자 포인트 낙관적 락 적용
+//        User user = userRepository.findByIdWithLock(request.getUserId())
+//                                  .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
 
         List<Long> productIds = extractProductIds(request.getOrders());
 
@@ -56,8 +60,14 @@ public class OrderService {
         saveOrder.getOrderItem().addAll(orderItems);
 
         int totalPrice = productTotalPrice(productIds, productMap);
+
+        try {
+            user.deductUserPoint(totalPrice);
+        } catch (OptimisticLockException e) {
+            throw new IllegalArgumentException("사용자 포인트 차감 실패!");
+        }
+
         paymentService.paymentUserPoint(user.getId(), totalPrice, saveOrder);
-        user.deductUserPoint(totalPrice);
 
         boolean dataResult = dataPlatformService.sendOrderData(user.getId(), saveOrder.getId());
         log.info(String.format("데이터 플랫폼 전송 결과 : %s ", dataResult));
@@ -82,12 +92,12 @@ public class OrderService {
         Map<Long, OrderServiceRequest> orderMap) {
 
         for (Long productId : new HashSet<>(productKeys)) {
-            Product product = productMap.get(productId);
-            int quantity = orderMap.get(productId).getOrderCount();
+            //            Product product = productMap.get(productId);
+            // 비관적 락 적용
+            Product product = productRepository.findByIdWithPessimisticLock(productId)
+                                               .orElseThrow();
 
-//            if (product.isQuantityLessThan(quantity)) {
-//                throw new IllegalArgumentException("재고가 부족한 상품이 있습니다.");
-//            }
+            int quantity = orderMap.get(productId).getOrderCount();
 
             product.deductQuantity(quantity);
         }
