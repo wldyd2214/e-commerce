@@ -56,15 +56,9 @@ public class CartServiceTest {
 
         User user = createUser(userId, userName, userPoint);
 
-        given(userRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(user));
-
-        Cart cart = createCart(user);
-        given(cartRepository.findByUser(user))
-                .willReturn(Optional.ofNullable(createCart(user)));
-
-        given(cartItemRepository.findAllByCart(any()))
-                .willReturn(List.of(createCartItem()));
+        given(userRepository.findById(anyLong())).willReturn(Optional.ofNullable(user));
+        given(cartRepository.findByUser(user)).willReturn(Optional.ofNullable(createCart(user)));
+        given(cartItemRepository.findAllByCart(any())).willReturn(List.of(createCartItem()));
 
         CartServiceRes result = cartService.getCart(userId);
 
@@ -80,16 +74,13 @@ public class CartServiceTest {
 
         User user = createUser(userId, userName, userPoint);
 
-        given(userRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(user));
+        given(userRepository.findById(anyLong())).willReturn(Optional.ofNullable(user));
 
-        given(cartRepository.findByUser(user))
-                .willReturn(Optional.ofNullable(createCart(user)));
+        given(cartRepository.findByUser(user)).willReturn(Optional.ofNullable(createCart(user)));
 
-        given(productRepository.findById(anyLong()))
-                .willReturn(Optional.ofNullable(Product.builder()
-                                                       .productName("상품")
-                                                       .build()));
+        given(productRepository.findById(anyLong())).willReturn(Optional.ofNullable(Product.builder()
+                                                                                           .productName("상품")
+                                                                                           .build()));
 
         CartRegisterRequest request = CartRegisterRequest.builder()
                                                          .cartItems(List.of(

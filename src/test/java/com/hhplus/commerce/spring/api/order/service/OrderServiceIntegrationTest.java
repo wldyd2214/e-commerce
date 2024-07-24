@@ -1,5 +1,9 @@
 package com.hhplus.commerce.spring.api.order.service;
 
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadGateWayException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.code.BadGateWayErrorCode;
+import com.hhplus.commerce.spring.api.order.infrastructure.database.OrderJpaRepository;
 import com.hhplus.commerce.spring.api.order.model.Order;
 import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
@@ -9,6 +13,8 @@ import com.hhplus.commerce.spring.api.user.infrastructure.client.PaymentSystemCl
 import com.hhplus.commerce.spring.api.user.infrastructure.database.UserJpaRepository;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
+
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,20 +22,23 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.stream.Collectors;
 
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadGateWayErrorCode.PAYMENT_BAD_GATEWAY;
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.*;
 import static com.hhplus.commerce.spring.api.order.model.type.OrderStatus.COMPLETED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 
+@ActiveProfiles("test")
 @SpringBootTest
 public class OrderServiceIntegrationTest {
     @MockBean
     private PaymentSystemClient paymentSystemClient;
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -39,6 +48,8 @@ public class OrderServiceIntegrationTest {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderJpaRepository orderJpaRepository;
 
     @DisplayName("유효하지 않은 사용자의 경우 주문에 실패한다.")
     @Test
@@ -53,8 +64,8 @@ public class OrderServiceIntegrationTest {
 
         // when // then
         assertThatThrownBy(() -> orderService.createOrder(request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않은 사용자");
+                .isInstanceOf(CustomBadRequestException.class)
+                .hasMessage(USER_BAD_REQUEST.getMessage());
     }
 
     @DisplayName("사용자의 잔액이 부족한 경우 주문에 실패한다.")
@@ -64,21 +75,19 @@ public class OrderServiceIntegrationTest {
         String userName = "잔액 부족 사용자";
         int userPoint = 0;
 
-        long productId = 1;
-        int orderCount = 1;
-
         User saveUser = createUser(userName, userPoint);
         userJpaRepository.save(saveUser);
 
-        OrderServiceRequest order = createOrderServiceRequest(productId, orderCount);
+        Product saveProduct = productJpaRepository.save(createProduct());
+        int orderCount = 1;
+
+        OrderServiceRequest order = createOrderServiceRequest(saveProduct.getId(), orderCount);
         CreateOrderServiceRequest request = createOrderPaymentServiceRequest(saveUser.getId(), order);
 
         // when // then
         assertThatThrownBy(() -> orderService.createOrder(request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("사용자 잔액 부족");
-
-        userJpaRepository.deleteById(saveUser.getId());
+                .isInstanceOf(CustomBadRequestException.class)
+                .hasMessage(USER_POINT_BAD_REQUEST.getMessage());
     }
 
     @DisplayName("상품 재고가 부족한 경우 주문에 실패한다.")
@@ -102,11 +111,8 @@ public class OrderServiceIntegrationTest {
 
         // when // then
         assertThatThrownBy(() -> orderService.createOrder(request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("재고가 부족한 상품이 있습니다.");
-
-        productJpaRepository.deleteById(productId);
-        userJpaRepository.deleteById(saveUser.getId());
+                .isInstanceOf(CustomBadRequestException.class)
+                .hasMessage(PRODUCT_STOCK_BAD_REQUEST.getMessage());
     }
 
     @DisplayName("결제가 실패하는 경우 상품 주문에 실패한다.")
@@ -133,11 +139,8 @@ public class OrderServiceIntegrationTest {
                .thenReturn(false);
 
         assertThatThrownBy(() -> orderService.createOrder(request))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("결제 실패");
-
-        productJpaRepository.deleteById(productId);
-        userJpaRepository.deleteById(saveUser.getId());
+                .isInstanceOf(CustomBadGateWayException.class)
+                .hasMessage(PAYMENT_BAD_GATEWAY.getMessage());
     }
 
     @DisplayName("상품 주문을 성공한다.")
@@ -167,36 +170,38 @@ public class OrderServiceIntegrationTest {
 
         assertThat(order).isNotNull();
         assertThat(order).extracting("id", "orderStatus")
-            .contains(order.getId(), COMPLETED);
+                         .contains(order.getId(), COMPLETED);
     }
 
-    @DisplayName("주문 동시성 테스트")
+    @DisplayName("주문 재고 동시성 테스트")
     @Test
-    @Transactional
-    void createOrderAsync() {
+    void createOrderStockAsync() {
         // given
-//        User user1 = userJpaRepository.save(createUser("유저1", 10000000));
-//        User user2 = userJpaRepository.save(createUser("유저2", 10000000));
+        User user1 = userJpaRepository.save(createUser("유저1", 10000000));
+        User user2 = userJpaRepository.save(createUser("유저2", 10000000));
 
         Product saveProduct = productJpaRepository.save(createTenStockProduct());
 
         int orderCount = 6;
-        OrderServiceRequest orderServiceRequest = createOrderServiceRequest(saveProduct.getId(), orderCount);
+        OrderServiceRequest orderServiceRequest1 = createOrderServiceRequest(saveProduct.getId(), orderCount);
+        OrderServiceRequest orderServiceRequest2 = createOrderServiceRequest(saveProduct.getId(), orderCount);
 
-        CreateOrderServiceRequest request1 = createOrderPaymentServiceRequest(88, orderServiceRequest);
-        CreateOrderServiceRequest request2 = createOrderPaymentServiceRequest(89, orderServiceRequest);
+        CreateOrderServiceRequest request1 = createOrderPaymentServiceRequest(user1.getId(), orderServiceRequest1);
+        CreateOrderServiceRequest request2 = createOrderPaymentServiceRequest(user2.getId(), orderServiceRequest2);
+
+        List<Order> orders = new ArrayList<>();
 
         // when
         CompletableFuture.allOf(
-            CompletableFuture.runAsync(() -> orderService.createOrder(request1))
+            CompletableFuture.supplyAsync(() -> orderService.createOrder(request1))
                              .handle((result, ex) -> {
                                  if (ex != null) System.out.println("1 주문 실패! : " + ex.getMessage());
-                                 return "";
+                                 return orders.add(result);
                              }),
-            CompletableFuture.runAsync(() -> orderService.createOrder(request2))
+            CompletableFuture.supplyAsync(() -> orderService.createOrder(request2))
                              .handle((result, ex) -> {
                                  if (ex != null) System.out.println("2 주문 실패! : " + ex.getMessage());
-                                 return "";
+                                 return orders.add(result);
                              })
         ).join();
 
@@ -204,6 +209,58 @@ public class OrderServiceIntegrationTest {
                                               .orElseThrow(() -> new IllegalArgumentException("미존재 상품"));
 
         // then
+        assertThat(product.getProductCount()).isEqualTo(saveProduct.getProductCount() - orderCount);
+
+        orderJpaRepository.deleteAllByIdInBatch(orders.stream().map(o -> o.getId()).collect(Collectors.toList()));
+        productJpaRepository.deleteById(saveProduct.getId());
+        userJpaRepository.deleteAllByIdInBatch(List.of(user1.getId(), user2.getId()));
+    }
+
+    @DisplayName("주문 사용자 잔액 동시성 테스트")
+    @Test
+    void createOrderUserPointAsync() {
+        // given
+        User user1 = userJpaRepository.save(createUser("유저1", 10000000));
+
+        Product saveProduct = productJpaRepository.save(createTenStockProduct());
+
+        int orderCount = 1;
+        OrderServiceRequest orderServiceRequest1 = createOrderServiceRequest(saveProduct.getId(), orderCount);
+        OrderServiceRequest orderServiceRequest2 = createOrderServiceRequest(saveProduct.getId(), orderCount);
+
+        CreateOrderServiceRequest request1 = createOrderPaymentServiceRequest(user1.getId(), orderServiceRequest1);
+        CreateOrderServiceRequest request2 = createOrderPaymentServiceRequest(user1.getId(), orderServiceRequest2);
+
+        List<Order> orders = new ArrayList<>();
+
+        // when
+        CompletableFuture.allOf(
+                CompletableFuture.supplyAsync(() -> orderService.createOrder(request1))
+                                 .handle((result, ex) -> {
+                                     if (ex != null) {
+                                         System.out.println("1 주문 실패! : " + ex.getMessage());
+                                         return null;
+                                     }
+                                     return orders.add(result);
+                                 }),
+                CompletableFuture.supplyAsync(() -> orderService.createOrder(request2))
+                                 .handle((result, ex) -> {
+                                     if (ex != null) {
+                                         System.out.println("2 주문 실패! : " + ex.getMessage());
+                                         return null;
+                                     }
+                                     return orders.add(result);
+                                 })
+        ).join();
+
+        Product product = productJpaRepository.findById(saveProduct.getId())
+                                              .orElseThrow(() -> new IllegalArgumentException("미존재 상품"));
+
+        User findUser = userJpaRepository.findById(user1.getId())
+                                         .orElseThrow(() -> new IllegalArgumentException("미존재 사용자"));
+
+        // then
+        assertThat(findUser.getUserPoint()).isEqualTo(user1.getUserPoint() - saveProduct.getProductPrice());
         assertThat(product.getProductCount()).isEqualTo(saveProduct.getProductCount() - orderCount);
     }
 

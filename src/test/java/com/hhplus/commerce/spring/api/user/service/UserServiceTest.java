@@ -1,11 +1,13 @@
 package com.hhplus.commerce.spring.api.user.service;
 
-import static com.hhplus.commerce.spring.api.common.presentation.exception.code.NotFoundErrorCode.USER_NOT_FOUND;
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadGateWayErrorCode.PAYMENT_BAD_GATEWAY;
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.USER_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
-import com.hhplus.commerce.spring.api.common.presentation.exception.CustomNotFoundException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadGateWayException;
 import com.hhplus.commerce.spring.api.order.service.PaymentService;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
@@ -36,13 +38,12 @@ class UserServiceTest {
         Long userId = 1L;
         int chargePoint = 100000;
 
-        given(userRepository.findById(userId))
-            .willThrow(new IllegalArgumentException("존재하지 않은 사용자"));
+        given(userRepository.findByIdWithLock(userId)).willThrow(new CustomBadRequestException(USER_BAD_REQUEST));
 
         // when // then
         assertThatThrownBy(() -> userService.userBalanceCharge(userId, chargePoint))
-            .isInstanceOf(CustomNotFoundException.class)
-            .hasMessage(USER_NOT_FOUND.getMessage());
+            .isInstanceOf(CustomBadRequestException.class)
+            .hasMessage(USER_BAD_REQUEST.getMessage());
     }
 
     @DisplayName("음수를 충전하는 경우 예외가 발생한다.")
@@ -54,8 +55,8 @@ class UserServiceTest {
 
         // when // then
         assertThatThrownBy(() -> userService.userBalanceCharge(userId, chargePoint))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("충전 액수는 0보다 커야 합니다.");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("충전 액수는 0보다 커야 합니다.");
     }
 
     @DisplayName("결제 시스템 결제 실패시 예외가 발생한다.")
@@ -67,16 +68,15 @@ class UserServiceTest {
         int userPoint = 100000;
         int chargePoint = 50000;
 
-        given(userRepository.findById(userId)).willReturn(
-            Optional.ofNullable(createUser(userId, userName, userPoint)));
+        given(userRepository.findByIdWithLock(userId)).willReturn(Optional.ofNullable(createUser(userId, userName, userPoint)));
 
         given(paymentService.sendPayment(String.valueOf(userId), chargePoint))
             .willReturn(false);
 
         // when // then
         assertThatThrownBy(() -> userService.userBalanceCharge(userId, chargePoint))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("결제 시스템 결제 실패!");
+            .isInstanceOf(CustomBadGateWayException.class)
+            .hasMessage(PAYMENT_BAD_GATEWAY.getMessage());
     }
 
     @DisplayName("잔액 충전에 성공한다.")
@@ -88,11 +88,9 @@ class UserServiceTest {
         int userPoint = 100000;
         int chargePoint = 50000;
 
-        given(userRepository.findById(userId)).willReturn(
-            Optional.ofNullable(createUser(userId, userName, userPoint)));
+        given(userRepository.findByIdWithLock(userId)).willReturn(Optional.ofNullable(createUser(userId, userName, userPoint)));
 
-        given(paymentService.sendPayment(String.valueOf(userId), chargePoint))
-            .willReturn(true);
+        given(paymentService.sendPayment(String.valueOf(userId), chargePoint)).willReturn(true);
 
         // when // then
         User user = userService.userBalanceCharge(userId, chargePoint);
