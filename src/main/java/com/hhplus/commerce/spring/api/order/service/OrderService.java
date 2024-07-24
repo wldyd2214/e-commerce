@@ -2,8 +2,6 @@ package com.hhplus.commerce.spring.api.order.service;
 
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomConflictException;
-import com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode;
-import com.hhplus.commerce.spring.api.common.presentation.exception.code.ConflictErrorCode;
 import com.hhplus.commerce.spring.api.order.model.Order;
 import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
@@ -32,7 +30,6 @@ import static com.hhplus.commerce.spring.api.common.presentation.exception.code.
 @Service
 @Slf4j
 public class OrderService {
-    private final PaymentService paymentService;
     private final DataPlatformService dataPlatformService;
 
     private final UserRepository userRepository;
@@ -48,7 +45,6 @@ public class OrderService {
 
         List<Long> productIds = extractProductIds(request.getOrders());
 
-        Map<Long, Product> productMap = createProductMap(productIds);
         Map<Long, OrderServiceRequest> orderMap = createOrderServieMap(request.getOrders());
 
         /**
@@ -57,7 +53,9 @@ public class OrderService {
          * 동시의 여러개의 주문이 들어오는 경우
          * 재고 10개 <- 1번 주문 재고 9개 구매, 2번 주문 재고 2개 구매인 경우
          */
-        deductProductQuantities(productIds, productMap, orderMap);
+        deductProductQuantities(productIds, orderMap);
+
+        Map<Long, Product> productMap = createProductMap(productIds);
 
         Order saveOrder = orderRepository.save(Order.create(user));
         List<OrderItem> orderItems = createOrderItems(saveOrder, productIds, productMap, orderMap);
@@ -71,10 +69,8 @@ public class OrderService {
             throw new CustomConflictException(USER_POINT_DEDUCTION_CONFLICT);
         }
 
-        paymentService.paymentUserPoint(user.getId(), totalPrice, saveOrder);
-
         boolean dataResult = dataPlatformService.sendOrderData(user.getId(), saveOrder.getId());
-        log.info(String.format("데이터 플랫폼 전송 결과 : %s ", dataResult));
+        log.info("데이터 플랫폼 전송 결과 : {} ", dataResult);
 
         saveOrder.orderStatusPaymentCompleted();
         return saveOrder;
@@ -92,9 +88,7 @@ public class OrderService {
         return totalPrice;
     }
 
-    private void deductProductQuantities(List<Long> productKeys, Map<Long, Product> productMap,
-        Map<Long, OrderServiceRequest> orderMap) {
-
+    private void deductProductQuantities(List<Long> productKeys, Map<Long, OrderServiceRequest> orderMap) {
         for (Long productId : new HashSet<>(productKeys)) {
             // 비관적 락 적용
             Product product = productRepository.findByIdWithPessimisticLock(productId)
