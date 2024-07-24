@@ -1,46 +1,36 @@
 package com.hhplus.commerce.spring.api.order.service;
 
-import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadGateWayException;
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
-import com.hhplus.commerce.spring.api.common.presentation.exception.code.BadGateWayErrorCode;
 import com.hhplus.commerce.spring.api.order.infrastructure.database.OrderJpaRepository;
 import com.hhplus.commerce.spring.api.order.model.Order;
 import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
 import com.hhplus.commerce.spring.api.product.infrastructure.database.ProductJpaRepository;
 import com.hhplus.commerce.spring.api.product.model.Product;
-import com.hhplus.commerce.spring.api.user.infrastructure.client.PaymentSystemClient;
 import com.hhplus.commerce.spring.api.user.infrastructure.database.UserJpaRepository;
 import com.hhplus.commerce.spring.api.user.model.User;
-import com.hhplus.commerce.spring.api.user.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadGateWayErrorCode.PAYMENT_BAD_GATEWAY;
 import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.*;
 import static com.hhplus.commerce.spring.api.order.model.type.OrderStatus.COMPLETED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
 
+@Slf4j
 @ActiveProfiles("test")
 @SpringBootTest
 public class OrderServiceIntegrationTest {
-    @MockBean
-    private PaymentSystemClient paymentSystemClient;
-    @Autowired
-    private UserRepository userRepository;
     @Autowired
     private UserJpaRepository userJpaRepository;
     @Autowired
@@ -115,33 +105,29 @@ public class OrderServiceIntegrationTest {
                 .hasMessage(PRODUCT_STOCK_BAD_REQUEST.getMessage());
     }
 
-    @DisplayName("결제가 실패하는 경우 상품 주문에 실패한다.")
-    @Test
-    void orderPaymentFail() {
-        // given
-        String userName = "박지용";
-        int userPoint = 10000000;
-
-        Product saveOutOfStockProduct = createProduct();
-        productJpaRepository.save(saveOutOfStockProduct);
-
-        long productId = saveOutOfStockProduct.getId();
-        int orderCount = 1;
-
-        User saveUser = createUser(userName, userPoint);
-        userJpaRepository.save(saveUser);
-
-        OrderServiceRequest order = createOrderServiceRequest(productId, orderCount);
-        CreateOrderServiceRequest request = createOrderPaymentServiceRequest(saveUser.getId(), order);
-
-        // when // then
-        Mockito.when(paymentSystemClient.paymentUserPoint(anyLong(), anyInt()))
-               .thenReturn(false);
-
-        assertThatThrownBy(() -> orderService.createOrder(request))
-                .isInstanceOf(CustomBadGateWayException.class)
-                .hasMessage(PAYMENT_BAD_GATEWAY.getMessage());
-    }
+//    @DisplayName("결제가 실패하는 경우 상품 주문에 실패한다.")
+//    @Test
+//    void orderPaymentFail() {
+//        // given
+//        String userName = "박지용";
+//        int userPoint = 10000000;
+//
+//        Product saveOutOfStockProduct = createProduct();
+//        productJpaRepository.save(saveOutOfStockProduct);
+//
+//        long productId = saveOutOfStockProduct.getId();
+//        int orderCount = 1;
+//
+//        User saveUser = createUser(userName, userPoint);
+//        userJpaRepository.save(saveUser);
+//
+//        OrderServiceRequest order = createOrderServiceRequest(productId, orderCount);
+//        CreateOrderServiceRequest request = createOrderPaymentServiceRequest(saveUser.getId(), order);
+//
+//        assertThatThrownBy(() -> orderService.createOrder(request))
+//                .isInstanceOf(CustomBadGateWayException.class)
+//                .hasMessage(PAYMENT_BAD_GATEWAY.getMessage());
+//    }
 
     @DisplayName("상품 주문을 성공한다.")
     @Test
@@ -162,10 +148,6 @@ public class OrderServiceIntegrationTest {
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
         CreateOrderServiceRequest request = createOrderPaymentServiceRequest(saveUser.getId(), orderServiceRequest);
 
-        // when // then
-        Mockito.when(paymentSystemClient.paymentUserPoint(anyLong(), anyInt()))
-               .thenReturn(true);
-
         Order order = orderService.createOrder(request);
 
         assertThat(order).isNotNull();
@@ -183,11 +165,10 @@ public class OrderServiceIntegrationTest {
         Product saveProduct = productJpaRepository.save(createTenStockProduct());
 
         int orderCount = 6;
-        OrderServiceRequest orderServiceRequest1 = createOrderServiceRequest(saveProduct.getId(), orderCount);
-        OrderServiceRequest orderServiceRequest2 = createOrderServiceRequest(saveProduct.getId(), orderCount);
+        OrderServiceRequest orderServiceRequest = createOrderServiceRequest(saveProduct.getId(), orderCount);
 
-        CreateOrderServiceRequest request1 = createOrderPaymentServiceRequest(user1.getId(), orderServiceRequest1);
-        CreateOrderServiceRequest request2 = createOrderPaymentServiceRequest(user2.getId(), orderServiceRequest2);
+        CreateOrderServiceRequest request1 = createOrderPaymentServiceRequest(user1.getId(), orderServiceRequest);
+        CreateOrderServiceRequest request2 = createOrderPaymentServiceRequest(user2.getId(), orderServiceRequest);
 
         List<Order> orders = new ArrayList<>();
 
@@ -195,12 +176,18 @@ public class OrderServiceIntegrationTest {
         CompletableFuture.allOf(
             CompletableFuture.supplyAsync(() -> orderService.createOrder(request1))
                              .handle((result, ex) -> {
-                                 if (ex != null) System.out.println("1 주문 실패! : " + ex.getMessage());
+                                 if (ex != null) {
+                                     log.error("1. 주문 요청 실패 : {}", ex.getMessage());
+                                     return null;
+                                 }
                                  return orders.add(result);
                              }),
             CompletableFuture.supplyAsync(() -> orderService.createOrder(request2))
                              .handle((result, ex) -> {
-                                 if (ex != null) System.out.println("2 주문 실패! : " + ex.getMessage());
+                                 if (ex != null) {
+                                     log.error("2. 주문 요청 실패 : {}", ex.getMessage());
+                                     return null;
+                                 }
                                  return orders.add(result);
                              })
         ).join();
@@ -238,7 +225,7 @@ public class OrderServiceIntegrationTest {
                 CompletableFuture.supplyAsync(() -> orderService.createOrder(request1))
                                  .handle((result, ex) -> {
                                      if (ex != null) {
-                                         System.out.println("1 주문 실패! : " + ex.getMessage());
+                                         log.error("1. 주문 요청 실패 : {}", ex.getMessage());
                                          return null;
                                      }
                                      return orders.add(result);
@@ -246,7 +233,7 @@ public class OrderServiceIntegrationTest {
                 CompletableFuture.supplyAsync(() -> orderService.createOrder(request2))
                                  .handle((result, ex) -> {
                                      if (ex != null) {
-                                         System.out.println("2 주문 실패! : " + ex.getMessage());
+                                         log.error("2. 주문 요청 실패 : {}", ex.getMessage());
                                          return null;
                                      }
                                      return orders.add(result);

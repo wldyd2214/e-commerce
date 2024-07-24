@@ -38,8 +38,6 @@ class OrderServiceTest {
     @Mock
     OrderRepository orderRepository;
     @Mock
-    PaymentService paymentService;
-    @Mock
     DataPlatformService dataPlatformService;
     @InjectMocks
     OrderService orderService;
@@ -132,43 +130,6 @@ class OrderServiceTest {
         assertThatThrownBy(() -> orderService.createOrder(request))
                 .isInstanceOf(CustomBadRequestException.class)
                 .hasMessage(PRODUCT_STOCK_BAD_REQUEST.getMessage());
-    }
-
-    @DisplayName("결제가 실패하는 경우 상품 주문에 실패한다.")
-    @Test
-    void orderPaymentFail() {
-        // given
-        long userId = 1;
-        String userName = "박지용";
-        int userPoint = 1000000;
-
-        User user = createUser(userId, userName, userPoint);
-
-        long productId = 1;
-        int productPrice = 100000;
-        int stockCount = 1;
-
-        Product product = createProduct(productId, stockCount, productPrice);
-
-        int orderCount = 1;
-
-        OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
-        CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
-
-        given(userRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(user));
-        given(productRepository.findAllByIdIn(anyList())).willReturn(List.of(product));
-        given(productRepository.findByIdWithPessimisticLock(anyLong())).willReturn(Optional.ofNullable(product));
-
-        Order order = Order.create(user);
-        order.setId(1L);
-        given(orderRepository.save(any())).willReturn(order);
-        given(paymentService.paymentUserPoint(anyLong(), anyInt(), any()))
-                .willThrow(new CustomBadGateWayException(PAYMENT_BAD_GATEWAY));
-
-        // when // then
-        assertThatThrownBy(() -> orderService.createOrder(request))
-            .isInstanceOf(CustomBadGateWayException.class)
-            .hasMessage(PAYMENT_BAD_GATEWAY.getMessage());
     }
 
     @DisplayName("상품 주문에 성공한다.")
