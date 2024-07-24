@@ -1,8 +1,12 @@
 package com.hhplus.commerce.spring.api.order.service;
 
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomConflictException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode;
+import com.hhplus.commerce.spring.api.common.presentation.exception.code.ConflictErrorCode;
+import com.hhplus.commerce.spring.api.order.model.Order;
 import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
-import com.hhplus.commerce.spring.api.order.model.Order;
 import com.hhplus.commerce.spring.api.order.model.OrderItem;
 import com.hhplus.commerce.spring.api.product.model.Product;
 import com.hhplus.commerce.spring.api.user.model.User;
@@ -20,6 +24,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.PRODUCT_BAD_REQUEST;
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.USER_BAD_REQUEST;
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.ConflictErrorCode.USER_POINT_DEDUCTION_CONFLICT;
+
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -32,15 +40,11 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     // TODO: 결제와 재고차감과 데이터플랫폼으로 주문데이터 전송은 주문 생성의 하나의 로직이라고 볼 수 있다.
-    // 보상 트랜잭션 어디까지 롤백?
-    @Transactional()
+    @Transactional
     public Order createOrder(CreateOrderServiceRequest request) {
-
-        User user = userRepository.findById(request.getUserId())
-                                  .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
         // 사용자 포인트 낙관적 락 적용
-//        User user = userRepository.findByIdWithLock(request.getUserId())
-//                                  .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 사용자"));
+        User user = userRepository.findByIdWithLock(request.getUserId())
+                                  .orElseThrow(() -> new CustomBadRequestException(USER_BAD_REQUEST));
 
         List<Long> productIds = extractProductIds(request.getOrders());
 
@@ -64,7 +68,7 @@ public class OrderService {
         try {
             user.deductUserPoint(totalPrice);
         } catch (OptimisticLockException e) {
-            throw new IllegalArgumentException("사용자 포인트 차감 실패!");
+            throw new CustomConflictException(USER_POINT_DEDUCTION_CONFLICT);
         }
 
         paymentService.paymentUserPoint(user.getId(), totalPrice, saveOrder);
@@ -92,12 +96,12 @@ public class OrderService {
         Map<Long, OrderServiceRequest> orderMap) {
 
         for (Long productId : new HashSet<>(productKeys)) {
-            //            Product product = productMap.get(productId);
             // 비관적 락 적용
             Product product = productRepository.findByIdWithPessimisticLock(productId)
-                                               .orElseThrow();
+                                               .orElseThrow(() -> new CustomBadRequestException(PRODUCT_BAD_REQUEST));
 
-            int quantity = orderMap.get(productId).getOrderCount();
+            int quantity = orderMap.get(productId)
+                                   .getOrderCount();
 
             product.deductQuantity(quantity);
         }
@@ -121,7 +125,7 @@ public class OrderService {
     }
 
     private List<OrderItem> createOrderItems(Order order, List<Long> productKeys, Map<Long, Product> productMap,
-        Map<Long, OrderServiceRequest> orderMap) {
+                                             Map<Long, OrderServiceRequest> orderMap) {
 
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -131,10 +135,6 @@ public class OrderService {
 
             orderItems.add(OrderItem.create(order, product, orderCount));
         }
-
-//        if (orderItems.size() > 0) {
-//            return orderItemRepository.saveAll(orderItems);
-//        }
 
         return orderItems;
     }

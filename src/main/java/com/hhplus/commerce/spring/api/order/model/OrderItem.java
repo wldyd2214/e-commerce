@@ -29,7 +29,7 @@ import lombok.Setter;
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "order_item")
+@Table(name = "tb_order_item")
 public class OrderItem extends BaseEntity {
 
     @Id
@@ -56,8 +56,8 @@ public class OrderItem extends BaseEntity {
 
     @Builder
     public OrderItem(Order order, Product product, String orderProductName,
-        Integer orderProductPrice,
-        Integer orderProductCount) {
+                     Integer orderProductPrice,
+                     Integer orderProductCount) {
         this.order = order;
         this.product = product;
         this.orderProductName = orderProductName;

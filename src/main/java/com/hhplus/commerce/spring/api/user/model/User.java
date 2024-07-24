@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.user.model;
 
-import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.INSUFFICIENT_BALANCE;
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.USER_POINT_BAD_REQUEST;
 
 import com.hhplus.commerce.spring.api.common.infrastructure.database.BaseEntity;
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
@@ -24,7 +24,7 @@ import lombok.Setter;
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "user")
+@Table(name = "tb_user")
 public class User extends BaseEntity {
 
     @Id
@@ -54,7 +54,7 @@ public class User extends BaseEntity {
 
     public void deductUserPoint(int deductionPoint) {
         if (this.userPoint < deductionPoint) {
-            throw new CustomBadRequestException(INSUFFICIENT_BALANCE);
+            throw new CustomBadRequestException(USER_POINT_BAD_REQUEST);
         }
         this.userPoint = this.userPoint - deductionPoint;
     }

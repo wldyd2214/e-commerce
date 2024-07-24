@@ -37,7 +37,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "product_order")
+@Table(name = "tb_order")
 public class Order extends BaseEntity {
 
     @Id

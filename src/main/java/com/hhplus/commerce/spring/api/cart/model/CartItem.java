@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "cart_item")
+@Table(name = "tb_cart_item")
 public class CartItem extends BaseEntity {
 
     @Id
