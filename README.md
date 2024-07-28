@@ -56,3 +56,8 @@ e-커머스 서비스
 2. 시퀀스 다이어그램: https://github.com/wldyd2214/e-commerce/tree/feature/step05/design/sequence
 3. DB ERD 문서: https://github.com/wldyd2214/e-commerce/blob/feature/step06/design/db/DB_ERD.png
 4. API 명세서: https://jiyong.gitbook.io/e/
+
+---
+
+## 동시성 문제
+- e-커머스 서비스에서 발생할 수 있는 동시성 문제를 생각해보고 해결한 내용을 기술블로그(https://jiyongpark-dev.tistory.com/113) 에 정리하였습니다.

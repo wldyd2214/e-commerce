@@ -1,6 +1,7 @@
 package com.hhplus.commerce.spring.api.product.model;
 
 import com.hhplus.commerce.spring.api.common.infrastructure.database.BaseEntity;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -13,6 +14,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.coyote.BadRequestException;
+
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.PRODUCT_STOCK_BAD_REQUEST;
 
 @Getter
 @AttributeOverrides({
@@ -24,7 +28,7 @@ import lombok.NoArgsConstructor;
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "product")
+@Table(name = "tb_product")
 public class Product extends BaseEntity {
 
     @Id
@@ -60,7 +64,7 @@ public class Product extends BaseEntity {
 
     public void deductQuantity(int quantity) {
         if (isQuantityLessThan(quantity)) {
-            throw new IllegalArgumentException("차감할 재고 수량이 없습니다.");
+            throw new CustomBadRequestException(PRODUCT_STOCK_BAD_REQUEST);
         }
         this.productCount -= quantity;
     }

@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "payment")
+@Table(name = "tb_payment")
 public class Payment extends BaseEntity {
 
     @Id

@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.cart.service;
 
-import static com.hhplus.commerce.spring.api.common.presentation.exception.code.NotFoundErrorCode.*;
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.*;
 import static com.hhplus.commerce.spring.api.common.presentation.exception.code.ForbiddenErrorCode.*;
 
 import com.hhplus.commerce.spring.api.cart.service.request.CartItemRegister;
@@ -10,8 +10,8 @@ import com.hhplus.commerce.spring.api.cart.model.CartItem;
 import com.hhplus.commerce.spring.api.cart.repository.CartItemRepository;
 import com.hhplus.commerce.spring.api.cart.repository.CartRepository;
 import com.hhplus.commerce.spring.api.cart.service.response.CartServiceRes;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomForbiddenException;
-import com.hhplus.commerce.spring.api.common.presentation.exception.CustomNotFoundException;
 import com.hhplus.commerce.spring.api.product.model.Product;
 import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.api.user.model.User;
@@ -36,10 +36,10 @@ public class CartService {
     public CartServiceRes getCart(Long userId) {
 
         User user = userRepository.findById(userId)
-                                  .orElseThrow(() -> new CustomNotFoundException(USER_NOT_FOUND));
+                                  .orElseThrow(() -> new CustomBadRequestException(USER_BAD_REQUEST));
 
         Cart cart = cartRepository.findByUser(user)
-                                  .orElseThrow(() -> new CustomNotFoundException(CART_NOT_FOUND));
+                                  .orElseThrow(() -> new CustomBadRequestException(CART_BAD_REQUEST));
 
         return CartServiceRes.toCartServiceRes(cart);
     }
@@ -48,7 +48,7 @@ public class CartService {
     public Cart addCart(Long userId, CartRegisterRequest cartRegRequest) {
 
         User user = userRepository.findById(userId)
-                                  .orElseThrow(() -> new CustomNotFoundException(USER_NOT_FOUND));
+                                  .orElseThrow(() -> new CustomBadRequestException(USER_BAD_REQUEST));
 
         Cart cart = cartRepository.findByUser(user).orElse(Cart.create(user));
         cartRepository.save(cart);
@@ -65,7 +65,7 @@ public class CartService {
         for (CartItemRegister cartItemRegister : cartRegRequest.getCartItems()) {
             Product product =
                 productRepository.findById(cartItemRegister.getProductId())
-                                 .orElseThrow(() -> new CustomNotFoundException(PRODUCT_NOT_FOUND));
+                                 .orElseThrow(() -> new CustomBadRequestException(PRODUCT_BAD_REQUEST));
 
             CartItem cartItem = CartItem.create(cart, product, cartItemRegister.getOrderCount());
             cartItems.add(cartItem);
@@ -78,7 +78,7 @@ public class CartService {
     public CartServiceRes removeCartItems(Long userId, List<Long> cartItemKeys) {
 
         User user = userRepository.findById(userId)
-                                  .orElseThrow(() -> new CustomNotFoundException(USER_NOT_FOUND));
+                                  .orElseThrow(() -> new CustomBadRequestException(USER_BAD_REQUEST));
 
         List<CartItem> cartItems = cartItemRepository.findAllById(cartItemKeys);
         sameUserCheck(user, cartItems, cartItemKeys);
@@ -86,7 +86,7 @@ public class CartService {
         cartItemRepository.deleteAllByIdInBatch(cartItemKeys);
 
         Cart cart = cartRepository.findByUser(user)
-                                  .orElseThrow(() -> new CustomNotFoundException(CART_ITEM_NOT_FOUND));
+                                  .orElseThrow(() -> new CustomBadRequestException(CART_ITEM_BAD_REQUEST));
 
         return CartServiceRes.toCartServiceRes(cart);
     }

@@ -11,9 +11,4 @@ public class PaymentSystemClient {
         log.info("carNo: {} {}원 결제 요청", cardNo, money);
         return true;
     }
-
-    public boolean paymentUserPoint(long userId, int payMoney) {
-        log.info(String.format("%d 사용자 %d 포인트 결제 요청", userId, payMoney));
-        return true;
-    }
 }

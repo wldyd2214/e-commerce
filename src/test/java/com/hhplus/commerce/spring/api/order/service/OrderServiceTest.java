@@ -1,13 +1,19 @@
 package com.hhplus.commerce.spring.api.order.service;
 
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadGateWayErrorCode.PAYMENT_BAD_GATEWAY;
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadGateWayException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomConflictException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode;
+import com.hhplus.commerce.spring.api.order.model.Order;
 import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
-import com.hhplus.commerce.spring.api.order.model.Order;
 import com.hhplus.commerce.spring.api.product.model.Product;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.order.repository.OrderRepository;
@@ -32,8 +38,6 @@ class OrderServiceTest {
     @Mock
     OrderRepository orderRepository;
     @Mock
-    PaymentService paymentService;
-    @Mock
     DataPlatformService dataPlatformService;
     @InjectMocks
     OrderService orderService;
@@ -50,13 +54,12 @@ class OrderServiceTest {
         OrderServiceRequest order = createOrderServiceRequest(productId, orderCount);
         CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, order);
 
-        given(userRepository.findById(anyLong()))
-            .willThrow(new IllegalArgumentException("존재하지 않은 사용자"));
+        given(userRepository.findByIdWithLock(anyLong())).willThrow(new CustomBadRequestException(USER_BAD_REQUEST));
 
         // when // then
         assertThatThrownBy(() -> orderService.createOrder(request))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("존재하지 않은 사용자");
+            .isInstanceOf(CustomBadRequestException.class)
+            .hasMessage(USER_BAD_REQUEST.getMessage());
     }
 
     @DisplayName("사용자의 잔액이 부족한 경우 주문에 실패한다.")
@@ -81,14 +84,11 @@ class OrderServiceTest {
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
         CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
 
-        given(userRepository.findById(anyLong())).willReturn(
-            Optional.ofNullable(user));
+        given(userRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(user));
 
-        given(productRepository.findAllByIdIn(anyList())).willReturn(
-            List.of(product));
+        given(productRepository.findAllByIdIn(any())).willReturn(List.of(product));
 
-        given(productRepository.findAllByIdIn(anyList())).willReturn(
-                List.of(product));
+        given(productRepository.findByIdWithPessimisticLock(anyLong())).willReturn(Optional.ofNullable(product));
 
         Order order = Order.create(user);
         order.setId(1L);
@@ -96,8 +96,8 @@ class OrderServiceTest {
 
         // when // then
         assertThatThrownBy(() -> orderService.createOrder(request))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("사용자 잔액 부족");
+            .isInstanceOf(CustomBadRequestException.class)
+            .hasMessage(USER_POINT_BAD_REQUEST.getMessage());
     }
 
     @DisplayName("상품 재고가 부족한 경우 주문에 실패한다.")
@@ -122,57 +122,14 @@ class OrderServiceTest {
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
         CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
 
-        given(userRepository.findById(anyLong())).willReturn(
-            Optional.ofNullable(user));
+        given(userRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(user));
 
-        given(productRepository.findAllByIdIn(anyList())).willReturn(
-            List.of(product));
+        given(productRepository.findByIdWithPessimisticLock(any())).willReturn(Optional.ofNullable(product));
 
         // when // then
         assertThatThrownBy(() -> orderService.createOrder(request))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("재고가 부족한 상품이 있습니다.");
-    }
-
-    @DisplayName("결제가 실패하는 경우 상품 주문에 실패한다.")
-    @Test
-    void orderPaymentFail() {
-
-        // given
-        long userId = 1;
-        String userName = "박지용";
-        int userPoint = 1000000;
-
-        User user = createUser(userId, userName, userPoint);
-
-        long productId = 1;
-        int productPrice = 100000;
-        int stockCount = 1;
-
-        Product product = createProduct(productId, stockCount, productPrice);
-
-        int orderCount = 1;
-
-        OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
-        CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
-
-        given(userRepository.findById(anyLong())).willReturn(
-            Optional.ofNullable(user));
-
-        given(productRepository.findAllByIdIn(anyList())).willReturn(
-            List.of(product));
-
-        Order order = Order.create(user);
-        order.setId(1L);
-        given(orderRepository.save(any())).willReturn(order);
-
-        given(paymentService.paymentUserPoint(anyLong(), anyInt(), any()))
-                .willThrow(new IllegalArgumentException("결제 실패"));
-
-        // when // then
-        assertThatThrownBy(() -> orderService.createOrder(request))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("결제 실패");
+                .isInstanceOf(CustomBadRequestException.class)
+                .hasMessage(PRODUCT_STOCK_BAD_REQUEST.getMessage());
     }
 
     @DisplayName("상품 주문에 성공한다.")
@@ -197,16 +154,13 @@ class OrderServiceTest {
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
         CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
 
-        given(userRepository.findById(anyLong())).willReturn(
-            Optional.ofNullable(user));
-
-        given(productRepository.findAllByIdIn(anyList())).willReturn(
-            List.of(product));
+        given(userRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(user));
+        given(productRepository.findByIdWithPessimisticLock(anyLong())).willReturn(Optional.ofNullable(product));
+        given(productRepository.findAllByIdIn(anyList())).willReturn(List.of(product));
 
         Order order = Order.create(user);
         order.setId(1L);
         given(orderRepository.save(any())).willReturn(order);
-
         given(dataPlatformService.sendOrderData(any(), any())).willReturn(true);
 
         Order resultOrder = orderService.createOrder(request);

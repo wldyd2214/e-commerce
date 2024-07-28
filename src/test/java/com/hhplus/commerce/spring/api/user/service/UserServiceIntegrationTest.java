@@ -1,17 +1,23 @@
 package com.hhplus.commerce.spring.api.user.service;
 
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.api.user.infrastructure.database.UserJpaRepository;
 import com.hhplus.commerce.spring.api.user.model.User;
 import com.hhplus.commerce.spring.api.user.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.concurrent.CompletableFuture;
 
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.USER_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
+@ActiveProfiles("test")
 @SpringBootTest
 public class UserServiceIntegrationTest {
     @Autowired
@@ -25,54 +31,52 @@ public class UserServiceIntegrationTest {
     @Test
     void userPointChargeAsync() {
         // given
-        User saveUser = userJpaRepository.save(createUser());
+        User saveUser = userJpaRepository.save(createUser("잔액 충전 동시성 테스트", 0));
         long userId = saveUser.getId();
 
         int chargePoint = 10000;
-        int runAsyncNum = 1;
+        int successCount = 1;
 
         // when
         CompletableFuture.allOf(
             CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint))
                              .handle((result, ex) -> {
-                                 if (ex != null) System.out.println("1 잔액 충전 실패!");
+                                 if (ex != null) log.error("1. 잔액 충전실패!");
                                  return "";
                              }),
             CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint))
                              .handle((result, ex) -> {
-                                 if (ex != null) System.out.println("2 잔액 충전 실패!");
+                                 if (ex != null) log.error("2. 잔액 충전실패!");
                                  return "";
                              }),
             CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint))
                              .handle((result, ex) -> {
-                                 if (ex != null) System.out.println("3 잔액 충전 실패!");
+                                 if (ex != null) log.error("3. 잔액 충전실패!");
                                  return "";
                              }),
             CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint))
                              .handle((result, ex) -> {
-                                 if (ex != null) System.out.println("4 잔액 충전 실패!");
+                                 if (ex != null) log.error("4. 잔액 충전실패!");
                                  return "";
                              }),
             CompletableFuture.runAsync(() -> userService.userBalanceCharge(userId, chargePoint))
                              .handle((result, ex) -> {
-                                 if (ex != null) System.out.println("5 잔액 충전 실패!");
+                                 if (ex != null) log.error("5. 잔액 충전실패!");
                                  return "";
                              })
         ).join();
 
         User findUser = userRepository.findById(userId)
-                                  .orElseThrow(() -> new IllegalArgumentException("미존재 사용자"));
+                                      .orElseThrow(() -> new CustomBadRequestException(USER_BAD_REQUEST));
 
         // then
-        assertThat(findUser.getUserPoint()).isEqualTo(saveUser.getUserPoint() + (chargePoint * runAsyncNum));
-
-        userJpaRepository.deleteById(saveUser.getId());
+        assertThat(findUser.getUserPoint()).isEqualTo(saveUser.getUserPoint() + (chargePoint * successCount));
     }
 
-    private User createUser() {
+    private User createUser(String userName, int userPoint) {
         return User.builder()
-                   .userName("동시성 테스트 사용자")
-                   .userPoint(0)
+                   .userName(userName)
+                   .userPoint(userPoint)
                    .build();
     }
 }

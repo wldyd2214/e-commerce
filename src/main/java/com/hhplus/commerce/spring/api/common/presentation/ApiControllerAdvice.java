@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.api.common.presentation;
 
-import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
-import com.hhplus.commerce.spring.api.common.presentation.exception.CustomNotFoundException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomConflictException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadGateWayException;
 import com.hhplus.commerce.spring.api.common.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,23 +34,23 @@ public class ApiControllerAdvice {
         );
     }
 
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(CustomBadRequestException.class)
-//    public ApiResponse<Object> CustomBadRequestException(CustomBadRequestException e) {
-//        return ApiResponse.of(
-//            e.getErrorCode().getHttpStatus(),
-//            e.getMessage(),
-//            null
-//        );
-//    }
-//
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    @ExceptionHandler(CustomBadRequestException.class)
-//    public ApiResponse<Object> CustomNotFoundException(CustomNotFoundException e) {
-//        return ApiResponse.of(
-//            e.getErrorCode().getHttpStatus(),
-//            e.getMessage(),
-//            null
-//        );
-//    }
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(CustomConflictException.class)
+    public ApiResponse<Object> ConflictException(CustomConflictException e) {
+        return ApiResponse.of(
+                HttpStatus.CONFLICT,
+                e.getMessage(),
+                null
+        );
+    }
+
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    @ExceptionHandler(CustomBadGateWayException.class)
+    public ApiResponse<Object> BadGateWayException(CustomBadGateWayException e) {
+        return ApiResponse.of(
+                HttpStatus.BAD_GATEWAY,
+                e.getMessage(),
+                null
+        );
+    }
 }

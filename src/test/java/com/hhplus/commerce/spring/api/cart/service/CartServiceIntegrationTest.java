@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.api.cart.service;
 
-import static com.hhplus.commerce.spring.api.common.presentation.exception.code.NotFoundErrorCode.*;
+import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.hhplus.commerce.spring.api.cart.infrastructure.database.CartItemJpaRepository;
@@ -10,7 +10,8 @@ import com.hhplus.commerce.spring.api.cart.model.CartItem;
 import com.hhplus.commerce.spring.api.cart.service.request.CartItemRegister;
 import com.hhplus.commerce.spring.api.cart.service.request.CartRegisterRequest;
 import com.hhplus.commerce.spring.api.cart.service.response.CartServiceRes;
-import com.hhplus.commerce.spring.api.common.presentation.exception.CustomNotFoundException;
+import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.api.product.infrastructure.database.ProductJpaRepository;
 import com.hhplus.commerce.spring.api.product.model.Product;
 import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.api.user.infrastructure.database.UserJpaRepository;
@@ -23,10 +24,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
 
+@ActiveProfiles("test")
 @SpringBootTest
 public class CartServiceIntegrationTest {
     @Autowired
@@ -40,6 +43,8 @@ public class CartServiceIntegrationTest {
 
     @Autowired
     private CartService cartService;
+    @Autowired
+    private ProductJpaRepository productJpaRepository;
 
     @DisplayName("유효하지 않은 사용자의 경우 장바구니 목록 조회에 실패한다.")
     @Test
@@ -49,8 +54,8 @@ public class CartServiceIntegrationTest {
 
         // when // then
         assertThatThrownBy(() -> cartService.getCart(userId))
-            .isInstanceOf(CustomNotFoundException.class)
-            .hasMessage(USER_NOT_FOUND.getMessage());
+            .isInstanceOf(CustomBadRequestException.class)
+            .hasMessage(USER_BAD_REQUEST.getMessage());
     }
 
     @DisplayName("장바구니가 비어있는 경우 목록 조회시 예외가 발생한다.")
@@ -65,8 +70,8 @@ public class CartServiceIntegrationTest {
 
         // when // then
         assertThatThrownBy(() -> cartService.getCart(saveUser.getId()))
-            .isInstanceOf(CustomNotFoundException.class)
-            .hasMessage(CART_NOT_FOUND.getMessage());
+            .isInstanceOf(CustomBadRequestException.class)
+            .hasMessage(CART_BAD_REQUEST.getMessage());
 
         userJpaRepository.deleteById(saveUser.getId());
     }
@@ -125,8 +130,8 @@ public class CartServiceIntegrationTest {
 
         // when // then
         assertThatThrownBy(() -> cartService.addCart(userId, request))
-                .isInstanceOf(CustomNotFoundException.class)
-                .hasMessage(USER_NOT_FOUND.getMessage());
+                .isInstanceOf(CustomBadRequestException.class)
+                .hasMessage(USER_BAD_REQUEST.getMessage());
     }
 
     @DisplayName("미존재 상품 정보의 경우 장바구니 정보 추가에 실패한다.")
@@ -152,8 +157,8 @@ public class CartServiceIntegrationTest {
 
         // then
         assertThatThrownBy(() -> cartService.addCart(saveUser.getId(), request))
-                .isInstanceOf(CustomNotFoundException.class)
-                .hasMessage(PRODUCT_NOT_FOUND.getMessage());
+                .isInstanceOf(CustomBadRequestException.class)
+                .hasMessage(PRODUCT_BAD_REQUEST.getMessage());
 
         userJpaRepository.deleteById(saveUser.getId());
     }
@@ -204,8 +209,11 @@ public class CartServiceIntegrationTest {
         User saveUser = createUser(userName, userPoint);
         userJpaRepository.save(saveUser);
 
-        CartItemRegister cartItemRegister1 = cartItemRegister(1L, 1);
-        CartItemRegister cartItemRegister2 = cartItemRegister(2L, 1);
+        Product saveProduct = createProduct("테스트 상품");
+        productJpaRepository.save(saveProduct);
+
+        CartItemRegister cartItemRegister1 = cartItemRegister(saveProduct.getId(), 1);
+        CartItemRegister cartItemRegister2 = cartItemRegister(saveProduct.getId(), 1);
 
         CartRegisterRequest request = CartRegisterRequest.builder()
                                                          .cartItems(List.of(cartItemRegister1, cartItemRegister2))
@@ -224,10 +232,6 @@ public class CartServiceIntegrationTest {
                 .containsExactlyInAnyOrder(
                         tuple(cart.getCartItems().get(1).getId(), cart.getCartItems().get(1).getCartItemProductCount())
                 );
-
-        userJpaRepository.deleteById(saveUser.getId());
-        cartItemJpaRepository.deleteAllByIdInBatch(cart.getCartItems().stream().map(i -> i.getId()).collect(Collectors.toList()));
-        cartJpaRepository.deleteById(cart.getId());
     }
 
     private User createUser(String userName, int userPoint) {
@@ -242,5 +246,14 @@ public class CartServiceIntegrationTest {
                                .productId(productId)
                                .orderCount(orderCount)
                                .build();
+    }
+
+    private Product createProduct(String name) {
+        return Product.builder()
+                      .productName(String.format("%s 제품 이름", name))
+                      .productDesc(String.format("%s 제품 내용", name))
+                      .productPrice(100000)
+                      .productCount(50)
+                      .build();
     }
 }
