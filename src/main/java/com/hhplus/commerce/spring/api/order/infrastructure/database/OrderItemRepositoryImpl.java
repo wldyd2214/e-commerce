@@ -5,6 +5,7 @@ import com.hhplus.commerce.spring.api.order.model.type.OrderStatus;
 import com.hhplus.commerce.spring.api.order.repository.OrderItemRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import com.hhplus.commerce.spring.api.product.model.Product;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 import static com.hhplus.commerce.spring.api.order.model.QOrderItem.orderItem;
 import static com.hhplus.commerce.spring.api.order.model.QOrder.order;
 
+@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class OrderItemRepositoryImpl implements OrderItemRepository {
@@ -45,7 +47,6 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
 
         // TODO: 인덱스 추가
         /*
-
         // 쿼리에서 최근 3일간의 데이터를 필터링하는데 사용되어 조회 속도를 향상시키기 위해 인덱스 추가
         CREATE INDEX idx_order_date ON order_item(reg_date);
 
@@ -58,6 +59,8 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
 
         LocalDate threeDaysAgo = LocalDate.now().minusDays(3);
 
+        long startTime = System.currentTimeMillis();
+
         List<Tuple> tuples =
                 jpaQueryFactory
                         .select(orderItem.product, orderItem.orderProductCount.sum())
@@ -68,6 +71,9 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
                         .orderBy(orderItem.orderProductCount.sum().desc())
                         .limit(5)
                         .fetch();
+
+        long endTime = System.currentTimeMillis();
+        log.info("selectPopularOrderItems() - execute time: {}(ms)", endTime - startTime);
 
         return tuples.stream()
                      .map(t -> t.get(orderItem.product))
