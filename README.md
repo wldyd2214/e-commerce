@@ -60,4 +60,9 @@ e-커머스 서비스
 ---
 
 ## 동시성 문제
-- e-커머스 서비스에서 발생할 수 있는 동시성 문제를 생각해보고 해결한 내용을 기술블로그(https://jiyongpark-dev.tistory.com/113) 에 정리하였습니다.
+- [동시성 문제와 극복](https://jiyongpark-dev.tistory.com/113)
+
+---
+
+## Query 분석 및 캐싱 전략 설계
+- [적은 부하로 트래픽 처리하기](https://jiyongpark-dev.tistory.com/116)
