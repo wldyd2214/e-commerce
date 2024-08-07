@@ -2,8 +2,10 @@ package com.hhplus.commerce.spring.api.order.service;
 
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomConflictException;
+import com.hhplus.commerce.spring.api.order.infrastructure.client.DataPlatformClient;
 import com.hhplus.commerce.spring.api.order.model.Order;
 import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
+import com.hhplus.commerce.spring.api.order.service.request.OrderEvent;
 import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.model.OrderItem;
 import com.hhplus.commerce.spring.api.product.model.Product;
@@ -19,6 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,11 +33,11 @@ import static com.hhplus.commerce.spring.api.common.presentation.exception.code.
 @Service
 @Slf4j
 public class OrderService {
-    private final DataPlatformService dataPlatformService;
-
+    private final DataPlatformClient dataPlatformClient;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     // TODO: 결제와 재고차감과 데이터플랫폼으로 주문데이터 전송은 주문 생성의 하나의 로직이라고 볼 수 있다.
     @Transactional
@@ -69,10 +72,10 @@ public class OrderService {
             throw new CustomConflictException(USER_POINT_DEDUCTION_CONFLICT);
         }
 
-        boolean dataResult = dataPlatformService.sendOrderData(user.getId(), saveOrder.getId());
-        log.info("데이터 플랫폼 전송 결과 : {} ", dataResult);
-
         saveOrder.orderStatusPaymentCompleted();
+
+        eventPublisher.publishEvent(new OrderEvent(user.getId(), saveOrder.getId()));
+
         return saveOrder;
     }
 
