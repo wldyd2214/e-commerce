@@ -66,3 +66,108 @@ e-커머스 서비스
 
 ## Query 분석 및 캐싱 전략 설계
 - [적은 부하로 트래픽 처리하기](https://jiyongpark-dev.tistory.com/116)
+
+---
+
+## 서비스 확장을 위한 트랜잭션 관리와 마이크로서비스 설계 방법
+재미있는 사실 하나! 대규모 서비스에서는 작은 기능이 전체 시스템에 어떤 영향을 미칠 수 있는지 생각해본 적 있으신가요? 오늘은 그 중 하나로, 주문 생성 로직을 다루면서 서비스 규모 확장 시의 관심사 분리와 트랜잭션 처리 방법에 대해 이야기해볼까 합니다.
+
+### 주문 생성 로직 이해하기
+먼저, 기본적인 주문 생성 로직을 살펴볼게요. 가장 기본적인 예로, 사용자가 주문을 요청하면, 이를 서비스가 받아들여 처리한 뒤 데이터 플랫폼에 전송합니다. 다음은 그 예제 코드입니다:
+
+```java
+@Transactional
+public Order createOrder(CreateOrderRequest request) {
+    // 사용자 조회
+    User user = userRepository.findById(request.getUserId())
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+    // 재고 확인 및 차감
+    Product product = productRepository.findById(request.getProductId())
+            .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+    
+    if (product.getStock() < request.getQuantity()) {
+        throw new OutOfStockException("Insufficient stock");
+    }
+    product.decreaseStock(request.getQuantity());
+
+    // 주문 생성 및 저장
+    Order order = new Order(user, product, request.getQuantity());
+    orderRepository.save(order);
+    
+    return order;
+}
+```
+
+이 코드는 간단해 보일 수 있지만, 실질적으로 다양한 단계와 의존성이 얽혀 있습니다. 사용자를 확인하고, 재고를 차감하고, 주문을 생성한 뒤 데이터 플랫폼에 전송까지 하는 단일 책임 원칙(Single Responsibility Principle)을 위배하는 코드입니다.
+
+### 이벤트 기반 설계로 관심사 분리
+주문 생성 로직에 이벤트를 도입함으로써 관심사를 분리하고 더 관리하기 쉽게 만들 수 있습니다. 다음은 이벤트 개념을 활용한 코드 예제입니다:
+
+먼저, `OrderEvent` 클래스를 정의합니다. 이 클래스는 주문이 생성될 때 필요한 데이터를 담습니다.
+
+```java
+@Getter
+@AllArgsConstructor
+public class OrderEvent {
+
+    private Long userId;
+    private Long orderId;
+}
+```
+
+이제 주문 생성 로직에서 이벤트를 발행합니다:
+
+```java
+@Transactional
+public Order createOrder(CreateOrderRequest request) {
+    User user = userRepository.findById(request.getUserId())
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+    Product product = productRepository.findById(request.getProductId())
+            .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+    if (product.getStock() < request.getQuantity()) {
+        throw new OutOfStockException("Insufficient stock");
+    }
+    product.decreaseStock(request.getQuantity());
+
+    Order order = new Order(user, product, request.getQuantity());
+    orderRepository.save(order);
+
+    // 이벤트 발행
+    eventPublisher.publishEvent(new OrderEvent(user.getId(), order.getId()));
+
+    return order;
+}
+```
+
+이제 우리는 `OrderEventListener` 라는 이벤트 리스너를 통해 데이터 플랫폼 전송 로직을 분리할 수 있습니다:
+
+```java
+@RequiredArgsConstructor
+@Component
+@Slf4j
+public class OrderEventListener {
+
+    private final DataPlatformClient dataPlatformClient;
+
+    @Async
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void sendOrderData(OrderEvent orderEvent) {
+        boolean dataResult = dataPlatformClient.sendOrderData(orderEvent.getUserId(), orderEvent.getOrderId());
+        log.info("데이터 플랫폼 전송 결과 : {} ", dataResult);
+    }
+}
+```
+
+### 이해하고 넘어가기
+이제 주문 생성 로직이 이벤트 발행과 이벤트 처리로 나뉘어 보다 깔끔하게 정리되었습니다. 핵심은 비동기적으로 이벤트를 처리하며, 트랜잭션이 성공적으로 커밋된 이후에만 데이터 플랫폼에 전송되도록 설계된 것입니다. 이렇게 하면 주문 생성 로직에서 데이터 플랫폼 전송 로직을 분리할 수 있어 각 로직의 유연성과 독립성이 증가합니다.
+
+### 실서비스에서의 확장과 한계
+서비스가 확장되면서 각각의 로직을 독립적으로 관리하고 성능을 최적화하기 위해 마이크로서비스 아키텍처를 고려할 수 있습니다. 이때, 트랜잭션 관리에 한계가 생기는데요. 이는 분산 트랜잭션이나 Sage 패턴 등을 활용하여 해결할 수 있습니다.
+
+1. **분산 트랜잭션:** 두 개 이상의 데이터 소스나 서비스가 함께 사용하는 트랜잭션으로, 트랜잭션 관리자(Coordinator)가 전체 트랜잭션을 관리합니다.
+2. **Sage 패턴:** 긴 트랜잭션을 여러 개의 작은 트랜잭션으로 나누고, 각 단계를 로컬 트랜잭션으로 처리하며 실패 시 보상 작업을 수행해 일관성을 유지하는 패턴입니다.
+
+서비스가 확장될수록 이를 잘 고려하여 아키텍처를 설계하는 것이 중요합니다. 이러한 개념들을 도입하면 보다 안정적이고 유연한 시스템을 구현할 수 있습니다. 여러분도 코드에서 이렇게 작은 변화로 큰 효과를 볼 수 있다는 점, 정말 흥미롭지 않나요?
