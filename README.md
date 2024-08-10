@@ -86,9 +86,6 @@ public Order createOrder(CreateOrderRequest request) {
     Product product = productRepository.findById(request.getProductId())
             .orElseThrow(() -> new ProductNotFoundException("Product not found"));
     
-    if (product.getStock() < request.getQuantity()) {
-        throw new OutOfStockException("Insufficient stock");
-    }
     product.decreaseStock(request.getQuantity());
 
     // 주문 생성 및 저장
