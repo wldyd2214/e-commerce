@@ -37,8 +37,6 @@ class OrderServiceTest {
     ProductRepository productRepository;
     @Mock
     OrderRepository orderRepository;
-    @Mock
-    DataPlatformService dataPlatformService;
     @InjectMocks
     OrderService orderService;
 
@@ -161,7 +159,7 @@ class OrderServiceTest {
         Order order = Order.create(user);
         order.setId(1L);
         given(orderRepository.save(any())).willReturn(order);
-        given(dataPlatformService.sendOrderData(any(), any())).willReturn(true);
+//        given(dataPlatformService.sendOrderData(any(), any())).willReturn(true);
 
         Order resultOrder = orderService.createOrder(request);
         assertThat(resultOrder).isNotNull();
