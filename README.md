@@ -197,3 +197,35 @@ public class OrderEventListener {
 ### 결론
 서비스가 확장될수록 이를 잘 고려하여 아키텍처를 설계하는 것이 중요하고, 이러한 개념들을 도입하면 보다 안정적이고 유연한 시스템을 구현할 수 있다는걸 알게 되었고, 코드에서 이렇게 작은 변화로 큰 효과를 볼 수 있다는 점에서 정말 흥미로운 것 같다.
 
+---
+
+## 카프카 연동
+
+### 1. docker 를 이용해 kafka 를 설치 및 실행하고 애플리케이션과 연결
+카프카 docker-compose.yaml 작성 및 컨테이너 기동
+```yml
+version: '3.8'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka:2.12-2.5.0
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+```
+docker compose -f ./docker-compose.yml up -d //도커 컴포즈 up 명령어 수행
+```
+![kafka_containers.png](readme_images/kafka_containers.png)
+
+어플리케이션 카프카 연동 확인
+![kafka_print.png](readme_images/kafka_print.png)

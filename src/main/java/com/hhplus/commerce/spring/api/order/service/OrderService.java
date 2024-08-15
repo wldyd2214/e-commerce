@@ -1,9 +1,18 @@
 package com.hhplus.commerce.spring.api.order.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.api.common.presentation.exception.CustomConflictException;
+import com.hhplus.commerce.spring.api.order.event.request.OrderEventRequest;
 import com.hhplus.commerce.spring.api.order.infrastructure.client.DataPlatformClient;
+import com.hhplus.commerce.spring.api.order.infrastructure.database.OrderOutboxJpaRepository;
 import com.hhplus.commerce.spring.api.order.model.Order;
+import com.hhplus.commerce.spring.api.order.model.OrderOutbox;
+import com.hhplus.commerce.spring.api.order.model.type.AggregateType;
+import com.hhplus.commerce.spring.api.order.model.type.EventStatus;
+import com.hhplus.commerce.spring.api.order.model.type.EventType;
+import com.hhplus.commerce.spring.api.order.repository.OrderOutboxRepository;
 import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.api.order.service.request.OrderEvent;
 import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
@@ -33,10 +42,10 @@ import static com.hhplus.commerce.spring.api.common.presentation.exception.code.
 @Service
 @Slf4j
 public class OrderService {
-    private final DataPlatformClient dataPlatformClient;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final OrderOutboxRepository orderOutboxRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     // TODO: 결제와 재고차감과 데이터플랫폼으로 주문데이터 전송은 주문 생성의 하나의 로직이라고 볼 수 있다.
@@ -74,9 +83,30 @@ public class OrderService {
 
         saveOrder.orderStatusPaymentCompleted();
 
-        eventPublisher.publishEvent(new OrderEvent(user.getId(), saveOrder.getId()));
+        OrderEvent orderEvent = new OrderEvent(user.getId(), saveOrder.getId());
+
+        /**
+        * outbox pattern 적용
+        */
+        OrderOutbox outbox = saveOutbox(saveOrder.getId(), orderEvent);
+        eventPublisher.publishEvent(new OrderEventRequest(orderEvent, outbox.getId()));
 
         return saveOrder;
+    }
+
+    private OrderOutbox saveOutbox(Long orderId, OrderEvent orderEvent) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        OrderOutbox orderOutbox = null;
+
+        try {
+            String json = objectMapper.writeValueAsString(orderEvent);
+            orderOutbox = orderOutboxRepository.save(new OrderOutbox(orderId, AggregateType.ORDER, EventType.ORDER_CREATE, json, EventStatus.INIT));
+        } catch (JsonProcessingException ex) {
+            log.error("saveOutbox() - JsonProcessingException : {}", ex.getMessage());
+        }
+
+        return orderOutbox;
     }
 
     private int productTotalPrice(List<Long> productKeys, Map<Long, Product> productMap) {

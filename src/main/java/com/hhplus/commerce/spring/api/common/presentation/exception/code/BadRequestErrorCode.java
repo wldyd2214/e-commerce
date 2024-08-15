@@ -13,7 +13,8 @@ public enum BadRequestErrorCode {
     CART_ITEM_BAD_REQUEST(HttpStatus.BAD_REQUEST, "40000201", "미존재 장바구니 정보"),
     PRODUCT_BAD_REQUEST(HttpStatus.BAD_REQUEST, "40000300", "미존재 상품 정보"),
     PRODUCT_STOCK_BAD_REQUEST(HttpStatus.BAD_REQUEST, "40000301", "상품 재고 부족"),
-    USER_POINT_BAD_REQUEST(HttpStatus.BAD_REQUEST, "40000400", "사용자 포인트 부족");
+    USER_POINT_BAD_REQUEST(HttpStatus.BAD_REQUEST, "40000400", "사용자 포인트 부족"),
+    ORDER_OUTBOX_BAD_REQUEST(HttpStatus.BAD_REQUEST, "40000500", "아웃박스 정보 미존재");
 
     private HttpStatus httpStatus;
     private String code;
