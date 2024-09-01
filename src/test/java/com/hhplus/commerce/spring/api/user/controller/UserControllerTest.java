@@ -7,11 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhplus.commerce.spring.api.user.controller.UserController;
-import com.hhplus.commerce.spring.api.user.controller.request.BalanceChargeRequest;
-import com.hhplus.commerce.spring.api.user.controller.response.BalanceChargeResponse;
-import com.hhplus.commerce.spring.api.user.service.UserService;
-import com.hhplus.commerce.spring.api.user.model.User;
+import com.hhplus.commerce.spring.old.api.user.controller.UserController;
+import com.hhplus.commerce.spring.old.api.user.controller.request.BalanceChargeRequest;
+import com.hhplus.commerce.spring.old.api.user.controller.response.BalanceChargeResponse;
+import com.hhplus.commerce.spring.old.api.user.service.UserService;
+import com.hhplus.commerce.spring.old.api.user.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

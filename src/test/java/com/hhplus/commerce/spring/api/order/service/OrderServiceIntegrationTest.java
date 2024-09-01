@@ -1,14 +1,15 @@
 package com.hhplus.commerce.spring.api.order.service;
 
-import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
-import com.hhplus.commerce.spring.api.order.infrastructure.database.OrderJpaRepository;
-import com.hhplus.commerce.spring.api.order.model.Order;
-import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
-import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
-import com.hhplus.commerce.spring.api.product.infrastructure.database.ProductJpaRepository;
-import com.hhplus.commerce.spring.api.product.model.Product;
-import com.hhplus.commerce.spring.api.user.infrastructure.database.UserJpaRepository;
-import com.hhplus.commerce.spring.api.user.model.User;
+import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.old.api.order.infrastructure.database.OrderJpaRepository;
+import com.hhplus.commerce.spring.domain.order.model.Order;
+import com.hhplus.commerce.spring.domain.order.service.OrderService;
+import com.hhplus.commerce.spring.old.api.order.service.request.CreateOrderServiceRequest;
+import com.hhplus.commerce.spring.old.api.order.service.request.OrderServiceRequest;
+import com.hhplus.commerce.spring.old.api.product.infrastructure.database.ProductJpaRepository;
+import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.old.api.user.infrastructure.database.UserJpaRepository;
+import com.hhplus.commerce.spring.old.api.user.model.User;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
@@ -22,8 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.*;
-import static com.hhplus.commerce.spring.api.order.model.type.OrderStatus.COMPLETED;
+import static com.hhplus.commerce.spring.domain.order.model.type.OrderStatus.COMPLETED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

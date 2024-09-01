@@ -8,14 +8,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.BDDMockito.given;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhplus.commerce.spring.api.order.controller.dto.OrderPaymentDTO;
-import com.hhplus.commerce.spring.api.order.controller.request.CreateOrderRequest;
-import com.hhplus.commerce.spring.api.order.model.Order;
-import com.hhplus.commerce.spring.api.order.model.type.OrderStatus;
-import com.hhplus.commerce.spring.api.order.service.OrderService;
+import com.hhplus.commerce.spring.presentation.order.controller.OrderController;
+import com.hhplus.commerce.spring.presentation.order.dto.OrderPaymentDTO;
+import com.hhplus.commerce.spring.presentation.order.dto.request.OrderRequestDTO;
+import com.hhplus.commerce.spring.domain.order.model.Order;
+import com.hhplus.commerce.spring.domain.order.model.type.OrderStatus;
+import com.hhplus.commerce.spring.domain.order.service.OrderService;
 import java.util.List;
 
-import com.hhplus.commerce.spring.api.user.model.User;
+import com.hhplus.commerce.spring.old.api.user.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +47,10 @@ class OrderControllerTest {
         long productId = 1;
         OrderPaymentDTO orderPayment1 = createOrderPaymentDTO(orderCount, productId);
 
-        CreateOrderRequest request = CreateOrderRequest.builder()
-                                                       .userId(userId)
-                                                       .orderItems(List.of(orderPayment1))
-                                                       .build();
+        OrderRequestDTO request = OrderRequestDTO.builder()
+                                                 .userId(userId)
+                                                 .orderItems(List.of(orderPayment1))
+                                                 .build();
 
         // when // then
         mockMvc.perform(
@@ -75,10 +76,10 @@ class OrderControllerTest {
         long productId = -1;
         OrderPaymentDTO orderPayment1 = createOrderPaymentDTO(orderCount, productId);
 
-        CreateOrderRequest request = CreateOrderRequest.builder()
-                                                       .userId(userId)
-                                                       .orderItems(List.of(orderPayment1))
-                                                       .build();
+        OrderRequestDTO request = OrderRequestDTO.builder()
+                                                 .userId(userId)
+                                                 .orderItems(List.of(orderPayment1))
+                                                 .build();
 
         mockMvc.perform(
                        post("/orders")
@@ -103,10 +104,10 @@ class OrderControllerTest {
         long productId = 1;
         OrderPaymentDTO orderPayment1 = createOrderPaymentDTO(orderCount, productId);
 
-        CreateOrderRequest request = CreateOrderRequest.builder()
-                                                       .userId(userId)
-                                                       .orderItems(List.of(orderPayment1))
-                                                       .build();
+        OrderRequestDTO request = OrderRequestDTO.builder()
+                                                 .userId(userId)
+                                                 .orderItems(List.of(orderPayment1))
+                                                 .build();
 
         mockMvc.perform(
                        post("/orders")
@@ -133,10 +134,10 @@ class OrderControllerTest {
         OrderPaymentDTO orderPayment1 = createOrderPaymentDTO(1, 1);
         OrderPaymentDTO orderPayment2 = createOrderPaymentDTO(1, 2);
 
-        CreateOrderRequest request = CreateOrderRequest.builder()
-                                                       .userId(userId)
-                                                       .orderItems(List.of(orderPayment1, orderPayment2))
-                                                       .build();
+        OrderRequestDTO request = OrderRequestDTO.builder()
+                                                 .userId(userId)
+                                                 .orderItems(List.of(orderPayment1, orderPayment2))
+                                                 .build();
 
         given(orderService.createOrder(any())).willReturn(createOrderEntity(orderId, userId));
 

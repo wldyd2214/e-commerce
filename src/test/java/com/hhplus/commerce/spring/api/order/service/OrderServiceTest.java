@@ -1,24 +1,20 @@
 package com.hhplus.commerce.spring.api.order.service;
 
-import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadGateWayErrorCode.PAYMENT_BAD_GATEWAY;
-import static com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
-import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadGateWayException;
-import com.hhplus.commerce.spring.api.common.presentation.exception.CustomBadRequestException;
-import com.hhplus.commerce.spring.api.common.presentation.exception.CustomConflictException;
-import com.hhplus.commerce.spring.api.common.presentation.exception.code.BadRequestErrorCode;
-import com.hhplus.commerce.spring.api.order.model.Order;
-import com.hhplus.commerce.spring.api.order.service.request.CreateOrderServiceRequest;
-import com.hhplus.commerce.spring.api.order.service.request.OrderServiceRequest;
-import com.hhplus.commerce.spring.api.product.model.Product;
-import com.hhplus.commerce.spring.api.user.model.User;
-import com.hhplus.commerce.spring.api.order.repository.OrderRepository;
-import com.hhplus.commerce.spring.api.product.repository.ProductRepository;
-import com.hhplus.commerce.spring.api.user.repository.UserRepository;
+import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.domain.order.model.Order;
+import com.hhplus.commerce.spring.domain.order.service.OrderService;
+import com.hhplus.commerce.spring.old.api.order.service.request.CreateOrderServiceRequest;
+import com.hhplus.commerce.spring.old.api.order.service.request.OrderServiceRequest;
+import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.old.api.order.repository.OrderRepository;
+import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
+import com.hhplus.commerce.spring.old.api.user.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
