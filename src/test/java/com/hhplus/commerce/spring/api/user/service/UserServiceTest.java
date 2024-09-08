@@ -11,7 +11,7 @@ import com.hhplus.commerce.spring.presentation.common.exception.CustomBadGateWay
 import com.hhplus.commerce.spring.domain.order.service.PaymentService;
 import com.hhplus.commerce.spring.old.api.user.model.User;
 import com.hhplus.commerce.spring.old.api.user.repository.UserRepository;
-import com.hhplus.commerce.spring.old.api.user.service.UserService;
+import com.hhplus.commerce.spring.domain.user.service.UserService;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

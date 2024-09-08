@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.api.order.service;
 
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
-import com.hhplus.commerce.spring.old.api.order.infrastructure.database.OrderJpaRepository;
+import com.hhplus.commerce.spring.infrastructure.order.OrderJpaRepository;
 import com.hhplus.commerce.spring.domain.order.model.Order;
 import com.hhplus.commerce.spring.domain.order.service.OrderService;
 import com.hhplus.commerce.spring.old.api.order.service.request.CreateOrderServiceRequest;

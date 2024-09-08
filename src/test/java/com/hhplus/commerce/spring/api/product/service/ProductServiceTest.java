@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.hhplus.commerce.spring.old.api.product.service.ProductService;
 import com.hhplus.commerce.spring.old.api.product.model.Product;
-import com.hhplus.commerce.spring.old.api.order.repository.OrderItemRepository;
+import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;

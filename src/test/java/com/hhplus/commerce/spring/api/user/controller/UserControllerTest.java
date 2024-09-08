@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.old.api.user.controller.UserController;
 import com.hhplus.commerce.spring.old.api.user.controller.request.BalanceChargeRequest;
 import com.hhplus.commerce.spring.old.api.user.controller.response.BalanceChargeResponse;
-import com.hhplus.commerce.spring.old.api.user.service.UserService;
+import com.hhplus.commerce.spring.domain.user.service.UserService;
 import com.hhplus.commerce.spring.old.api.user.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

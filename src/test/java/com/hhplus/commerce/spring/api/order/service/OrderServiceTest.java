@@ -12,7 +12,7 @@ import com.hhplus.commerce.spring.old.api.order.service.request.CreateOrderServi
 import com.hhplus.commerce.spring.old.api.order.service.request.OrderServiceRequest;
 import com.hhplus.commerce.spring.old.api.product.model.Product;
 import com.hhplus.commerce.spring.old.api.user.model.User;
-import com.hhplus.commerce.spring.old.api.order.repository.OrderRepository;
+import com.hhplus.commerce.spring.domain.order.repository.OrderRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.old.api.user.repository.UserRepository;
 import java.util.List;
