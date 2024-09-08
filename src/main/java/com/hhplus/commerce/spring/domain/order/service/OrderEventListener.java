@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.domain.order.service;
 
-import com.hhplus.commerce.spring.old.api.order.infrastructure.client.DataPlatformClient;
+import com.hhplus.commerce.spring.infrastructure.order.client.DataPlatformClient;
 import com.hhplus.commerce.spring.old.api.order.service.request.OrderEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

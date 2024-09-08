@@ -1,11 +1,11 @@
-package com.hhplus.commerce.spring.old.api.order.infrastructure.database;
+package com.hhplus.commerce.spring.infrastructure.order;
 
 import static com.hhplus.commerce.spring.domain.order.model.QOrder.order;
 import static com.hhplus.commerce.spring.domain.order.model.QOrderItem.orderItem;
 
 import com.hhplus.commerce.spring.domain.order.model.OrderItem;
 import com.hhplus.commerce.spring.domain.order.model.type.OrderStatus;
-import com.hhplus.commerce.spring.old.api.order.repository.OrderItemRepository;
+import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.old.api.product.model.Product;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

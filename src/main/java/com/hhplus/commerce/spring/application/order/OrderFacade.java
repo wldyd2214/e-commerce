@@ -14,8 +14,6 @@ public class OrderFacade {
     private final OrderService orderService;
 
     public OrderFacadeResponse order(OrderFacadeRequest request) {
-        return OrderFacadeResponseMapper.toOrder(
-            orderService.order(OrderFacadeRequestMapper.toOrder(request))
-        );
+        return OrderFacadeResponseMapper.toOrder(orderService.order(OrderFacadeRequestMapper.toOrder(request)));
     }
 }

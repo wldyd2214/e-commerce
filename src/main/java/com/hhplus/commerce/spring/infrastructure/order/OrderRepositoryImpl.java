@@ -1,7 +1,7 @@
-package com.hhplus.commerce.spring.old.api.order.infrastructure.database;
+package com.hhplus.commerce.spring.infrastructure.order;
 
 import com.hhplus.commerce.spring.domain.order.model.Order;
-import com.hhplus.commerce.spring.old.api.order.repository.OrderRepository;
+import com.hhplus.commerce.spring.domain.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

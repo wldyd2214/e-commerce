@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.old.api.order.repository;
+package com.hhplus.commerce.spring.domain.order.repository;
 
 import com.hhplus.commerce.spring.domain.order.model.OrderItem;
 import com.hhplus.commerce.spring.old.api.product.model.Product;

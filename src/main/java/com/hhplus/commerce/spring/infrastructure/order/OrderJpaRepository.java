@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.old.api.order.infrastructure.database;
+package com.hhplus.commerce.spring.infrastructure.order;
 
 import com.hhplus.commerce.spring.domain.order.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;

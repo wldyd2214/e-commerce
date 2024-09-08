@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.old.api.order.infrastructure.client;
+package com.hhplus.commerce.spring.infrastructure.order.client;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

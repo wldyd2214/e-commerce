@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.old.api.user.service;
+package com.hhplus.commerce.spring.domain.user.service;
 
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomConflictException;
@@ -19,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class UserService {
-
     private final PaymentService paymentService;
-
     private final UserRepository userRepository;
 
     @Transactional
