@@ -7,11 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhplus.commerce.spring.old.api.user.controller.UserController;
 import com.hhplus.commerce.spring.old.api.user.controller.request.BalanceChargeRequest;
 import com.hhplus.commerce.spring.old.api.user.controller.response.BalanceChargeResponse;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
 import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.presentation.user.controller.UserController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,8 +100,8 @@ class UserControllerTest {
     private User createUser(Long userId, String userName, int userPoint) {
         return User.builder()
                    .id(userId)
-                   .userName(userName)
-                   .userPoint(userPoint)
+//                   .userName(userName)
+//                   .userPoint(userPoint)
                    .build();
     }
 }

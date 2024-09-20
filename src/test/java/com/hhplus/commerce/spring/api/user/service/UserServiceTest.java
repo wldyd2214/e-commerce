@@ -10,7 +10,7 @@ import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequest
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadGateWayException;
 import com.hhplus.commerce.spring.domain.order.service.PaymentService;
 import com.hhplus.commerce.spring.old.api.user.model.User;
-import com.hhplus.commerce.spring.old.api.user.repository.UserRepository;
+import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -105,8 +105,8 @@ class UserServiceTest {
     private User createUser(Long userId, String userName, int userPoint) {
         return User.builder()
                    .id(userId)
-                   .userName(userName)
-                   .userPoint(userPoint)
+//                   .userName(userName)
+//                   .userPoint(userPoint)
                    .build();
     }
 }
