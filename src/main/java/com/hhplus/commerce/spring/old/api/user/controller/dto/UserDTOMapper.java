@@ -15,7 +15,7 @@ public class UserDTOMapper {
     public static BalanceChargeResponse toBalanceChargeResponse(User user) {
         return BalanceChargeResponse.builder()
                                     .userId(user.getId())
-                                    .userPoint(user.getUserPoint())
+                                    .userPoint(user.getPoint())
                                     .build();
     }
 }

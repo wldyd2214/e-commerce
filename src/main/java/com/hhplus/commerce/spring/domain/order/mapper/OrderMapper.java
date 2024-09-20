@@ -10,12 +10,12 @@ public class OrderMapper {
 
     public static OrderInfo toOrderInfo(Order order) {
         return OrderInfo.builder()
-                        .id(order.getId())
-                        .userId(order.getUser().getId())
-                        .orders(order.getOrderItem()
-                                     .stream()
-                                     .map(item -> toOrderItemInfo(item))
-                                     .collect(Collectors.toList()))
+//                        .id(order.getId())
+//                        .userId(order.getUser().getId())
+//                        .orders(order.getOrderItem()
+//                                     .stream()
+//                                     .map(item -> toOrderItemInfo(item))
+//                                     .collect(Collectors.toList()))
                         .build();
     }
 
@@ -23,9 +23,9 @@ public class OrderMapper {
         return OrderInfo.OrderItemInfo
             .builder()
             .id(orderItem.getId())
-            .productName(orderItem.getOrderProductName())
-            .productPrice(orderItem.getOrderProductPrice())
-            .orderCount(orderItem.getOrderProductCount())
+//            .productName(orderItem.getOrderProductName())
+//            .productPrice(orderItem.getOrderProductPrice())
+//            .orderCount(orderItem.getOrderProductCount())
             .build();
     }
 }

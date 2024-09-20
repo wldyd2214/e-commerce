@@ -27,9 +27,9 @@ public class OrderController {
     @PostMapping(value = "")
     public ApiResponse<OrderResponseDTO> createOrder(@RequestBody @Valid OrderRequestDTO request) {
         return ApiResponse.ok(
-            OrderResponseMapper.toOrder(
-                orderFacade.order(OrderRequestMapper.toOrder(request))
-            )
+                OrderResponseMapper.toOrder(
+                        orderFacade.order(OrderRequestMapper.toOrder(request))
+                )
         );
     }
 }

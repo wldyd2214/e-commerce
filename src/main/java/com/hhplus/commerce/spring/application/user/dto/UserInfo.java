@@ -1,12 +1,12 @@
-package com.hhplus.commerce.spring.old.api.user.model;
+package com.hhplus.commerce.spring.application.user.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class User {
+public class UserInfo {
     private Long id;
     private String name;
-    private Integer point;
+    private int point;
 }

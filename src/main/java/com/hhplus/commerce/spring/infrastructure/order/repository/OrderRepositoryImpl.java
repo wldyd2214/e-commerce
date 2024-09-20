@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.infrastructure.order;
+package com.hhplus.commerce.spring.infrastructure.order.repository;
 
 import com.hhplus.commerce.spring.domain.order.model.Order;
 import com.hhplus.commerce.spring.domain.order.repository.OrderRepository;
@@ -13,6 +13,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order save(Order order) {
-        return orderJpaRepository.save(order);
+//        return orderJpaRepository.save(order);
+        return null;
     }
 }
