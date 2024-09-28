@@ -3,9 +3,11 @@ package com.hhplus.commerce.spring.old.api.user.controller.dto;
 import com.hhplus.commerce.spring.old.api.user.controller.response.BalanceChargeResponse;
 import com.hhplus.commerce.spring.old.api.user.model.User;
 
+import java.math.BigDecimal;
+
 public class UserDTOMapper {
 
-    public static BalanceChargeResponse createDummyBalanceChargeResponse(Long userId, int chargePoint) {
+    public static BalanceChargeResponse createDummyBalanceChargeResponse(Long userId, BigDecimal chargePoint) {
         return BalanceChargeResponse.builder()
                                     .userId(userId)
                                     .userPoint(chargePoint)

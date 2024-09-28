@@ -6,6 +6,8 @@ import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestE
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AttributeOverrides({
@@ -29,24 +31,31 @@ public class UserEntity extends BaseEntity {
     private String name;
 
     @Column(name = "user_balance_amount", nullable = false)
-    private Integer point;
+    private BigDecimal point;
 
     @Version
     private Long version;
 
-    public UserEntity(String name, Integer point) {
+    public UserEntity(String name, BigDecimal point) {
         this.name = name;
         this.point = point;
     }
 
-    public Integer chargePoint(int point) {
-        return this.point += point;
+    public BigDecimal chargePoint(BigDecimal point) {
+
+        if (point.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("충전 액수는 0보다 커야 합니다.");
+        }
+
+        return this.point.add(point);
     }
 
-    public void deductPoint(int point) {
-        if (this.point < point) {
+    public BigDecimal deductPoint(BigDecimal point) {
+
+        if (this.point.compareTo(point) < 0) {
             throw new CustomBadRequestException(BadRequestErrorCode.USER_POINT_BAD_REQUEST);
         }
-        this.point = this.point - point;
+
+        return this.point.subtract(point);
     }
 }

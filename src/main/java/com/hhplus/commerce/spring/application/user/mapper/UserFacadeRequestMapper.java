@@ -1,6 +1,7 @@
 package com.hhplus.commerce.spring.application.user.mapper;
 
 import com.hhplus.commerce.spring.application.user.dto.request.UserPointChargeRequest;
+import com.hhplus.commerce.spring.domain.payment.dto.PaymentCommand;
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 
 public class UserFacadeRequestMapper {
@@ -9,6 +10,13 @@ public class UserFacadeRequestMapper {
         return UserCommand.PointCharge.builder()
                                       .userId(request.getUserId())
                                       .chargePoint(request.getPoint())
+                                      .build();
+    }
+
+    public static PaymentCommand.Payment toPayment(UserPointChargeRequest request) {
+        return PaymentCommand.Payment.builder()
+                                      .userId(request.getUserId())
+                                      .amount(request.getPoint())
                                       .build();
     }
 }

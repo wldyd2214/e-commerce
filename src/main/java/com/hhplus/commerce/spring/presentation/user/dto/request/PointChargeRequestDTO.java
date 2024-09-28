@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,5 +17,5 @@ public class PointChargeRequestDTO {
 
     @Schema(description = "충전 액수", example = "10000")
     @Positive(message = "충전 액수는 0보다 커야 합니다.")
-    private int chargePoint;
+    private BigDecimal chargePoint;
 }

@@ -7,7 +7,5 @@ public interface UserService {
 
     User findUserById(Long userId);
 
-    User userBalanceCharge(Long userId, int chargePoint);
-
     User chargeUserPoints(UserCommand.PointCharge toPointCharge);
 }

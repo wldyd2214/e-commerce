@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @Getter
 @Builder
 public class UserPointChargeRequest {
 
     private Long userId;
-    private Integer point;
+    private BigDecimal point;
 }
