@@ -42,7 +42,7 @@ class UserControllerTest {
 
         User user = createUser(userId, "박지용", chargePoint);
 
-        given(userService.userBalanceCharge(userId, chargePoint)).willReturn(user);
+//        given(userService.userBalanceCharge(userId, chargePoint)).willReturn(user);
 
         BalanceChargeRequest request = BalanceChargeRequest.builder()
                                                            .chargePoint(chargePoint)
@@ -93,7 +93,7 @@ class UserControllerTest {
     private BalanceChargeResponse createBalanceChargeResponse(Long userId, int userPoint) {
         return BalanceChargeResponse.builder()
                                     .userId(userId)
-                                    .userPoint(userPoint)
+//                                    .userPoint(userPoint)
                                     .build();
     }
 

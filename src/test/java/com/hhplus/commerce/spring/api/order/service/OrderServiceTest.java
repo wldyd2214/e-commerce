@@ -80,7 +80,7 @@ class OrderServiceTest {
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
         CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
 
-        given(userRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(user));
+//        given(userRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(user));
 
         given(productRepository.findAllByIdIn(any())).willReturn(List.of(product));
 
@@ -118,7 +118,7 @@ class OrderServiceTest {
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
         CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
 
-        given(userRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(user));
+//        given(userRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(user));
 
         given(productRepository.findByIdWithPessimisticLock(any())).willReturn(Optional.ofNullable(product));
 
@@ -150,7 +150,7 @@ class OrderServiceTest {
         OrderServiceRequest orderServiceRequest = createOrderServiceRequest(productId, orderCount);
         CreateOrderServiceRequest request = createOrderPaymentServiceRequest(userId, orderServiceRequest);
 
-        given(userRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(user));
+//        given(userRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(user));
         given(productRepository.findByIdWithPessimisticLock(anyLong())).willReturn(Optional.ofNullable(product));
         given(productRepository.findAllByIdIn(anyList())).willReturn(List.of(product));
 
