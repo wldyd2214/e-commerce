@@ -78,7 +78,7 @@ class UserFacadeImplUnitTest {
             System.out.println("에러 발생!");
         }
 
-        assertEquals();
+//        assertEquals();
     }
 
     private UserPointChargeRequest createUserPointChargeRequest(Long userId, BigDecimal point) {
