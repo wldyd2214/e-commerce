@@ -41,13 +41,21 @@ public class UserEntity extends BaseEntity {
         this.point = point;
     }
 
+    public UserEntity(Long id, String name, BigDecimal point) {
+        this.id = id;
+        this.name = name;
+        this.point = point;
+    }
+
     public BigDecimal chargePoint(BigDecimal point) {
 
         if (point.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("충전 액수는 0보다 커야 합니다.");
         }
 
-        return this.point.add(point);
+        this.point = this.point.add(point);
+
+        return this.point;
     }
 
     public BigDecimal deductPoint(BigDecimal point) {
