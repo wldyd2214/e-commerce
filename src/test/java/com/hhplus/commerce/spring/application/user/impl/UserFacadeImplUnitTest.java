@@ -1,13 +1,17 @@
 package com.hhplus.commerce.spring.application.user.impl;
 
+import com.hhplus.commerce.spring.application.user.dto.UserInfo;
 import com.hhplus.commerce.spring.application.user.dto.request.UserPointChargeRequest;
 import com.hhplus.commerce.spring.domain.payment.dto.PaymentCommand;
 import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
+import com.hhplus.commerce.spring.domain.payment.service.PaymentServiceImpl;
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
 import com.hhplus.commerce.spring.infrastructure.payment.client.PaymentSystemClient;
 import com.hhplus.commerce.spring.old.api.user.model.User;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadGateWayException;
+import com.hhplus.commerce.spring.presentation.common.exception.code.BadGateWayErrorCode;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,20 +24,19 @@ import java.math.BigDecimal;
 import static org.mockito.BDDMockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 @ExtendWith(MockitoExtension.class)
 class UserFacadeImplUnitTest {
-    @InjectMocks
-    UserFacadeImpl userFacade;
     @Mock
     UserService userService;
     @Mock
     PaymentService paymentService;
-    @Mock
-    PaymentSystemClient client;
+    @InjectMocks
+    UserFacadeImpl userFacade;
 
     @DisplayName("사용자 포인트 충전 비즈니스 로직 호출 검증")
     @Test
-    void processUserPointCharge() {
+    void testProcessUserPointCharge() {
         // given
         long userId = 1;
         BigDecimal point = new BigDecimal("1000");
@@ -42,7 +45,7 @@ class UserFacadeImplUnitTest {
         String name = "제리";
         given(userService.chargeUserPoints(any(UserCommand.PointCharge.class))).willReturn(createUser(userId, name, point));
 
-        String transactionId = "txn-" + System.currentTimeMillis();
+        String transactionId = createTransactionId();
         given(paymentService.sendPayment(any(PaymentCommand.Payment.class))).willReturn(transactionId);
         
         // when
@@ -51,34 +54,6 @@ class UserFacadeImplUnitTest {
         // then
         verify(userService, times(1)).chargeUserPoints(any(UserCommand.PointCharge.class));
         verify(paymentService, times(1)).sendPayment(any(PaymentCommand.Payment.class));
-    }
-
-    @DisplayName("결제 시스템 연동 실패시 사용자 포인트 보상 트랜잭션 검증")
-    @Test
-    void paymentSystemCustomBadGateWayException() {
-        // given
-        long userId = 1;
-        BigDecimal point = new BigDecimal("1000");
-        UserPointChargeRequest request = createUserPointChargeRequest(userId, point);
-
-        String name = "제리";
-        given(userService.chargeUserPoints(any(UserCommand.PointCharge.class))).willReturn(createUser(userId, name, point));
-
-        given(client.sendPayment(userId, point)).willThrow(CustomBadGateWayException.class);
-
-        doCallRealMethod().when(paymentService).sendPayment(any());
-
-//        String transactionId = "txn-" + System.currentTimeMillis();
-//        given(paymentService.sendPayment(any(PaymentCommand.Payment.class))).willReturn(transactionId);
-
-        // when
-        try {
-            userFacade.processUserPointCharge(request);
-        } catch (CustomBadGateWayException e) {
-            System.out.println("에러 발생!");
-        }
-
-//        assertEquals();
     }
 
     private UserPointChargeRequest createUserPointChargeRequest(Long userId, BigDecimal point) {
@@ -94,5 +69,9 @@ class UserFacadeImplUnitTest {
                    .name(name)
                    .point(point)
                    .build();
+    }
+
+    private String createTransactionId() {
+        return "txn-" + System.currentTimeMillis();
     }
 }

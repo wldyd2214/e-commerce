@@ -36,7 +36,7 @@ class UserFacadeImplIntegrationTest {
 
     @DisplayName("사용자 포인트 충전 비즈니스 로직 호출 검증")
     @Test
-    void processUserPointCharge() {
+    void testProcessUserPointCharge() {
         // given
         long userId = 1;
         BigDecimal point = new BigDecimal("1000");
@@ -45,7 +45,7 @@ class UserFacadeImplIntegrationTest {
         String name = "제리";
         given(userService.chargeUserPoints(any(UserCommand.PointCharge.class))).willReturn(createUser(userId, name, point));
 
-        String transactionId = "txn-" + System.currentTimeMillis();
+        String transactionId = createTransactionId();
         given(paymentService.sendPayment(any(PaymentCommand.Payment.class))).willReturn(transactionId);
 
         // when
@@ -62,5 +62,9 @@ class UserFacadeImplIntegrationTest {
                    .name(name)
                    .point(point)
                    .build();
+    }
+
+    private String createTransactionId() {
+        return "txn-" + System.currentTimeMillis();
     }
 }
