@@ -1,6 +1,5 @@
 package com.hhplus.commerce.spring.domain.user.service.impl;
 
-import com.hhplus.commerce.spring.domain.payment.service.PaymentServiceImpl;
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.mapper.UserMapper;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    private final PaymentServiceImpl paymentService;
     private final UserRepository userRepository;
 
     private UserEntity findUserEntityById(Long userId) {
