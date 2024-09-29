@@ -1,16 +1,11 @@
 package com.hhplus.commerce.spring.application.user.impl;
 
-import com.hhplus.commerce.spring.application.user.dto.UserInfo;
 import com.hhplus.commerce.spring.application.user.dto.request.UserPointChargeRequest;
 import com.hhplus.commerce.spring.domain.payment.dto.PaymentCommand;
 import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
-import com.hhplus.commerce.spring.domain.payment.service.PaymentServiceImpl;
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
-import com.hhplus.commerce.spring.infrastructure.payment.client.PaymentSystemClient;
 import com.hhplus.commerce.spring.old.api.user.model.User;
-import com.hhplus.commerce.spring.presentation.common.exception.CustomBadGateWayException;
-import com.hhplus.commerce.spring.presentation.common.exception.code.BadGateWayErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 
 import static org.mockito.BDDMockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
