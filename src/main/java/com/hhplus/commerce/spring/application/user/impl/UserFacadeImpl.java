@@ -22,8 +22,10 @@ public class UserFacadeImpl implements UserFacade {
     @Transactional
     public UserInfo processUserPointCharge(UserPointChargeRequest request) {
 
+        // 1. 사용자 포인트 충전
         User user = userService.chargeUserPoints(UserFacadeRequestMapper.toPointCharge(request));
 
+        // 2. 결제 시스템 호출
         paymentService.sendPayment(UserFacadeRequestMapper.toPayment(request));
 
         return UserFacadeResponseMapper.toUserInfo(user);
