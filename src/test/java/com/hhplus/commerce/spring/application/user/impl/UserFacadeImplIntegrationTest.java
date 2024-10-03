@@ -52,8 +52,9 @@ class UserFacadeImplIntegrationTest {
         userFacade.processUserPointCharge(request);
 
         // then
-        verify(userService, times(1)).chargeUserPoints(any(UserCommand.PointCharge.class));
+        verify(userService, times(1)).findUserById(any(Long.class));
         verify(paymentService, times(1)).sendPayment(any(PaymentCommand.Payment.class));
+        verify(userService, times(1)).chargeUserPoints(any(UserCommand.PointCharge.class));
     }
 
     private User createUser(Long id, String name, BigDecimal point) {
