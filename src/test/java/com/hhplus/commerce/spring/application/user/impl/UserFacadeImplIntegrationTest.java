@@ -1,5 +1,6 @@
 package com.hhplus.commerce.spring.application.user.impl;
 
+import com.hhplus.commerce.spring.application.user.UserFacade;
 import com.hhplus.commerce.spring.application.user.dto.request.UserPointChargeRequest;
 import com.hhplus.commerce.spring.domain.payment.dto.PaymentCommand;
 import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.verify;
 @Transactional
 class UserFacadeImplIntegrationTest {
     @Autowired
-    private UserFacadeImpl userFacade;
+    private UserFacade userFacade;
     @MockBean
     private UserService userService;
     @MockBean

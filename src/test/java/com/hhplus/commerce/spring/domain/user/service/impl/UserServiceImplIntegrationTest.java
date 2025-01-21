@@ -6,6 +6,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
+import com.hhplus.commerce.spring.domain.user.service.UserService;
 import com.hhplus.commerce.spring.infrastructure.user.database.UserJpaRepository;
 import com.hhplus.commerce.spring.infrastructure.user.entity.UserEntity;
 import com.hhplus.commerce.spring.old.api.user.model.User;
@@ -32,7 +33,7 @@ public class UserServiceImplIntegrationTest {
     @Autowired
     PaymentService paymentService;
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     @DisplayName("사용자 정보 조회에 성공한다.")
     @Test

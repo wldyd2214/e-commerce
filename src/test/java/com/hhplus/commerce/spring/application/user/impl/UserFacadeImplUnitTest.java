@@ -1,5 +1,6 @@
 package com.hhplus.commerce.spring.application.user.impl;
 
+import com.hhplus.commerce.spring.application.user.UserFacade;
 import com.hhplus.commerce.spring.application.user.dto.request.UserPointChargeRequest;
 import com.hhplus.commerce.spring.domain.payment.dto.PaymentCommand;
 import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
@@ -26,7 +27,7 @@ class UserFacadeImplUnitTest {
     @Mock
     PaymentService paymentService;
     @InjectMocks
-    UserFacadeImpl userFacade;
+    UserFacade userFacade;
 
     @DisplayName("사용자 포인트 충전 비즈니스 로직 호출 검증")
     @Test

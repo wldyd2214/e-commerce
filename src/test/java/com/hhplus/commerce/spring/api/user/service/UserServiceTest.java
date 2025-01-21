@@ -6,9 +6,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
+import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadGateWayException;
-import com.hhplus.commerce.spring.domain.payment.service.PaymentServiceImpl;
 import com.hhplus.commerce.spring.old.api.user.model.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
@@ -27,7 +27,7 @@ class UserServiceTest {
     UserRepository userRepository;
 
     @Mock
-    PaymentServiceImpl paymentService;
+    PaymentService paymentService;
 
     @InjectMocks
     UserService userService;

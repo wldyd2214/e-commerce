@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.hhplus.commerce.spring.infrastructure.user.database.UserJpaRepository;
 import com.hhplus.commerce.spring.infrastructure.user.entity.UserEntity;
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
+import com.hhplus.commerce.spring.presentation.user.UserController;
 import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequestDTO;
 import com.hhplus.commerce.spring.presentation.user.dto.response.UserResponseDTO;
 import java.math.BigDecimal;
