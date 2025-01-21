@@ -5,18 +5,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.BDDMockito.given;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.presentation.order.controller.OrderController;
 import com.hhplus.commerce.spring.presentation.order.dto.OrderPaymentDTO;
 import com.hhplus.commerce.spring.presentation.order.dto.request.OrderRequestDTO;
 import com.hhplus.commerce.spring.domain.order.model.Order;
-import com.hhplus.commerce.spring.domain.order.model.type.State;
 import com.hhplus.commerce.spring.domain.order.service.OrderService;
 import java.util.List;
 
-import com.hhplus.commerce.spring.old.api.user.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

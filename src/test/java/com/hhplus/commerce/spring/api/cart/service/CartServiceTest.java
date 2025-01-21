@@ -2,32 +2,18 @@ package com.hhplus.commerce.spring.api.cart.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
 
 import com.hhplus.commerce.spring.old.api.cart.service.CartService;
-import com.hhplus.commerce.spring.old.api.cart.service.request.CartItemRegister;
-import com.hhplus.commerce.spring.old.api.cart.service.request.CartRegisterRequest;
-import com.hhplus.commerce.spring.old.api.cart.model.Cart;
-import com.hhplus.commerce.spring.old.api.cart.model.CartItem;
 import com.hhplus.commerce.spring.old.api.cart.repository.CartItemRepository;
 import com.hhplus.commerce.spring.old.api.cart.repository.CartRepository;
-import com.hhplus.commerce.spring.old.api.cart.service.response.CartServiceRes;
-import com.hhplus.commerce.spring.old.api.product.model.Product;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
-import com.hhplus.commerce.spring.old.api.user.model.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-
-import java.util.List;
-import java.util.Optional;
 
 
 @ExtendWith(MockitoExtension.class)

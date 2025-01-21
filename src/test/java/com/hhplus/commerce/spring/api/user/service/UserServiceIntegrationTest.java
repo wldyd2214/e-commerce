@@ -1,8 +1,7 @@
 package com.hhplus.commerce.spring.api.user.service;
 
-import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.infrastructure.user.database.UserJpaRepository;
-import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.concurrent.CompletableFuture;
-
-import static com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode.USER_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j

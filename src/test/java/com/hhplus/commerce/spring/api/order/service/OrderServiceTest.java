@@ -2,16 +2,13 @@ package com.hhplus.commerce.spring.api.order.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
-import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
-import com.hhplus.commerce.spring.domain.order.model.Order;
 import com.hhplus.commerce.spring.domain.order.service.OrderService;
 import com.hhplus.commerce.spring.old.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.old.api.order.service.request.OrderServiceRequest;
 import com.hhplus.commerce.spring.old.api.product.model.Product;
-import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.domain.order.repository.OrderRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;

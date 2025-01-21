@@ -1,20 +1,12 @@
 package com.hhplus.commerce.spring.api.user.service;
 
-import static com.hhplus.commerce.spring.presentation.common.exception.code.BadGateWayErrorCode.PAYMENT_BAD_GATEWAY;
-import static com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode.USER_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
 
 import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
-import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
-import com.hhplus.commerce.spring.presentation.common.exception.CustomBadGateWayException;
-import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
-import java.util.Optional;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
