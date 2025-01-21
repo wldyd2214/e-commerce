@@ -75,14 +75,14 @@ tasks.named('test') {
 }
 
 //querydsl 추가 시작
-def querydslDir = "src/main/generated"
-
-sourceSets {
-    main.java.srcDirs += [ querydslDir ]
-}
+def querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
 
 tasks.withType(JavaCompile) {
     options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+}
+
+sourceSets {
+    main.java.srcDirs += [ querydslDir ]
 }
 
 clean {
@@ -92,3 +92,24 @@ clean {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+//querydsl 추가 끝
+
+//querydsl old
+//def querydslDir = "src/main/generated"
+//
+//sourceSets {
+//    main.java.srcDirs += [ querydslDir ]
+//}
+//
+//tasks.withType(JavaCompile) {
+//    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+//}
+//
+//clean {
+//    delete file(querydslDir)
+//}
+//
+//tasks.named('test') {
+//    useJUnitPlatform()
+//}
