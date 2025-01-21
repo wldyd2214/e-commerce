@@ -3,7 +3,7 @@ package com.hhplus.commerce.spring.domain.user.service.impl;
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
-import com.hhplus.commerce.spring.infrastructure.user.entity.UserEntity;
+import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
 import com.hhplus.commerce.spring.old.api.user.model.User;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
