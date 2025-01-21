@@ -40,7 +40,7 @@ public class OrderSample {
 
     private void calculateTotalAmounts() {
         int sum = orderLines.stream()
-                            .mapToInt(x -> x.getAmounts())
+                            .mapToInt(x -> x.getAmounts().getValue())
                             .sum();
         this.totalAmounts = new Money(sum);
     }

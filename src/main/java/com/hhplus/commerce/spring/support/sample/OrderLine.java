@@ -20,5 +20,5 @@ public class OrderLine {
         return price.multiply(quantity);
     }
 
-//    public int getAmounts() { ... }
+    public Money getAmounts() { return amounts; }
 }

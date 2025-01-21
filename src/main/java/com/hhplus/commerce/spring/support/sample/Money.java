@@ -7,6 +7,10 @@ public class Money {
         this.value = value;
     }
 
+    public int getValue() {
+        return value;
+    }
+
     public Money add(Money money) {
         return new Money(this.value + money.value);
     }
