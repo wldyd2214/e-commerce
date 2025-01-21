@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.presentation.user.controller;
+package com.hhplus.commerce.spring.presentation.user;
 
 import com.hhplus.commerce.spring.application.user.UserFacade;
 import com.hhplus.commerce.spring.application.user.dto.request.UserPointChargeRequest;
