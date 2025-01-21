@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.old.api.user.model;
+package com.hhplus.commerce.spring.domain.user.dto;
 
 import lombok.Builder;
 import lombok.Getter;

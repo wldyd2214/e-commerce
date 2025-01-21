@@ -11,7 +11,7 @@ import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequest
 import com.hhplus.commerce.spring.presentation.common.exception.CustomForbiddenException;
 import com.hhplus.commerce.spring.old.api.product.model.Product;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
-import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.presentation.common.exception.code.ForbiddenErrorCode;

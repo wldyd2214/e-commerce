@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.application.user.mapper;
 
 import com.hhplus.commerce.spring.application.user.dto.UserInfo;
-import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.domain.user.dto.User;
 
 public class UserFacadeResponseMapper {
 

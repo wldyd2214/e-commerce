@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.old.api.user.controller.dto;
 
 import com.hhplus.commerce.spring.old.api.user.controller.response.BalanceChargeResponse;
-import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.domain.user.dto.User;
 
 import java.math.BigDecimal;
 

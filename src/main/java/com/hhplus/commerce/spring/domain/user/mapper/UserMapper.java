@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.domain.user.mapper;
 
 import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
-import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.domain.user.dto.User;
 
 /**
  * 클린 아키텍처에서는 Mapper를 사용하여 엔티티와 도메인 객체 간의 변환을 처리하는 것이 좋습니다. 이렇게 하면 책임의 분리와 유지보수성이 강화됩니다.
