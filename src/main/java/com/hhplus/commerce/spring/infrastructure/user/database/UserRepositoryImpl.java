@@ -1,7 +1,6 @@
 package com.hhplus.commerce.spring.infrastructure.user.database;
 
-import com.hhplus.commerce.spring.infrastructure.user.entity.UserEntity;
-import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import java.util.Optional;
 

@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.domain.user.mapper;
 
-import com.hhplus.commerce.spring.infrastructure.user.entity.UserEntity;
+import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
 import com.hhplus.commerce.spring.old.api.user.model.User;
 
 /**

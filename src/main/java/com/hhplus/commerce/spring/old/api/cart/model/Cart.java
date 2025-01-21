@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.old.api.cart.model;
 
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
-import com.hhplus.commerce.spring.infrastructure.user.entity.UserEntity;
+import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,8 @@
 package com.hhplus.commerce.spring.infrastructure.order.entity;
 
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
-import com.hhplus.commerce.spring.domain.order.model.OrderItem;
 import com.hhplus.commerce.spring.domain.order.model.type.State;
-import com.hhplus.commerce.spring.infrastructure.user.entity.UserEntity;
-import com.hhplus.commerce.spring.old.api.user.model.User;
+import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

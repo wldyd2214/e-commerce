@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.infrastructure.user.entity;
+package com.hhplus.commerce.spring.domain.user.entity;
 
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
