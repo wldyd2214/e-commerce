@@ -2,7 +2,7 @@ package com.hhplus.commerce.spring.api.order.service;
 
 import com.hhplus.commerce.spring.infrastructure.order.repository.OrderJpaRepository;
 import com.hhplus.commerce.spring.domain.order.service.OrderService;
-import com.hhplus.commerce.spring.old.api.product.infrastructure.database.ProductJpaRepository;
+import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
 import com.hhplus.commerce.spring.infrastructure.user.database.UserJpaRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public class OrderServiceIntegrationTest {
     @Autowired
     private UserJpaRepository userJpaRepository;
     @Autowired
-    private ProductJpaRepository productJpaRepository;
+    private ProductQueryRepository productQueryRepository;
 
     @Autowired
     private OrderService orderService;

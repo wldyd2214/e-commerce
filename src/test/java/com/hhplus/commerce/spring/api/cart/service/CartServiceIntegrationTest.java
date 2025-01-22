@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.hhplus.commerce.spring.old.api.cart.infrastructure.database.CartItemJpaRepository;
 import com.hhplus.commerce.spring.old.api.cart.infrastructure.database.CartJpaRepository;
 import com.hhplus.commerce.spring.old.api.cart.service.CartService;
-import com.hhplus.commerce.spring.old.api.product.infrastructure.database.ProductJpaRepository;
+import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.infrastructure.user.database.UserJpaRepository;
 
@@ -30,7 +30,7 @@ public class CartServiceIntegrationTest {
     @Autowired
     private CartService cartService;
     @Autowired
-    private ProductJpaRepository productJpaRepository;
+    private ProductQueryRepository productQueryRepository;
 
 //    @DisplayName("유효하지 않은 사용자의 경우 장바구니 목록 조회에 실패한다.")
 //    @Test
