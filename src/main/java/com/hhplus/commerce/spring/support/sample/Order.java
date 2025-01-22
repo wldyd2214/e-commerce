@@ -3,17 +3,17 @@ package com.hhplus.commerce.spring.support.sample;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class OrderSample {
+public class Order {
     private OrderNo number;
     private Orderer orderer;
     private List<OrderLine> orderLines;
     private Money totalAmounts;
     private ShippingInfo shippingInfo;
-    private OrderStateSample state;
+    private OrderState state;
     private LocalDateTime orderDate;
 
 
-    public OrderSample(List<OrderLine> orderLines) {
+    public Order(List<OrderLine> orderLines) {
         setOrderLines(orderLines);
         setShippingInfo(shippingInfo);
     }
@@ -47,11 +47,11 @@ public class OrderSample {
 
     public void cancel() {
         verifyNotYetShipped(); // 주문 취소 기능은 출고 전에만 가능
-        this.state = OrderStateSample.CANCELED;
+        this.state = OrderState.CANCELED;
     }
 
     private void verifyNotYetShipped() {
-        if (state != OrderStateSample.PAYMENT_WAITING && state != OrderStateSample.PREPARING)
+        if (state != OrderState.PAYMENT_WAITING && state != OrderState.PREPARING)
             throw new IllegalStateException("aleady shipped");
     }
 
@@ -63,7 +63,7 @@ public class OrderSample {
     }
 
     private boolean isShippingChangeable() {
-        return state == OrderStateSample.PAYMENT_WAITING ||
-            state == OrderStateSample.PREPARING;
+        return state == OrderState.PAYMENT_WAITING ||
+            state == OrderState.PREPARING;
     }
 }
