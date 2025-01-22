@@ -15,6 +15,11 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
     private final ProductJpaRepository jpaRepository;
 
     @Override
+    public Optional<Product> findById(Long id) {
+        return jpaRepository.findById(id);
+    }
+
+    @Override
     public List<Product> findAllByOrderByIdDesc() {
         return jpaRepository.findAllByOrderByIdDesc();
     }

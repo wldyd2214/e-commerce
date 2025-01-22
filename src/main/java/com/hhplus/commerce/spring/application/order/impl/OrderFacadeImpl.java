@@ -6,7 +6,7 @@ import com.hhplus.commerce.spring.application.order.dto.response.OrderFacadeResp
 import com.hhplus.commerce.spring.application.order.mapper.OrderFacadeRequestMapper;
 import com.hhplus.commerce.spring.application.order.mapper.OrderFacadeResponseMapper;
 import com.hhplus.commerce.spring.domain.order.service.OrderService;
-import com.hhplus.commerce.spring.old.api.product.service.ProductService;
+import com.hhplus.commerce.spring.old.api.product.service.ProductOldService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderFacadeImpl implements OrderFacade {
     private final OrderService orderService;
-    private final ProductService productService;
+    private final ProductOldService productOldService;
 
     public OrderFacadeResponse order(OrderFacadeRequest request) {
 

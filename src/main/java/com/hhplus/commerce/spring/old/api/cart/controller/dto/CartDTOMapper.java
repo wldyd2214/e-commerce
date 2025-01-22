@@ -41,9 +41,9 @@ public class CartDTOMapper {
     public static ProductDTO toProductDTO(Product product) {
         return ProductDTO.builder()
                          .id(product.getId())
-                         .name(product.getProductName())
-                         .consumerPrice(product.getProductPrice())
-                         .stockCount(product.getProductCount())
+                         .name(product.getName())
+                         .consumerPrice(product.getPrice())
+                         .stockCount(product.getCount())
                          .build();
     }
 

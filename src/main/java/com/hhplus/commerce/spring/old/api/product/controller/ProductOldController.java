@@ -3,7 +3,7 @@ package com.hhplus.commerce.spring.old.api.product.controller;
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
 import com.hhplus.commerce.spring.old.api.product.controller.dto.ProductDTOMapper;
 import com.hhplus.commerce.spring.old.api.product.controller.response.ProductsResponse;
-import com.hhplus.commerce.spring.old.api.product.service.ProductService;
+import com.hhplus.commerce.spring.old.api.product.service.ProductOldService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/products")
-public class ProductController {
+public class ProductOldController {
 
-    private final ProductService productService;
+    private final ProductOldService productOldService;
 
     @Operation(
         summary = "상품 목록 조회 API",
@@ -23,7 +23,7 @@ public class ProductController {
     )
     @GetMapping(value = "")
     public ApiResponse<ProductsResponse> getProducts() {
-        return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productService.getProducts()));
+        return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productOldService.getProducts()));
     }
 
     @Operation(
@@ -32,7 +32,7 @@ public class ProductController {
     )
     @GetMapping(value = "/popular")
     public ApiResponse<ProductsResponse> getPopulars() {
-        return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productService.getPopulars()));
+        return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productOldService.getPopulars()));
     }
 
 }

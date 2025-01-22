@@ -54,8 +54,8 @@ public class OrderItemEntity extends BaseEntity {
         return OrderItemEntity.builder()
                               .order(order)
                               .product(product)
-                              .orderProductName(product.getProductName())
-                              .orderProductPrice(product.getProductPrice())
+                              .orderProductName(product.getName())
+                              .orderProductPrice(product.getPrice())
                               .orderProductCount(orderCount)
                               .build();
     }
@@ -63,8 +63,8 @@ public class OrderItemEntity extends BaseEntity {
     public static OrderItemEntity create(Product product, int orderCount) {
         return OrderItemEntity.builder()
                               .product(product)
-                              .orderProductName(product.getProductName())
-                              .orderProductPrice(product.getProductPrice())
+                              .orderProductName(product.getName())
+                              .orderProductPrice(product.getPrice())
                               .orderProductCount(orderCount)
                               .build();
     }

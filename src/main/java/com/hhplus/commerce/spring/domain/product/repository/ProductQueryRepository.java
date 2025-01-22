@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface ProductQueryRepository {
 
+    Optional<Product> findById(Long id);
+
     List<Product> findAllByOrderByIdDesc();
 
     List<Product> findAllByIdIn(List<Long> productKeys);

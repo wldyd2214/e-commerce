@@ -83,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
         for (Long productId : new HashSet<>(productKeys)) {
             Product product = productMap.get(productId);
 
-            totalPrice += product.getProductPrice();
+            totalPrice += product.getPrice();
         }
 
         return totalPrice;

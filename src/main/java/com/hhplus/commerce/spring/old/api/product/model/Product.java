@@ -35,35 +35,35 @@ public class Product extends BaseEntity {
     private Long id;
 
     @Column(name = "product_name", nullable = false)
-    private String productName;
+    private String name;
 
     @Column(name = "product_desc", nullable = false)
-    private String productDesc;
+    private String desc;
 
     @Column(name = "product_price", nullable = false)
-    private Integer productPrice;
+    private Integer price;
 
     @Column(name = "product_count", nullable = false)
-    private Integer productCount;
+    private Integer count;
 
     @Builder
-    public Product(Long id, String productName, String productDesc, Integer productPrice,
-        Integer productCount) {
+    public Product(Long id, String name, String desc, Integer price,
+        Integer count) {
         this.id = id;
-        this.productName = productName;
-        this.productDesc = productDesc;
-        this.productPrice = productPrice;
-        this.productCount = productCount;
+        this.name = name;
+        this.desc = desc;
+        this.price = price;
+        this.count = count;
     }
 
     public boolean isQuantityLessThan(int quantity) {
-        return this.productCount < quantity;
+        return this.count < quantity;
     }
 
     public void deductQuantity(int quantity) {
         if (isQuantityLessThan(quantity)) {
             throw new CustomBadRequestException(BadRequestErrorCode.PRODUCT_STOCK_BAD_REQUEST);
         }
-        this.productCount -= quantity;
+        this.count -= quantity;
     }
 }

@@ -39,10 +39,10 @@ public class CartServiceRes {
     public static CartItemProductRes toCartItemProductRes(Product product) {
         return CartItemProductRes.builder()
                                  .id(product.getId())
-                                 .name(product.getProductName())
-                                 .desc(product.getProductDesc())
-                                 .price(product.getProductPrice())
-                                 .count(product.getProductCount())
+                                 .name(product.getName())
+                                 .desc(product.getDesc())
+                                 .price(product.getPrice())
+                                 .count(product.getCount())
                                  .build();
     }
 }
