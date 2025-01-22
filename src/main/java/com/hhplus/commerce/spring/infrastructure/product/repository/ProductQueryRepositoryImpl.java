@@ -1,19 +1,18 @@
-package com.hhplus.commerce.spring.old.api.product.infrastructure.database;
+package com.hhplus.commerce.spring.infrastructure.product.repository;
 
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
 import com.hhplus.commerce.spring.old.api.product.model.Product;
-import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
-import java.util.List;
-import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Repository
-public class ProductRepositoryImpl implements ProductRepository {
+public class ProductQueryRepositoryImpl implements ProductQueryRepository {
 
-    private final ProductQueryRepository jpaRepository;
+    private final ProductJpaRepository jpaRepository;
 
     @Override
     public List<Product> findAllByOrderByIdDesc() {
@@ -23,11 +22,6 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<Product> findAllByIdIn(List<Long> productKeys) {
         return jpaRepository.findAllByIdIn(productKeys);
-    }
-
-    @Override
-    public Optional<Product> findById(Long productId) {
-        return jpaRepository.findById(productId);
     }
 
     @Override
