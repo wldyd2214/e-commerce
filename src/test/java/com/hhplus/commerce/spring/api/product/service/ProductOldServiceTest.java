@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.BDDMockito.given;
 
-import com.hhplus.commerce.spring.old.api.product.service.ProductService;
+import com.hhplus.commerce.spring.old.api.product.service.ProductOldService;
 import com.hhplus.commerce.spring.old.api.product.model.Product;
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class ProductServiceTest {
+class ProductOldServiceTest {
 
     @Mock
     ProductRepository productRepository;
@@ -27,7 +27,7 @@ class ProductServiceTest {
     OrderItemRepository orderItemRepository;
 
     @InjectMocks
-    ProductService productService;
+    ProductOldService productOldService;
 
     @DisplayName("상품 목록 조회를 성공한다.")
     @Test
@@ -41,7 +41,7 @@ class ProductServiceTest {
             .willReturn(products);
 
         // when // then
-        List<Product> resProducts = productService.getProducts();
+        List<Product> resProducts = productOldService.getProducts();
 
         assertThat(resProducts).isNotNull();
         assertThat(resProducts).hasSize(productLength)
@@ -95,10 +95,10 @@ class ProductServiceTest {
     private Product createProduct(long id) {
         return Product.builder()
                       .id(id)
-                      .productName(String.format("%d번 제품 이름", id))
-                      .productDesc(String.format("%d번 제품 내용", id))
-                      .productPrice(100000)
-                      .productCount(50)
+                      .name(String.format("%d번 제품 이름", id))
+                      .desc(String.format("%d번 제품 내용", id))
+                      .price(100000)
+                      .count(50)
                       .build();
     }
 }
