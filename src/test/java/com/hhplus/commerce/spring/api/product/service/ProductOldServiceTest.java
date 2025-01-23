@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.BDDMockito.given;
 
 import com.hhplus.commerce.spring.old.api.product.service.ProductOldService;
-import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.domain.product.entity.Product;
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import java.util.ArrayList;
