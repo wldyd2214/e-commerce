@@ -2,9 +2,11 @@ package com.hhplus.commerce.spring.domain.product.service;
 
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
+import com.hhplus.commerce.spring.domain.product.dto.ProductInfoList;
+import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
+import com.hhplus.commerce.spring.domain.product.mapper.ProductInfoMapper;
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
-import com.hhplus.commerce.spring.old.api.product.model.Product;
-import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
+import com.hhplus.commerce.spring.domain.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -24,8 +26,20 @@ public class ProductService {
         return null;
     }
 
-    public List<Product> getProducts() {
-        return productQueryRepository.findAllByOrderByIdDesc();
+    public ProductInfoList getProducts(ProductQuery.List query) {
+
+        List<Product> products = productQueryRepository.findAllByQuery(query);
+
+        Long totalCount = productQueryRepository.selectProductTotalCount(query);
+
+        List<ProductInfo> productInfoList =
+            ProductInfoMapper.INSTANCE.toProductInfoList(products);
+
+        return ProductInfoList.builder()
+                              .totalCount(totalCount.intValue())
+                              .currentPage(query.getPage())
+                              .productInfoList(productInfoList)
+                              .build();
     }
 
     @Transactional(readOnly = true)

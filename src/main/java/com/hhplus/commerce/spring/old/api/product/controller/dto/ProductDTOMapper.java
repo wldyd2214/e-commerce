@@ -2,7 +2,7 @@ package com.hhplus.commerce.spring.old.api.product.controller.dto;
 
 import com.hhplus.commerce.spring.old.api.product.controller.response.ProductsResponse;
 
-import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.domain.product.entity.Product;
 import java.util.List;
 import java.util.stream.Collectors;
 

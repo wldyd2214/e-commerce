@@ -7,7 +7,7 @@ import com.hhplus.commerce.spring.domain.order.model.OrderItem;
 import com.hhplus.commerce.spring.domain.order.repository.OrderRepository;
 import com.hhplus.commerce.spring.domain.order.service.OrderService;
 import com.hhplus.commerce.spring.infrastructure.order.client.DataPlatformClient;
-import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.domain.product.entity.Product;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;

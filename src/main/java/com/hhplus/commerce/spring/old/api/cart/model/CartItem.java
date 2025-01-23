@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.old.api.cart.model;
 
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
-import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.domain.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

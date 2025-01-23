@@ -9,7 +9,7 @@ import com.hhplus.commerce.spring.old.api.cart.repository.CartRepository;
 import com.hhplus.commerce.spring.old.api.cart.service.response.CartServiceRes;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomForbiddenException;
-import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.domain.product.entity.Product;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;

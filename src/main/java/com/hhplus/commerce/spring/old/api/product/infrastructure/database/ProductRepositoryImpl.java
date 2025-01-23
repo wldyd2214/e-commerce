@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.old.api.product.infrastructure.database;
 
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
-import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.domain.product.entity.Product;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;

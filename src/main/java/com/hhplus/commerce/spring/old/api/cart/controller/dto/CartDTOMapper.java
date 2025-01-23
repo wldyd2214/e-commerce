@@ -11,7 +11,7 @@ import com.hhplus.commerce.spring.old.api.product.controller.dto.ProductDTO;
 import com.hhplus.commerce.spring.old.api.cart.service.request.CartItemRegister;
 import com.hhplus.commerce.spring.old.api.cart.service.request.CartRegisterRequest;
 import com.hhplus.commerce.spring.old.api.cart.model.CartItem;
-import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.domain.product.entity.Product;
 
 import java.util.stream.Collectors;
 

@@ -2,7 +2,7 @@ package com.hhplus.commerce.spring.old.api.cart.service.response;
 
 import com.hhplus.commerce.spring.old.api.cart.model.Cart;
 import com.hhplus.commerce.spring.old.api.cart.model.CartItem;
-import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.domain.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

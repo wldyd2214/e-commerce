@@ -4,19 +4,16 @@ package com.hhplus.commerce.spring.infrastructure.order.repository;
 //import static com.hhplus.commerce.spring.domain.order.model.QOrderItem.orderItem;
 
 import com.hhplus.commerce.spring.domain.order.model.OrderItem;
-import com.hhplus.commerce.spring.domain.order.model.type.State;
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
-import com.hhplus.commerce.spring.old.api.product.model.Product;
+import com.hhplus.commerce.spring.domain.product.entity.Product;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.time.LocalDate;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
