@@ -1,15 +1,11 @@
 package com.hhplus.commerce.spring.application.user.mapper;
 
-import com.hhplus.commerce.spring.application.user.dto.UserInfo;
-import com.hhplus.commerce.spring.domain.user.dto.User;
+import com.hhplus.commerce.spring.application.user.dto.UserFacadeResponse;
+import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
+import org.mapstruct.Mapper;
 
-public class UserFacadeResponseMapper {
+@Mapper(componentModel = "spring")
+public interface UserFacadeResponseMapper {
 
-    public static UserInfo toUserInfo(User user) {
-        return UserInfo.builder()
-                       .id(user.getId())
-                       .name(user.getName())
-                       .point(user.getPoint())
-                       .build();
-    }
+    UserFacadeResponse.PointCharge toUserInfo(UserInfo userInfo);
 }

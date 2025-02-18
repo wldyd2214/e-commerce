@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
-import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
 import org.junit.jupiter.api.extension.ExtendWith;

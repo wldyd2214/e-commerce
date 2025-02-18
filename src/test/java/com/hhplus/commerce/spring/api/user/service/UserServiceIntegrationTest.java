@@ -1,7 +1,6 @@
 package com.hhplus.commerce.spring.api.user.service;
 
 import com.hhplus.commerce.spring.infrastructure.user.database.UserJpaRepository;
-import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;

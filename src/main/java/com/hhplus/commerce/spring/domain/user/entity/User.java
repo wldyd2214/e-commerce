@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "tb_user")
-public class UserEntity extends BaseEntity {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,12 +36,12 @@ public class UserEntity extends BaseEntity {
     @Version
     private Long version;
 
-    public UserEntity(String name, BigDecimal point) {
+    public User(String name, BigDecimal point) {
         this.name = name;
         this.point = point;
     }
 
-    public UserEntity(Long id, String name, BigDecimal point) {
+    public User(Long id, String name, BigDecimal point) {
         this.id = id;
         this.name = name;
         this.point = point;

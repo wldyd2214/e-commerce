@@ -1,10 +1,9 @@
 package com.hhplus.commerce.spring.domain.user.service.impl;
 
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
+import com.hhplus.commerce.spring.domain.user.entity.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
-import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
-import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import java.math.BigDecimal;
@@ -34,7 +33,7 @@ public class UserServiceImplUnitTest {
         long userId = 1;
         String name = "제리";
         BigDecimal point = new BigDecimal("0");
-        UserEntity userEntity = createUserEntity(userId, name, point);
+        User userEntity = createUserEntity(userId, name, point);
 
         given(userRepository.findById(userId)).willReturn(Optional.ofNullable(userEntity));
 
@@ -68,7 +67,7 @@ public class UserServiceImplUnitTest {
         long userId = 1;
         String name = "제리";
         BigDecimal defaultPoint = new BigDecimal("0");
-        UserEntity userEntity = createUserEntity(userId, name, defaultPoint);
+        User userEntity = createUserEntity(userId, name, defaultPoint);
 
         BigDecimal chargePoint = new BigDecimal("1000");
         UserCommand.PointCharge command = createPointChargeCommand(userId, chargePoint);
@@ -84,8 +83,8 @@ public class UserServiceImplUnitTest {
                         .contains(userId, name, defaultPoint.add(chargePoint));
     }
 
-    private UserEntity createUserEntity(Long id, String name, BigDecimal point) {
-        return new UserEntity(id, name, point);
+    private User createUserEntity(Long id, String name, BigDecimal point) {
+        return new User(id, name, point);
     }
 
     private UserCommand.PointCharge createPointChargeCommand(long userId, BigDecimal point) {

@@ -1,15 +1,18 @@
 package com.hhplus.commerce.spring.presentation.user.mapper;
 
-import com.hhplus.commerce.spring.application.user.dto.request.UserPointChargeRequest;
+import com.hhplus.commerce.spring.application.user.dto.UserFacadeRequest;
 
+import java.lang.annotation.Target;
 import java.math.BigDecimal;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-public class UserDTORequestMapper {
+@Mapper(componentModel = "spring")
+public interface UserDTORequestMapper {
 
-    public static UserPointChargeRequest toUserPointChargeRequest(Long userId, BigDecimal chargePoint) {
-        return UserPointChargeRequest.builder()
-                                     .userId(userId)
-                                     .point(chargePoint)
-                                     .build();
-    }
+    UserDTORequestMapper INSTANCE = Mappers.getMapper(UserDTORequestMapper.class);
+
+    @Mapping(source = "chargePoint", target = "point")
+    UserFacadeRequest.PointCharge toPointCharge(Long userId, BigDecimal chargePoint);
 }

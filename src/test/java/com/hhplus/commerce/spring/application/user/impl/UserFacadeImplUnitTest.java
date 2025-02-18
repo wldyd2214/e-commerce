@@ -1,12 +1,10 @@
 package com.hhplus.commerce.spring.application.user.impl;
 
 import com.hhplus.commerce.spring.application.user.UserFacade;
-import com.hhplus.commerce.spring.application.user.dto.request.UserPointChargeRequest;
 import com.hhplus.commerce.spring.domain.payment.dto.PaymentCommand;
 import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
-import com.hhplus.commerce.spring.domain.user.dto.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

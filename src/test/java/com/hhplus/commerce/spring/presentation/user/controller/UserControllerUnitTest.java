@@ -9,7 +9,6 @@ import static org.mockito.BDDMockito.given;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.application.user.UserFacade;
-import com.hhplus.commerce.spring.application.user.dto.UserInfo;
 import com.hhplus.commerce.spring.presentation.user.UserController;
 import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequestDTO;
 import java.math.BigDecimal;

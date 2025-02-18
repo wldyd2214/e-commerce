@@ -1,22 +1,29 @@
 package com.hhplus.commerce.spring.presentation.user;
 
 import com.hhplus.commerce.spring.application.user.UserFacade;
-import com.hhplus.commerce.spring.application.user.dto.request.UserPointChargeRequest;
+import com.hhplus.commerce.spring.application.user.dto.UserFacadeRequest;
+import com.hhplus.commerce.spring.application.user.dto.UserFacadeResponse;
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
 import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequestDTO;
 import com.hhplus.commerce.spring.presentation.user.dto.response.UserResponseDTO;
 import com.hhplus.commerce.spring.presentation.user.mapper.UserDTORequestMapper;
 import com.hhplus.commerce.spring.presentation.user.mapper.UserDTOResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "유저", description = "사용자 관련 인터페이스를 제공합니다.")
 @RequestMapping(value = "/users")
 public class UserController {
+
     private final UserFacade userFacade;
+
+    private final UserDTORequestMapper requestMapper;
+    private final UserDTOResponseMapper responseMapper;
 
     /**
      * path 1안: /users/{userId}/charge
@@ -25,19 +32,19 @@ public class UserController {
      *
      * chargePoints 메소드명: 포인트 관리 관련된 메소드가 단일 포인트가 아니라 포인트 총량에 변화를 주는 것이라면, chargePoint보다 복수형으로 표현
      */
-    @Operation(
-            summary = "사용자 잔액 충전/조회 API",
-            description = "사용자 잔액을 충전하고 정보를 반환 합니다."
-    )
+    @Operation(summary = "사용자 잔액 충전/조회 API", description = "사용자 잔액을 충전합니다.")
     @PostMapping("/{userId}/charge")
     public ApiResponse<UserResponseDTO> chargePoints(@PathVariable Long userId,
-                                                     @RequestBody @Valid PointChargeRequestDTO reqDTO) {
+        @RequestBody @Valid PointChargeRequestDTO reqDTO) {
 
-        UserPointChargeRequest request =
-                UserDTORequestMapper.toUserPointChargeRequest(userId, reqDTO.getChargePoint());
+        // 1. Facade 요청 DTO 변환
+        UserFacadeRequest.PointCharge pointCharge = requestMapper.toPointCharge(userId, reqDTO.getChargePoint());
 
-        UserResponseDTO responseDTO =
-                UserDTOResponseMapper.toUserResponseDTO(userFacade.processUserPointCharge(request));
+        // 2. Facade 포인트 충전 프로세스 호출
+        UserFacadeResponse.PointCharge userInfo = userFacade.chargeUserPoints(pointCharge);
+
+        // 3. Facade 응답 컨트롤러 응답으로 변환
+        UserResponseDTO responseDTO = responseMapper.toUserResponseDTO(userInfo);
 
         return ApiResponse.ok(responseDTO);
     }

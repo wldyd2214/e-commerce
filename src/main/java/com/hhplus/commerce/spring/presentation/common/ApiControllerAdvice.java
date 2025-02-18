@@ -1,15 +1,14 @@
 package com.hhplus.commerce.spring.presentation.common;
 
+import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomConflictException;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadGateWayException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@Slf4j
 @RestControllerAdvice
 public class ApiControllerAdvice {
 
@@ -20,6 +19,16 @@ public class ApiControllerAdvice {
                 HttpStatus.BAD_REQUEST,
                 e.getBindingResult().getAllErrors().get(0).getDefaultMessage(),
                 null
+        );
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CustomBadRequestException.class)
+    public ApiResponse<Object> customBadRequestException(CustomBadRequestException e) {
+        return ApiResponse.of(
+            HttpStatus.BAD_REQUEST,
+            e.getMessage(),
+            null
         );
     }
 

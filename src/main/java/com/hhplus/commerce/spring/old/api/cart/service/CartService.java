@@ -11,7 +11,6 @@ import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequest
 import com.hhplus.commerce.spring.presentation.common.exception.CustomForbiddenException;
 import com.hhplus.commerce.spring.domain.product.entity.Product;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
-import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.presentation.common.exception.code.ForbiddenErrorCode;
@@ -100,16 +99,16 @@ public class CartService {
         return null;
     }
 
-    private void sameUserCheck(User user, List<CartItem> cartItems, List<Long> cartItemKeys) {
-        Map<Long, CartItem> cartItemMap = createProductMap(cartItems);
-        for (Long cartItemKey : new HashSet<>(cartItemKeys)) {
-            CartItem cartItem = cartItemMap.get(cartItemKey);
-
-            if (Objects.isNull(cartItem) || cartItem.getCart().getUser().getId() != user.getId()) {
-                throw new CustomForbiddenException(ForbiddenErrorCode.USER_FORBIDDEN);
-            }
-        }
-    }
+//    private void sameUserCheck(User user, List<CartItem> cartItems, List<Long> cartItemKeys) {
+//        Map<Long, CartItem> cartItemMap = createProductMap(cartItems);
+//        for (Long cartItemKey : new HashSet<>(cartItemKeys)) {
+//            CartItem cartItem = cartItemMap.get(cartItemKey);
+//
+//            if (Objects.isNull(cartItem) || cartItem.getCart().getUser().getId() != user.getId()) {
+//                throw new CustomForbiddenException(ForbiddenErrorCode.USER_FORBIDDEN);
+//            }
+//        }
+//    }
 
     private Map<Long, CartItem> createProductMap(List<CartItem> cartItems) {
         return cartItems.stream()

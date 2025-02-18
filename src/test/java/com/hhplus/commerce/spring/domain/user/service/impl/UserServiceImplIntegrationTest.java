@@ -5,11 +5,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
+import com.hhplus.commerce.spring.domain.user.entity.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
 import com.hhplus.commerce.spring.infrastructure.user.database.UserJpaRepository;
-import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
-import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import java.math.BigDecimal;
@@ -41,17 +40,17 @@ public class UserServiceImplIntegrationTest {
         // given
         String name = "제리";
         BigDecimal point = new BigDecimal("0");
-        UserEntity saveUserEntity = createUserEntity(name, point);
+        User saveUser = createUserEntity(name, point);
 
-        jpaRepository.save(saveUserEntity);
+        jpaRepository.save(saveUser);
 
         // when
-        User user = userService.findUserById(saveUserEntity.getId());
+        User user = userService.findUserById(saveUser.getId());
 
         // then
         assertThat(user).isNotNull();
         assertThat(user).extracting("id", "name", "point")
-                        .contains(saveUserEntity.getId(), name, point);
+                        .contains(saveUser.getId(), name, point);
     }
 
     @DisplayName("존재하지 않은 사용자 정보 조회시 실패한다.")
@@ -72,12 +71,12 @@ public class UserServiceImplIntegrationTest {
         // given
         String name = "제리";
         BigDecimal defaultPoint = new BigDecimal("0");
-        UserEntity saveUserEntity = createUserEntity(name, defaultPoint);
+        User saveUser = createUserEntity(name, defaultPoint);
 
-        jpaRepository.save(saveUserEntity);
+        jpaRepository.save(saveUser);
 
         BigDecimal chargePoint = new BigDecimal("1000");
-        UserCommand.PointCharge command = createPointChargeCommand(saveUserEntity.getId(), chargePoint);
+        UserCommand.PointCharge command = createPointChargeCommand(saveUser.getId(), chargePoint);
 
         // when
         User user = userService.chargeUserPoints(command);
@@ -85,11 +84,11 @@ public class UserServiceImplIntegrationTest {
         // then
         assertThat(user).isNotNull();
         assertThat(user).extracting("id", "name", "point")
-                        .contains(saveUserEntity.getId(), name, defaultPoint.add(chargePoint));
+                        .contains(saveUser.getId(), name, defaultPoint.add(chargePoint));
     }
 
-    private UserEntity createUserEntity(String name, BigDecimal point) {
-        return new UserEntity(name, point);
+    private User createUserEntity(String name, BigDecimal point) {
+        return new User(name, point);
     }
 
     private UserCommand.PointCharge createPointChargeCommand(long userId, BigDecimal point) {

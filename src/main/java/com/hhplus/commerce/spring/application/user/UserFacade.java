@@ -1,12 +1,12 @@
 package com.hhplus.commerce.spring.application.user;
 
-import com.hhplus.commerce.spring.application.user.dto.UserInfo;
-import com.hhplus.commerce.spring.application.user.dto.request.UserPointChargeRequest;
+import com.hhplus.commerce.spring.application.user.dto.UserFacadeRequest;
+import com.hhplus.commerce.spring.application.user.dto.UserFacadeResponse;
 import com.hhplus.commerce.spring.application.user.mapper.UserFacadeRequestMapper;
 import com.hhplus.commerce.spring.application.user.mapper.UserFacadeResponseMapper;
 import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
+import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
-import com.hhplus.commerce.spring.domain.user.dto.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,21 +14,25 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class UserFacade {
+
     private final UserService userService;
     private final PaymentService paymentService;
 
+    private final UserFacadeRequestMapper requestMapper;
+    private final UserFacadeResponseMapper responseMapper;
+
     @Transactional
-    public UserInfo processUserPointCharge(UserPointChargeRequest request) {
+    public UserFacadeResponse.PointCharge chargeUserPoints(UserFacadeRequest.PointCharge pointCharge) {
 
         // 1. 사용자 유효성 체크
-        userService.findUserById(request.getUserId());
+        userService.findUserById(pointCharge.getUserId());
 
         // 2. 결제 시스템 호출
-        paymentService.sendPayment(UserFacadeRequestMapper.toPayment(request));
+        paymentService.sendPayment(requestMapper.toPaymentCommand(pointCharge));
 
         // 3. 사용자 포인트 충전
-        User user = userService.chargeUserPoints(UserFacadeRequestMapper.toPointCharge(request));
+        UserInfo userInfo = userService.chargeUserPoints(requestMapper.toUserCommand(pointCharge));
 
-        return UserFacadeResponseMapper.toUserInfo(user);
+        return responseMapper.toUserInfo(userInfo);
     }
 }

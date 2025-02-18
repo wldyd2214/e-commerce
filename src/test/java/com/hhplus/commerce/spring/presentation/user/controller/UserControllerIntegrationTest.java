@@ -2,8 +2,8 @@ package com.hhplus.commerce.spring.presentation.user.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.hhplus.commerce.spring.domain.user.entity.User;
 import com.hhplus.commerce.spring.infrastructure.user.database.UserJpaRepository;
-import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
 import com.hhplus.commerce.spring.presentation.user.UserController;
 import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequestDTO;
@@ -33,22 +33,22 @@ public class UserControllerIntegrationTest {
         // given
         String name = "제리";
         BigDecimal point = new BigDecimal("0");
-        UserEntity saveUserEntity = createUserEntity(name, point);
-        jpaRepository.save(saveUserEntity);
+        User saveUser = createUserEntity(name, point);
+        jpaRepository.save(saveUser);
 
         PointChargeRequestDTO requestDTO = createPointChargeRequestDTO(point);
 
         // when
-        ApiResponse<UserResponseDTO> response = userController.chargePoints(saveUserEntity.getId(), requestDTO);
+        ApiResponse<UserResponseDTO> response = userController.chargePoints(saveUser.getId(), requestDTO);
 
         // then
         assertThat(response).isNotNull();
         assertThat(response).extracting("id", "name", "point")
-                            .contains(saveUserEntity.getId(), name, point);
+                            .contains(saveUser.getId(), name, point);
     }
 
-    private UserEntity createUserEntity(String name, BigDecimal point) {
-        return new UserEntity(name, point);
+    private User createUserEntity(String name, BigDecimal point) {
+        return new User(name, point);
     }
 
     private PointChargeRequestDTO createPointChargeRequestDTO(BigDecimal point) {

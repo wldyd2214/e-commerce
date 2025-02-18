@@ -8,7 +8,6 @@ import com.hhplus.commerce.spring.domain.order.service.OrderService;
 import com.hhplus.commerce.spring.old.api.order.service.request.CreateOrderServiceRequest;
 import com.hhplus.commerce.spring.old.api.order.service.request.OrderServiceRequest;
 import com.hhplus.commerce.spring.domain.product.entity.Product;
-import com.hhplus.commerce.spring.domain.user.dto.User;
 import com.hhplus.commerce.spring.domain.order.repository.OrderRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;

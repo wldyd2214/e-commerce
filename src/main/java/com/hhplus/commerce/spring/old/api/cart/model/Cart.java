@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.old.api.cart.model;
 
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
-import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
+import com.hhplus.commerce.spring.domain.user.entity.User;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,17 +30,17 @@ public class Cart extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private UserEntity user;
+    private User user;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 
     @Builder
-    public Cart(UserEntity user) {
+    public Cart(User user) {
         this.user = user;
     }
 
-    public static Cart create(UserEntity user) {
+    public static Cart create(User user) {
         return Cart.builder()
                    .user(user)
                    .build();

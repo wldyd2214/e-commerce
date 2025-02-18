@@ -2,7 +2,7 @@ package com.hhplus.commerce.spring.infrastructure.order.entity;
 
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
 import com.hhplus.commerce.spring.domain.order.model.type.State;
-import com.hhplus.commerce.spring.domain.user.entity.UserEntity;
+import com.hhplus.commerce.spring.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,7 +31,7 @@ public class OrderEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private UserEntity user;
+    private User user;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "order_status", nullable = false)
@@ -41,12 +41,12 @@ public class OrderEntity extends BaseEntity {
     private List<OrderItemEntity> orderItem = new ArrayList<>();
 
     @Builder
-    public OrderEntity(UserEntity user, State state) {
+    public OrderEntity(User user, State state) {
         this.user = user;
         this.state = state;
     }
 
-    public static OrderEntity create(UserEntity user) {
+    public static OrderEntity create(User user) {
         return OrderEntity.builder()
                           .user(user)
 //                          .orderStatus(State.INIT)
