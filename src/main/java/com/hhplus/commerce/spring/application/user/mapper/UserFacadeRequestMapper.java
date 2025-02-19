@@ -14,18 +14,4 @@ public interface UserFacadeRequestMapper {
 
     @Mapping(source = "point", target = "chargePoint")
     UserCommand.PointCharge toUserCommand(UserFacadeRequest.PointCharge pointCharge);
-
-//    public static UserCommand.PointCharge toPointCharge(UserPointChargeRequest request) {
-//        return UserCommand.PointCharge.builder()
-//                                      .userId(request.getUserId())
-//                                      .chargePoint(request.getPoint())
-//                                      .build();
-//    }
-//
-//    public static PaymentCommand.Payment toPayment(UserPointChargeRequest request) {
-//        return PaymentCommand.Payment.builder()
-//                                      .userId(request.getUserId())
-//                                      .amount(request.getPoint())
-//                                      .build();
-//    }
 }
