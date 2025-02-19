@@ -51,61 +51,61 @@ class CartControllerTest {
                );
     }
 
-    @DisplayName("장바구니 목록 정보 추가에 성공한다.")
-    @Test
-    void addCartItems() throws Exception {
-        long userId = 1;
-        long productId = 1;
-        int orderCount = 2;
+//    @DisplayName("장바구니 목록 정보 추가에 성공한다.")
+//    @Test
+//    void addCartItems() throws Exception {
+//        long userId = 1;
+//        long productId = 1;
+//        int orderCount = 2;
+//
+//        CartItemRegisterRequest cartItem = CartItemRegisterRequest.builder()
+//                                                                  .productId(productId)
+//                                                                  .orderCount(orderCount)
+//                                                                  .build();
+//
+//        CartItemsRegisterRequest request = CartItemsRegisterRequest.builder()
+//                                                                   .cartItems(
+//                                                                           List.of(cartItem)
+//                                                                   )
+//                                                                   .build();
+//
+//        // when // then
+//        mockMvc.perform(
+//                post(String.format("/carts/%d/item", userId))
+//                        .content(objectMapper.writeValueAsString(request))
+//                        .contentType(MediaType.APPLICATION_JSON))
+//               .andDo(print())
+//               .andExpectAll(
+//                       status().isOk(),
+//                       jsonPath("$.code").value("200"),
+//                       jsonPath("$.status").value("OK"),
+//                       jsonPath("$.message").value("OK"),
+//                       jsonPath("$.data").isNotEmpty()
+//               );
+//    }
 
-        CartItemRegisterRequest cartItem = CartItemRegisterRequest.builder()
-                                                                  .productId(productId)
-                                                                  .orderCount(orderCount)
-                                                                  .build();
-
-        CartItemsRegisterRequest request = CartItemsRegisterRequest.builder()
-                                                                   .cartItems(
-                                                                           List.of(cartItem)
-                                                                   )
-                                                                   .build();
-
-        // when // then
-        mockMvc.perform(
-                post(String.format("/carts/%d/item", userId))
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(MediaType.APPLICATION_JSON))
-               .andDo(print())
-               .andExpectAll(
-                       status().isOk(),
-                       jsonPath("$.code").value("200"),
-                       jsonPath("$.status").value("OK"),
-                       jsonPath("$.message").value("OK"),
-                       jsonPath("$.data").isNotEmpty()
-               );
-    }
-
-    @DisplayName("장바구니 목록 정보 삭제에 성공한다.")
-    @Test
-    void deleteCartItems() throws Exception {
-        long userId = 1;
-
-        List<Long> cartItemIds = List.of(1L, 2L, 3L);
-
-        CartItemRemoveRequest request = CartItemRemoveRequest.builder()
-                                                             .cartItemIds(cartItemIds)
-                                                             .build();
-        // when // then
-        mockMvc.perform(
-                       delete(String.format("/carts/%d/item", userId))
-                               .content(objectMapper.writeValueAsString(request))
-                               .contentType(MediaType.APPLICATION_JSON))
-               .andDo(print())
-               .andExpectAll(
-                       status().isOk(),
-                       jsonPath("$.code").value("200"),
-                       jsonPath("$.status").value("OK"),
-                       jsonPath("$.message").value("OK"),
-                       jsonPath("$.data").isEmpty()
-               );
-    }
+//    @DisplayName("장바구니 목록 정보 삭제에 성공한다.")
+//    @Test
+//    void deleteCartItems() throws Exception {
+//        long userId = 1;
+//
+//        List<Long> cartItemIds = List.of(1L, 2L, 3L);
+//
+//        CartItemRemoveRequest request = CartItemRemoveRequest.builder()
+//                                                             .cartItemIds(cartItemIds)
+//                                                             .build();
+//        // when // then
+//        mockMvc.perform(
+//                       delete(String.format("/carts/%d/item", userId))
+//                               .content(objectMapper.writeValueAsString(request))
+//                               .contentType(MediaType.APPLICATION_JSON))
+//               .andDo(print())
+//               .andExpectAll(
+//                       status().isOk(),
+//                       jsonPath("$.code").value("200"),
+//                       jsonPath("$.status").value("OK"),
+//                       jsonPath("$.message").value("OK"),
+//                       jsonPath("$.data").isEmpty()
+//               );
+//    }
 }

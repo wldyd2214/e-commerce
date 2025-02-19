@@ -93,11 +93,11 @@ class UserServiceTest {
 //            .contains(userId, userName, userPoint + chargePoint);
 //    }
 
-    private User createUser(Long userId, String userName, int userPoint) {
-        return User.builder()
-                   .id(userId)
+//    private User createUser(Long userId, String userName, int userPoint) {
+//        return User.builder()
+//                   .id(userId)
 //                   .userName(userName)
 //                   .userPoint(userPoint)
-                   .build();
-    }
+//                   .build();
+//    }
 }

@@ -69,10 +69,10 @@ public class UserServiceIntegrationTest {
 //        assertThat(findUser.getUserPoint()).isEqualTo(saveUser.getUserPoint() + (chargePoint * successCount));
     }
 
-    private User createUser(String userName, int userPoint) {
-        return User.builder()
+//    private User createUser(String userName, int userPoint) {
+//        return User.builder()
 //                   .userName(userName)
 //                   .userPoint(userPoint)
-                   .build();
-    }
+//                   .build();
+//    }
 }

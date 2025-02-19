@@ -63,7 +63,7 @@ public class OrderServiceIntegrationTest {
 //        // when // then
 //        assertThatThrownBy(() -> orderService.createOrder(request))
 //                .isInstanceOf(CustomBadRequestException.class)
-//                .hasMessage(USER_POINT_BAD_REQUEST.getMessage());
+//                .hasMessage(USER_INSUFFICIENT_BALANCE_BAD_REQUEST.getMessage());
 //    }
 //
 //    @DisplayName("상품 재고가 부족한 경우 주문에 실패한다.")
