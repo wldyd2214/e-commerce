@@ -70,7 +70,7 @@ public class UserServiceImplUnitTest {
         User userEntity = createUserEntity(userId, name, defaultPoint);
 
         BigDecimal chargePoint = new BigDecimal("1000");
-        UserCommand.PointCharge command = createPointChargeCommand(userId, chargePoint);
+//        UserCommand.PointCharge command = createPointChargeCommand(userId, chargePoint);
 
         given(userRepository.findById(userId)).willReturn(Optional.ofNullable(userEntity));
 
@@ -87,10 +87,10 @@ public class UserServiceImplUnitTest {
         return new User(id, name, point);
     }
 
-    private UserCommand.PointCharge createPointChargeCommand(long userId, BigDecimal point) {
-        return UserCommand.PointCharge.builder()
-                                      .userId(userId)
-                                      .chargePoint(point)
-                                      .build();
-    }
+//    private UserCommand.PointCharge createPointChargeCommand(long userId, BigDecimal point) {
+//        return UserCommand.PointCharge.builder()
+//                                      .userId(userId)
+//                                      .chargePoint(point)
+//                                      .build();
+//    }
 }

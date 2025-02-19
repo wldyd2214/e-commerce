@@ -76,7 +76,7 @@ public class UserServiceImplIntegrationTest {
         jpaRepository.save(saveUser);
 
         BigDecimal chargePoint = new BigDecimal("1000");
-        UserCommand.PointCharge command = createPointChargeCommand(saveUser.getId(), chargePoint);
+//        UserCommand.PointCharge command = createPointChargeCommand(saveUser.getId(), chargePoint);
 
         // when
 //        User user = userService.chargeUserPoints(command);
@@ -91,10 +91,10 @@ public class UserServiceImplIntegrationTest {
         return new User(name, point);
     }
 
-    private UserCommand.PointCharge createPointChargeCommand(long userId, BigDecimal point) {
-        return UserCommand.PointCharge.builder()
-                                      .userId(userId)
-                                      .chargePoint(point)
-                                      .build();
-    }
+//    private UserCommand.PointCharge createPointChargeCommand(long userId, BigDecimal point) {
+//        return UserCommand.PointCharge.builder()
+//                                      .userId(userId)
+//                                      .chargePoint(point)
+//                                      .build();
+//    }
 }
