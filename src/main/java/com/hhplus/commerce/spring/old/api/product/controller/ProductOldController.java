@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/products")
+@RequestMapping(value = "/products/v1")
 public class ProductOldController {
 
     private final ProductOldService productOldService;

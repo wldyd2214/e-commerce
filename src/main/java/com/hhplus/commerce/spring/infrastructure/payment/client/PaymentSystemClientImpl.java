@@ -18,10 +18,10 @@ public class PaymentSystemClientImpl implements PaymentSystemClient {
     public Payment sendPayment(Long userId, BigDecimal amount) {
 
         // 결제 요청을 시뮬레이션하여 응답 생성
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            log.error("{} 사용자 결제 실패", userId);
-            throw new CustomBadGateWayException(BadGateWayErrorCode.PAYMENT_BAD_GATEWAY);
-        }
+//        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+//            log.error("{} 사용자 결제 실패", userId);
+//            throw new CustomBadGateWayException(BadGateWayErrorCode.PAYMENT_BAD_GATEWAY);
+//        }
 
         // 성공적으로 결제 요청이 처리된 경우 임의의 트랜잭션 ID 생성
         String transactionId = "txn-" + System.currentTimeMillis();

@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.support.sample;
+package com.hhplus.commerce.spring.domain.sample;
 
 public class ShippingInfo {
     // 받는 사람

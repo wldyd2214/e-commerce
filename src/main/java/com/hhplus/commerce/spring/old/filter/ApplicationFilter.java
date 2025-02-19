@@ -29,17 +29,17 @@ public class ApplicationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(requestWrapper, responseWrapper);
 
-        makeLogMessage(requestWrapper, responseWrapper);
+//        makeLogMessage(requestWrapper, responseWrapper);
 
         responseWrapper.copyBodyToResponse();
     }
 
-    private void makeLogMessage(ContentCachingRequestWrapper requestWrapper, ContentCachingResponseWrapper responseWrapper) throws IOException {
-        log.info("REQ_METHOD={} | REQ_URI={} | REQ_BODY={} | RES_HTTP_STATUS={} | RES_BODY={}",
-                 requestWrapper.getMethod(),
-                 requestWrapper.getRequestURI(),
-                 objectMapper.readTree(requestWrapper.getContentAsByteArray()),
-                 HttpStatus.valueOf(responseWrapper.getStatus()),
-                 objectMapper.readTree(responseWrapper.getContentAsByteArray()));
-    }
+//    private void makeLogMessage(ContentCachingRequestWrapper requestWrapper, ContentCachingResponseWrapper responseWrapper) throws IOException {
+//        log.info("REQ_METHOD={} | REQ_URI={} | REQ_BODY={} | RES_HTTP_STATUS={} | RES_BODY={}",
+//                 requestWrapper.getMethod(),
+//                 requestWrapper.getRequestURI(),
+//                 objectMapper.readTree(requestWrapper.getContentAsByteArray()),
+//                 HttpStatus.valueOf(responseWrapper.getStatus()),
+//                 objectMapper.readTree(responseWrapper.getContentAsByteArray()));
+//    }
 }

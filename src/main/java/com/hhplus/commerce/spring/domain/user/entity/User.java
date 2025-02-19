@@ -47,10 +47,14 @@ public class User extends BaseEntity {
         this.point = point;
     }
 
+    public static User createUser(String name, BigDecimal point) {
+        return new User(name, point);
+    }
+
     public BigDecimal chargePoint(BigDecimal point) {
 
         if (point.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("충전 액수는 0보다 커야 합니다.");
+            throw new CustomBadRequestException(BadRequestErrorCode.POSITIVE_POINT_BAD_REQUEST);
         }
 
         this.point = this.point.add(point);
@@ -61,7 +65,7 @@ public class User extends BaseEntity {
     public BigDecimal deductPoint(BigDecimal point) {
 
         if (this.point.compareTo(point) < 0) {
-            throw new CustomBadRequestException(BadRequestErrorCode.USER_POINT_BAD_REQUEST);
+            throw new CustomBadRequestException(BadRequestErrorCode.USER_INSUFFICIENT_BALANCE_BAD_REQUEST);
         }
 
         return this.point.subtract(point);
