@@ -1,3 +1,12 @@
 ### 장바구니 추가
-POST localhost:8081/carts/item
+POST localhost:8081/carts/1/item
 Content-Type: application/json
+
+{
+  "cartItems": [
+    {
+      "productId": 1,
+      "orderCount": 1
+    }
+  ]
+}

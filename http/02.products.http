@@ -1,0 +1,3 @@
+### 2. 상품 목록 조회
+GET localhost:8081/v2/products?count=&page=&name=1번
+Content-Type: application/json
