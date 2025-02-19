@@ -38,28 +38,28 @@ class UserControllerTest {
         Long userId = 1000L;
         int chargePoint = 100000;
 
-        User user = createUser(userId, "박지용", chargePoint);
+//        User user = createUser(userId, "박지용", chargePoint);
 
 //        given(userService.userBalanceCharge(userId, chargePoint)).willReturn(user);
 
-        BalanceChargeRequest request = BalanceChargeRequest.builder()
-                                                           .chargePoint(chargePoint)
-                                                           .build();
+//        BalanceChargeRequest request = BalanceChargeRequest.builder()
+//                                                           .chargePoint(chargePoint)
+//                                                           .build();
 
         // when // then
-        mockMvc.perform(
-                   post(String.format("/users/%d/charge", userId))
-                       .content(objectMapper.writeValueAsString(request))
-                       .contentType(MediaType.APPLICATION_JSON))
-               .andDo(print())
-               .andExpectAll(
-                   status().isOk(),
-                   jsonPath("$.code").value("200"),
-                   jsonPath("$.status").value("OK"),
-                   jsonPath("$.message").value("OK"),
-                   jsonPath("$.data.userId").value(userId),
-                   jsonPath("$.data.userPoint").value(chargePoint)
-               );
+//        mockMvc.perform(
+//                   post(String.format("/users/%d/charge", userId))
+//                       .content(objectMapper.writeValueAsString(request))
+//                       .contentType(MediaType.APPLICATION_JSON))
+//               .andDo(print())
+//               .andExpectAll(
+//                   status().isOk(),
+//                   jsonPath("$.code").value("200"),
+//                   jsonPath("$.status").value("OK"),
+//                   jsonPath("$.message").value("OK"),
+//                   jsonPath("$.data.userId").value(userId),
+//                   jsonPath("$.data.userPoint").value(chargePoint)
+//               );
     }
 
     @DisplayName("사용자 포인트 충전시 충전 금액에 음수를 요청하는 경우 예외가 발생한다.")
@@ -95,11 +95,11 @@ class UserControllerTest {
                                     .build();
     }
 
-    private User createUser(Long userId, String userName, int userPoint) {
-        return User.builder()
-                   .id(userId)
+//    private User createUser(Long userId, String userName, int userPoint) {
+//        return User.builder()
+//                   .id(userId)
 //                   .userName(userName)
 //                   .userPoint(userPoint)
-                   .build();
-    }
+//                   .build();
+//    }
 }

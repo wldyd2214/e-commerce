@@ -1,6 +1,5 @@
 package com.hhplus.commerce.spring.presentation.user.controller;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -9,9 +8,18 @@ import static org.mockito.BDDMockito.given;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.application.user.UserFacade;
+import com.hhplus.commerce.spring.application.user.dto.UserFacadeRequest;
+import com.hhplus.commerce.spring.application.user.dto.UserFacadeResponse;
+import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.presentation.common.exception.ErrorCode;
+import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.presentation.user.UserController;
 import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequestDTO;
+import com.hhplus.commerce.spring.presentation.user.dto.response.UserResponseDTO;
+import com.hhplus.commerce.spring.presentation.user.mapper.UserDTORequestMapper;
+import com.hhplus.commerce.spring.presentation.user.mapper.UserDTOResponseMapper;
 import java.math.BigDecimal;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,31 +28,56 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 @WebMvcTest(UserController.class)
 public class UserControllerUnitTest {
+
     @Autowired
     protected MockMvc mockMvc;
     @Autowired
     protected ObjectMapper objectMapper;
     @MockBean
     protected UserFacade userFacade;
+    @MockBean
+    protected UserDTORequestMapper requestMapper;
+    @MockBean
+    protected UserDTOResponseMapper responseMapper;
 
-    @DisplayName("사용자 포인트 충전에 성공한다.")
+
+    private static long userId;
+    private static String userName;
+    private static BigDecimal point;
+
+    @BeforeAll
+    static void beforeAll() {
+        userId = 1;
+        userName = "제리";
+        point = new BigDecimal("100000");
+    }
+
+    @DisplayName("사용자 포인트 충전 - 성공")
     @Test
     void chargePoints() throws Exception {
+
         // given
-        long userId = 1;
-        String userName = "제리";
-        BigDecimal point = new BigDecimal("1000");
         PointChargeRequestDTO request = createPointChargeRequestDTO(point);
 
-        UserInfo userInfo = createUserInfo(userId, userName, point);
-        given(userFacade.processUserPointCharge(any())).willReturn(userInfo);
+        // 1. 사용자 포인트 충전 요청 메퍼 준비
+        UserFacadeRequest.PointCharge facadePointCharge = new UserFacadeRequest.PointCharge(userId, point);
+        given(requestMapper.toPointCharge(userId, request.getChargePoint())).willReturn(facadePointCharge);
+
+        // 2. 사용자 포인트 충전 준비
+        UserFacadeResponse.PointCharge pointCharge = createPointCharge(userId, userName, point);
+        given(userFacade.chargeUserPoints(facadePointCharge)).willReturn(pointCharge);
+
+        // 3. 사용자 포인트 충전 응답 매퍼 준비
+        UserResponseDTO responseDTO = new UserResponseDTO(userId, userName, point);
+        given(responseMapper.toUserResponseDTO(pointCharge)).willReturn(responseDTO);
 
         // when // then
         mockMvc.perform(
-                   post(String.format("/users/%d/charge", userId))
+                   post("/users/{userId}/charge", userId)
                        .content(objectMapper.writeValueAsString(request))
                        .contentType(MediaType.APPLICATION_JSON))
                .andDo(print())
@@ -59,45 +92,76 @@ public class UserControllerUnitTest {
                );
     }
 
-    @DisplayName("음수를 충전하는 경우 예외가 발생한다.")
+    @DisplayName("사용자 포인트 충전 - 음수 충전")
     @Test
     void chargePointsPositive() throws Exception {
-        // given
-        long userId = 1;
-        String userName = "제리";
-        BigDecimal point = new BigDecimal("-1000");
-        PointChargeRequestDTO request = createPointChargeRequestDTO(point);
 
-        UserInfo userInfo = createUserInfo(userId, userName, point);
-        given(userFacade.processUserPointCharge(any())).willReturn(userInfo);
+        // given
+        PointChargeRequestDTO request = createPointChargeRequestDTO(new BigDecimal("-100000"));
+
+        // 1. 사용자 포인트 충전 요청 메퍼 준비
+        UserFacadeRequest.PointCharge facadePointCharge = new UserFacadeRequest.PointCharge(userId, point);
+        given(requestMapper.toPointCharge(userId, request.getChargePoint())).willReturn(facadePointCharge);
+
+        // 2. 사용자 포인트 충전 준비
+        given(userFacade.chargeUserPoints(facadePointCharge)).willThrow(new CustomBadRequestException(
+            BadRequestErrorCode.POSITIVE_POINT_BAD_REQUEST));
 
         // when // then
         mockMvc.perform(
-                   post(String.format("/users/%d/charge", userId))
+                    post("/users/{userId}/charge", userId)
                        .content(objectMapper.writeValueAsString(request))
                        .contentType(MediaType.APPLICATION_JSON))
                .andDo(print())
+               .andExpect(status().isBadRequest())
                .andExpectAll(
-                   status().isBadRequest(),
-                   jsonPath("$.code").value(HttpStatus.BAD_REQUEST.value()),
-                   jsonPath("$.status").value(HttpStatus.BAD_REQUEST.name()),
-                   jsonPath("$.message").value("충전 액수는 0보다 커야 합니다."),
-                   jsonPath("$.data").isEmpty()
+                   assertErrorResponse(BadRequestErrorCode.POSITIVE_POINT_BAD_REQUEST)
                );
     }
 
+    @DisplayName("사용자 포인트 충전 - 존재하지 않은 사용자")
+    @Test
+    void chargePointsUserNotExist() throws Exception {
+
+        // given
+        userId = -1;
+        PointChargeRequestDTO request = createPointChargeRequestDTO(point);
+
+        // 1. 사용자 포인트 충전 요청 메퍼 준비
+        UserFacadeRequest.PointCharge facadePointCharge = new UserFacadeRequest.PointCharge(userId, point);
+        given(requestMapper.toPointCharge(userId, request.getChargePoint())).willReturn(facadePointCharge);
+
+        // 2. 사용자 포인트 충전 준비
+        given(userFacade.chargeUserPoints(facadePointCharge)).willThrow(new CustomBadRequestException(
+            BadRequestErrorCode.POSITIVE_POINT_BAD_REQUEST));
+
+        // when // then
+        mockMvc.perform(
+                post("/users/{userId}/charge", userId)
+                    .content(objectMapper.writeValueAsString(request))
+                    .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpectAll(
+                assertErrorResponse(BadRequestErrorCode.POSITIVE_POINT_BAD_REQUEST)
+            );
+    }
+
     private PointChargeRequestDTO createPointChargeRequestDTO(BigDecimal point) {
-        return PointChargeRequestDTO.builder()
-                                    .chargePoint(point)
-                                    .build();
+        return new PointChargeRequestDTO(point);
     }
 
-    private UserInfo createUserInfo(Long userId, String userName, BigDecimal point) {
-        return UserInfo.builder()
-                       .id(userId)
-                       .name(userName)
-                       .point(point)
-                       .build();
+    private UserFacadeResponse.PointCharge createPointCharge(Long userId, String userName, BigDecimal point) {
+        return new UserFacadeResponse.PointCharge(userId, userName, point);
     }
 
+    // 공통 예외 응답 검증 메서드
+    private ResultMatcher[] assertErrorResponse(ErrorCode errorCode) {
+        return new ResultMatcher[]{
+            jsonPath("$.code").value(errorCode.getHttpStatus().value()),
+            jsonPath("$.status").value(errorCode.getHttpStatus().name()),
+            jsonPath("$.message").value(errorCode.getMessage()),
+            jsonPath("$.data").isEmpty()
+        };
+    }
 }
