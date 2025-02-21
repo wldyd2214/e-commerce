@@ -67,7 +67,7 @@ class UserFacadeImplIntegrationTest {
         userFacade.chargeUserPoints(request);
 
         // then
-        verify(userService, times(1)).findUserById(request.getUserId());
+        verify(userService, times(1)).findUserInfoById(request.getUserId());
         verify(paymentService, times(1)).sendPayment(payment);
         verify(userService, times(1)).chargeUserPoints(pointCharge);
     }

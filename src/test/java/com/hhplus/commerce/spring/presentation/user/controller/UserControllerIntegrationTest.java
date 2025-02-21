@@ -43,13 +43,12 @@ public class UserControllerIntegrationTest {
 
     private long userId;
     private String userName;
-    private BigDecimal defaultPoint;
     private BigDecimal chargePoint;
 
     @BeforeEach
     void setUp() {
         userName = "제리";
-        defaultPoint = new BigDecimal("0");
+        BigDecimal defaultPoint = new BigDecimal("0");
         chargePoint = new BigDecimal("100000");
 
         // 테스트 사용자 정보 준비

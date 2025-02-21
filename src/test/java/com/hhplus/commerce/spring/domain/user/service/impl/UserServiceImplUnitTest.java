@@ -1,13 +1,16 @@
 package com.hhplus.commerce.spring.domain.user.service.impl;
 
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
+import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
 import com.hhplus.commerce.spring.domain.user.entity.User;
+import com.hhplus.commerce.spring.domain.user.mapper.UserMapper;
 import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import java.math.BigDecimal;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,76 +24,90 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplUnitTest {
+
     @Mock
     UserRepository userRepository;
+    @Mock
+    UserMapper userMapper;
+
     @InjectMocks
     UserService userService;
 
-    @DisplayName("사용자 정보 조회에 성공한다.")
+    private long userId;
+    private String userName;
+    private BigDecimal chargePoint;
+
+    @BeforeEach
+    void setUp() {
+        userId = 1;
+        userName = "제리";
+        chargePoint = new BigDecimal("100000");
+    }
+
+    @DisplayName("사용자 정보 조회 - userId")
     @Test
     void findUserById() {
         // given
-        long userId = 1;
-        String name = "제리";
-        BigDecimal point = new BigDecimal("0");
-        User userEntity = createUserEntity(userId, name, point);
+        User user = createUser(userId, userName, chargePoint);
+        UserInfo userInfo = createUserInfo(userId, userName, chargePoint);
 
-        given(userRepository.findById(userId)).willReturn(Optional.ofNullable(userEntity));
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        given(userMapper.toUserInfo(user)).willReturn(userInfo);
 
         // when
-//        User user = userService.findUserById(userId);
+        UserInfo result = userService.findUserInfoById(userId);
 
         // then
-//        assertThat(user).isNotNull();
-//        assertThat(user).extracting("id", "name", "point")
-//                        .contains(userId, name, point);
+        assertThat(result).isNotNull();
+        assertThat(result).extracting("id", "name", "point")
+                          .contains(userId, userName, chargePoint);
     }
 
-    @DisplayName("존재하지 않은 사용자 정보 조회시 실패한다.")
+    @DisplayName("사용자 정보 조회 - 존재하지 않은 사용자 정보")
     @Test
     void findUserByIdIsEmpty() {
         // given
-        long userId = -1;
+        userId = -1;
 
         given(userRepository.findById(userId)).willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> userService.findUserById(userId))
+        assertThatThrownBy(() -> userService.findUserInfoById(userId))
             .isInstanceOf(CustomBadRequestException.class)
             .hasMessage(BadRequestErrorCode.USER_BAD_REQUEST.getMessage());
     }
 
-    @DisplayName("사용자 포인트를 충전한다.")
+    @DisplayName("사용자 포인트 충전 - 성공")
     @Test
     void chargeUserPoints() {
         // given
-        long userId = 1;
-        String name = "제리";
         BigDecimal defaultPoint = new BigDecimal("0");
-        User userEntity = createUserEntity(userId, name, defaultPoint);
+        User user = createUser(userId, userName, defaultPoint);
+        UserInfo userInfo = createUserInfo(userId, userName, chargePoint);
 
-        BigDecimal chargePoint = new BigDecimal("1000");
-//        UserCommand.PointCharge command = createPointChargeCommand(userId, chargePoint);
+        UserCommand.PointCharge command = createPointChargeCommand(userId, chargePoint);
 
-        given(userRepository.findById(userId)).willReturn(Optional.ofNullable(userEntity));
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        given(userMapper.toUserInfo(user)).willReturn(userInfo);
 
         // when
-//        User user = userService.chargeUserPoints(command);
+        UserInfo result = userService.chargeUserPoints(command);
 
         // then
-//        assertThat(user).isNotNull();
-//        assertThat(user).extracting("id", "name", "point")
-//                        .contains(userId, name, defaultPoint.add(chargePoint));
+        assertThat(result).isNotNull();
+        assertThat(result).extracting("id", "name", "point")
+                          .contains(userId, userName, defaultPoint.add(chargePoint));
     }
 
-    private User createUserEntity(Long id, String name, BigDecimal point) {
+    private User createUser(Long id, String name, BigDecimal point) {
         return new User(id, name, point);
     }
 
-//    private UserCommand.PointCharge createPointChargeCommand(long userId, BigDecimal point) {
-//        return UserCommand.PointCharge.builder()
-//                                      .userId(userId)
-//                                      .chargePoint(point)
-//                                      .build();
-//    }
+    private UserInfo createUserInfo(Long id, String name, BigDecimal point) {
+        return new UserInfo(id, name, point);
+    }
+
+    private UserCommand.PointCharge createPointChargeCommand(long userId, BigDecimal point) {
+        return new UserCommand.PointCharge(userId, point);
+    }
 }
