@@ -24,13 +24,13 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    private User findUserEntityById(Long userId) {
+    private User findUserById(Long userId) {
         return userRepository.findById(userId)
                              .orElseThrow(() -> new CustomBadRequestException(BadRequestErrorCode.USER_BAD_REQUEST));
     }
 
-    public UserInfo findUserById(Long userId) {
-        User entity = findUserEntityById(userId);
+    public UserInfo findUserInfoById(Long userId) {
+        User entity = findUserById(userId);
         return userMapper.toUserInfo(entity);
     }
 
@@ -42,11 +42,11 @@ public class UserService {
          * 2. 포인트 충전
          *
          * A. UserService.chargeUserPoints() 는 '사용자 포인트 충전' 의 책임을 가지는 것
-         * 이 과정에서 findUserEntityById()를 통해 UserEntity를 받아 사용하게 되는 현상은 자연스러움
+         * 이 과정에서 findUserById()를 통해 UserEntity를 받아 사용하게 되는 현상은 자연스러움
          * 도메인 객체 간 협력이 일어나는 장소가 Service 이다.
          * 물론 포인트 충전이 아닌 다른 속성을 변경하는 필요 이상의 접근이 경우 책임이 위반되었다고 불 수도 있다.
          */
-        User entity = findUserEntityById(command.getUserId());
+        User entity = findUserById(command.getUserId());
 
         // 비관적 락 적용
         try {

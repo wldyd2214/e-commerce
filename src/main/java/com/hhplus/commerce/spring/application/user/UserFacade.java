@@ -25,7 +25,7 @@ public class UserFacade {
     public UserFacadeResponse.PointCharge chargeUserPoints(UserFacadeRequest.PointCharge pointCharge) {
 
         // 1. 사용자 유효성 체크
-        userService.findUserById(pointCharge.getUserId());
+        userService.findUserInfoById(pointCharge.getUserId());
 
         // 2. 결제 시스템 호출
         paymentService.sendPayment(requestMapper.toPaymentCommand(pointCharge));
