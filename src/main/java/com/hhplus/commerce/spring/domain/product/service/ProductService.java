@@ -2,7 +2,7 @@ package com.hhplus.commerce.spring.domain.product.service;
 
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
-import com.hhplus.commerce.spring.domain.product.dto.ProductInfoList;
+import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
 import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
 import com.hhplus.commerce.spring.domain.product.mapper.ProductInfoMapper;
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
@@ -21,31 +21,29 @@ public class ProductService {
     private final ProductQueryRepository productQueryRepository;
     private final OrderItemRepository orderItemRepository;
 
-    public List<ProductInfo> getProductsByIds(List<Long> productIds) {
-        productQueryRepository.findAllByIdIn(productIds);
-        return null;
-    }
+    private final ProductInfoMapper productInfoMapper;
 
-    public ProductInfoList getProducts(ProductQuery.List query) {
+    public ProductInfoPage getProducts(ProductQuery.List query) {
 
+        // 1. 상품 목록 정보 조회
         List<Product> products = productQueryRepository.findAllByQuery(query);
 
+        // 2. 전체 카운트 조회
         Long totalCount = productQueryRepository.selectProductTotalCount(query);
 
-        List<ProductInfo> productInfoList =
-            ProductInfoMapper.INSTANCE.toProductInfoList(products);
+        // 3. 응답 객체 변환
+        List<ProductInfo> productInfoList = productInfoMapper.toProductInfoList(products);
 
-        return ProductInfoList.builder()
-                              .totalCount(totalCount.intValue())
-                              .currentPage(query.getPage())
-                              .productInfoList(productInfoList)
-                              .build();
+        return productInfoMapper.toProductInfoPage(totalCount.intValue(), query.getPage(), productInfoList);
     }
 
     @Transactional(readOnly = true)
     @Cacheable("POPULAR_ITEM")
 //    @Cacheable(value = "Populars", key = "5", cacheManager = "cacheManager")
-    public List<Product> getPopulars() {
-        return orderItemRepository.selectPopularOrderItems();
+    public List<ProductInfo> getPopulars() {
+
+        List<Product> populars = orderItemRepository.selectPopularOrderItems();
+
+        return productInfoMapper.toProductInfoList(populars);
     }
 }

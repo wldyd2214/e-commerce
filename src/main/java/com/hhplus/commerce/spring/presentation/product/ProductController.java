@@ -1,17 +1,17 @@
 package com.hhplus.commerce.spring.presentation.product;
 
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
-import com.hhplus.commerce.spring.domain.product.dto.ProductInfoList;
+import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
 import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
 import com.hhplus.commerce.spring.domain.product.service.ProductService;
-import com.hhplus.commerce.spring.old.api.product.controller.dto.ProductDTOMapper;
-import com.hhplus.commerce.spring.old.api.product.controller.response.ProductsResponse;
+import com.hhplus.commerce.spring.presentation.product.response.ProductsResponse;
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
 import com.hhplus.commerce.spring.presentation.product.dto.request.ProductListRequest;
 import com.hhplus.commerce.spring.presentation.product.dto.response.ProductListResponse;
 import com.hhplus.commerce.spring.presentation.product.mapper.ProductRequestMapper;
 import com.hhplus.commerce.spring.presentation.product.mapper.ProductResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -22,27 +22,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/v2/products")
+@Tag(name = "상품", description = "상품 관련 인터페이스를 제공합니다.")
+@RequestMapping(value = "/products")
 public class ProductController {
 
     private final ProductService productService;
 
-    @Operation(
-            summary = "상품 목록 조회 API",
-            description = "상품 목록 정보를 반환합니다."
-    )
+    private final ProductRequestMapper requestMapper;
+    private final ProductResponseMapper responseMapper;
+
+    @Operation(summary = "상품 목록 조회 API", description = "상품 목록 정보를 반환합니다.")
     @GetMapping(value = "")
     public ApiResponse<ProductListResponse> getProducts(
         @ParameterObject @ModelAttribute ProductListRequest request) {
 
+        // 0. 유효성 검증
         request.defaultValueSetting();
 
-        ProductQuery.List query = ProductRequestMapper.INSTANCE.toProductQueryList(request);
+        // 1. 요청 객체 변환
+        ProductQuery.List query = requestMapper.toProductQueryList(request);
 
-        ProductInfoList productInfoList = productService.getProducts(query);
+        // 2. 상품 목록 조회
+        ProductInfoPage productInfoPage = productService.getProducts(query);
 
-        ProductListResponse response =
-            ProductResponseMapper.INSTANCE.toProductResponse(productInfoList);
+        // 3. 응답 객체 변환
+        ProductListResponse response = responseMapper.toProductListResponse(productInfoPage);
 
         return ApiResponse.ok(response);
     }
@@ -53,6 +57,13 @@ public class ProductController {
     )
     @GetMapping(value = "/popular")
     public ApiResponse<ProductsResponse> getPopulars() {
-        return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productService.getPopulars()));
+
+        // 1. 인기 상품 목록 조회
+        List<ProductInfo> productInfoList = productService.getPopulars();
+
+        // 2. 응답 객체 변환
+        ProductsResponse response = responseMapper.toProductsResponse(productInfoList);
+
+        return ApiResponse.ok(response);
     }
 }

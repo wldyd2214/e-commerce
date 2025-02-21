@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.old.api.product.controller.dto;
+package com.hhplus.commerce.spring.presentation.order.controller.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

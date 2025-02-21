@@ -9,9 +9,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
-public interface UserDTORequestMapper {
+public interface UserRequestMapper {
 
-    UserDTORequestMapper INSTANCE = Mappers.getMapper(UserDTORequestMapper.class);
+    UserRequestMapper INSTANCE = Mappers.getMapper(UserRequestMapper.class);
 
     @Mapping(source = "chargePoint", target = "point")
     UserFacadeRequest.PointCharge toPointCharge(Long userId, BigDecimal chargePoint);

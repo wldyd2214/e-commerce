@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.old.api.cart.controller.dto;
 
-import com.hhplus.commerce.spring.old.api.product.controller.dto.ProductDTO;
+import com.hhplus.commerce.spring.presentation.order.controller.dto.ProductDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
