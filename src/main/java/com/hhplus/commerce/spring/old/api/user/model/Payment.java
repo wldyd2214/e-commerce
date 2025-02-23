@@ -1,8 +1,7 @@
 package com.hhplus.commerce.spring.old.api.user.model;
 
-import com.hhplus.commerce.spring.domain.order.model.Order;
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
-import com.hhplus.commerce.spring.infrastructure.order.entity.OrderEntity;
+import com.hhplus.commerce.spring.domain.order.model.Order;
 import com.hhplus.commerce.spring.old.api.user.model.type.PaymentStatus;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -44,7 +43,7 @@ public class Payment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private OrderEntity order;
+    private Order order;
 
     @Column(name = "payment_price", nullable = false)
     private Integer paymentPrice;
@@ -54,13 +53,13 @@ public class Payment extends BaseEntity {
     private PaymentStatus paymentStatus;
 
     @Builder
-    public Payment(OrderEntity order, Integer paymentPrice, PaymentStatus paymentStatus) {
+    public Payment(Order order, Integer paymentPrice, PaymentStatus paymentStatus) {
         this.order = order;
         this.paymentPrice = paymentPrice;
         this.paymentStatus = paymentStatus;
     }
 
-    public static Payment create(OrderEntity order, int price) {
+    public static Payment create(Order order, int price) {
         return Payment.builder()
                       .order(order)
                       .paymentPrice(price)

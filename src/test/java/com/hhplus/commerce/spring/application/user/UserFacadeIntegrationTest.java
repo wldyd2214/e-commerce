@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.application.user.impl;
+package com.hhplus.commerce.spring.application.user;
 
 import com.hhplus.commerce.spring.application.user.UserFacade;
 import com.hhplus.commerce.spring.application.user.dto.UserFacadeRequest;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 @ActiveProfiles("test")
 @SpringBootTest
 @Transactional
-class UserFacadeImplIntegrationTest {
+class UserFacadeIntegrationTest {
 
     @Autowired
     private UserFacade userFacade;

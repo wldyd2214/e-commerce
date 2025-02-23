@@ -42,8 +42,10 @@ public class ProductService {
 //    @Cacheable(value = "Populars", key = "5", cacheManager = "cacheManager")
     public List<ProductInfo> getPopulars() {
 
+        // 1. 상위 상품 목록 조회
         List<Product> populars = orderItemRepository.selectPopularOrderItems();
 
+        // 2. 응답 객체 변환
         return productInfoMapper.toProductInfoList(populars);
     }
 }

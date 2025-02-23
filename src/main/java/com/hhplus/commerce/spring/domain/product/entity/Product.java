@@ -12,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,14 +45,15 @@ public class Product extends BaseEntity {
     @Column(name = "product_count", nullable = false)
     private Integer count;
 
-    @Builder
-    public Product(Long id, String name, String desc, Integer price,
-        Integer count) {
-        this.id = id;
+    public Product(String name, String desc, Integer price, Integer count) {
         this.name = name;
         this.desc = desc;
         this.price = price;
         this.count = count;
+    }
+
+    public static Product createProduct(String name, String desc, Integer price, Integer count) {
+        return new Product(name, desc, price, count);
     }
 
     public boolean isQuantityLessThan(int quantity) {

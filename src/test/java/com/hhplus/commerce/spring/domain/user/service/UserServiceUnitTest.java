@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.domain.user.service.impl;
+package com.hhplus.commerce.spring.domain.user.service;
 
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceImplUnitTest {
+public class UserServiceUnitTest {
 
     @Mock
     UserQueryRepository userQueryRepository;

@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.application.user.impl;
+package com.hhplus.commerce.spring.application.user;
 
 import com.hhplus.commerce.spring.application.user.UserFacade;
 import com.hhplus.commerce.spring.application.user.dto.UserFacadeRequest;
@@ -24,7 +24,7 @@ import static org.mockito.BDDMockito.*;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
-class UserFacadeImplUnitTest {
+class UserFacadeUnitTest {
 
     @Mock
     UserService userService;

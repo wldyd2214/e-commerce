@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.presentation.user.controller;
+package com.hhplus.commerce.spring.presentation.user;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

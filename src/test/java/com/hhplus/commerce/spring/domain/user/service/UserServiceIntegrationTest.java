@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.domain.user.service.impl;
+package com.hhplus.commerce.spring.domain.user.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 @SpringBootTest
 @Transactional
-public class UserServiceImplIntegrationTest {
+public class UserServiceIntegrationTest {
 
     @Autowired
     UserJpaRepository jpaRepository;
