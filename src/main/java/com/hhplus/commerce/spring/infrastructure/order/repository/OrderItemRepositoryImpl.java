@@ -1,12 +1,16 @@
 package com.hhplus.commerce.spring.infrastructure.order.repository;
 
-//import static com.hhplus.commerce.spring.domain.order.model.QOrder.order;
-//import static com.hhplus.commerce.spring.domain.order.model.QOrderItem.orderItem;
+import static com.hhplus.commerce.spring.domain.order.model.QOrder.order;
+import static com.hhplus.commerce.spring.domain.order.model.QOrderItem.orderItem;
 
-import com.hhplus.commerce.spring.domain.order.model.OrderItem;
+import com.hhplus.commerce.spring.domain.order.model.type.OrderProcessStatus;
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -19,14 +23,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @Repository
 public class OrderItemRepositoryImpl implements OrderItemRepository {
-    private final OrderItemJPARepository jpaRepository;
     private final JPAQueryFactory jpaQueryFactory;
-
-    @Override
-    public List<OrderItem> saveAll(List<OrderItem> orderItems) {
-//        return jpaRepository.saveAll(orderItems);
-        return null;
-    }
 
     @Override
     public List<Product> selectPopularOrderItems() {
@@ -59,23 +56,26 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
 
         long startTime = System.currentTimeMillis();
 
-//        List<Tuple> tuples =
-//                jpaQueryFactory
-//                        .select(orderItem.product, orderItem.orderProductCount.sum())
-//                        .from(orderItem)
-//                        .join(orderItem.order, order)
-//                        .where(order.orderStatus.eq(State.COMPLETED), orderItem.createdDateTime.after(threeDaysAgo.atStartOfDay()))
-//                        .groupBy(orderItem.product)
-//                        .orderBy(orderItem.orderProductCount.sum().desc())
-//                        .limit(5)
-//                        .fetch();
-//
-//        long endTime = System.currentTimeMillis();
-//        log.info("selectPopularOrderItems() - execute time: {}(ms)", endTime - startTime);
-//
-//        return tuples.stream()
-//                     .map(t -> t.get(orderItem.product))
-//                     .collect(Collectors.toList());
-        return null;
+        List<Tuple> tuples =
+                jpaQueryFactory
+                        .select(orderItem.product, orderItem.orderProductCount.sum())
+                        .from(orderItem)
+                        .join(orderItem.order, order)
+                        .where(eqOrderStatus(OrderProcessStatus.COMPLETED), orderItem.createdDateTime.after(threeDaysAgo.atStartOfDay()))
+                        .groupBy(orderItem.product)
+                        .orderBy(orderItem.orderProductCount.sum().desc())
+                        .limit(5)
+                        .fetch();
+
+        long endTime = System.currentTimeMillis();
+        log.info("selectPopularOrderItems() - execute time: {}(ms)", endTime - startTime);
+
+        return tuples.stream()
+                     .map(t -> t.get(orderItem.product))
+                     .collect(Collectors.toList());
+    }
+
+    public BooleanExpression eqOrderStatus(OrderProcessStatus status) {
+        return order.orderProcessStatus.eq(status);
     }
 }

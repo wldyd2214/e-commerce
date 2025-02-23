@@ -4,10 +4,10 @@ import com.hhplus.commerce.spring.application.user.UserFacade;
 import com.hhplus.commerce.spring.application.user.dto.UserFacadeRequest;
 import com.hhplus.commerce.spring.application.user.dto.UserFacadeResponse;
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
-import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequestDTO;
-import com.hhplus.commerce.spring.presentation.user.dto.response.UserResponseDTO;
-import com.hhplus.commerce.spring.presentation.user.mapper.UserDTORequestMapper;
-import com.hhplus.commerce.spring.presentation.user.mapper.UserDTOResponseMapper;
+import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequest;
+import com.hhplus.commerce.spring.presentation.user.dto.response.UserResponse;
+import com.hhplus.commerce.spring.presentation.user.mapper.UserRequestMapper;
+import com.hhplus.commerce.spring.presentation.user.mapper.UserResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -22,8 +22,8 @@ public class UserController {
 
     private final UserFacade userFacade;
 
-    private final UserDTORequestMapper requestMapper;
-    private final UserDTOResponseMapper responseMapper;
+    private final UserRequestMapper requestMapper;
+    private final UserResponseMapper responseMapper;
 
     /**
      * path 1안: /users/{userId}/charge
@@ -34,8 +34,8 @@ public class UserController {
      */
     @Operation(summary = "사용자 잔액 충전/조회 API", description = "사용자 잔액을 충전합니다.")
     @PostMapping("/{userId}/charge")
-    public ApiResponse<UserResponseDTO> chargePoints(@PathVariable Long userId,
-        @RequestBody @Valid PointChargeRequestDTO reqDTO) {
+    public ApiResponse<UserResponse> chargePoints(@PathVariable Long userId,
+        @RequestBody @Valid PointChargeRequest reqDTO) {
 
         // 1. Facade 요청 DTO 변환
         UserFacadeRequest.PointCharge pointCharge = requestMapper.toPointCharge(userId, reqDTO.getChargePoint());
@@ -44,8 +44,8 @@ public class UserController {
         UserFacadeResponse.PointCharge userInfo = userFacade.chargeUserPoints(pointCharge);
 
         // 3. Facade 응답 컨트롤러 응답으로 변환
-        UserResponseDTO responseDTO = responseMapper.toUserResponseDTO(userInfo);
+        UserResponse response = responseMapper.toUserResponse(userInfo);
 
-        return ApiResponse.ok(responseDTO);
+        return ApiResponse.ok(response);
     }
 }

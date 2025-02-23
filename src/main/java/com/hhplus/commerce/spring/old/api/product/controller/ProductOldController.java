@@ -1,8 +1,7 @@
 package com.hhplus.commerce.spring.old.api.product.controller;
 
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
-import com.hhplus.commerce.spring.old.api.product.controller.dto.ProductDTOMapper;
-import com.hhplus.commerce.spring.old.api.product.controller.response.ProductsResponse;
+import com.hhplus.commerce.spring.presentation.product.response.ProductsResponse;
 import com.hhplus.commerce.spring.old.api.product.service.ProductOldService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,8 @@ public class ProductOldController {
     )
     @GetMapping(value = "")
     public ApiResponse<ProductsResponse> getProducts() {
-        return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productOldService.getProducts()));
+//        ProductDTOMapper.toProductsResponse(productOldService.getProducts());
+        return ApiResponse.ok(null);
     }
 
     @Operation(
@@ -32,7 +32,8 @@ public class ProductOldController {
     )
     @GetMapping(value = "/popular")
     public ApiResponse<ProductsResponse> getPopulars() {
-        return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productOldService.getPopulars()));
+//        ProductDTOMapper.toProductsResponse(productOldService.getPopulars());
+        return ApiResponse.ok(null);
     }
 
 }

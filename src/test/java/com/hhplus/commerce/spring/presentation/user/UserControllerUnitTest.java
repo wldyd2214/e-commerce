@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.presentation.user.controller;
+package com.hhplus.commerce.spring.presentation.user;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -14,10 +14,10 @@ import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequest
 import com.hhplus.commerce.spring.presentation.common.exception.ErrorCode;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.presentation.user.UserController;
-import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequestDTO;
-import com.hhplus.commerce.spring.presentation.user.dto.response.UserResponseDTO;
-import com.hhplus.commerce.spring.presentation.user.mapper.UserDTORequestMapper;
-import com.hhplus.commerce.spring.presentation.user.mapper.UserDTOResponseMapper;
+import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequest;
+import com.hhplus.commerce.spring.presentation.user.dto.response.UserResponse;
+import com.hhplus.commerce.spring.presentation.user.mapper.UserRequestMapper;
+import com.hhplus.commerce.spring.presentation.user.mapper.UserResponseMapper;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -40,9 +40,9 @@ public class UserControllerUnitTest {
     @MockBean
     protected UserFacade userFacade;
     @MockBean
-    protected UserDTORequestMapper requestMapper;
+    protected UserRequestMapper requestMapper;
     @MockBean
-    protected UserDTOResponseMapper responseMapper;
+    protected UserResponseMapper responseMapper;
 
 
     private static long userId;
@@ -61,7 +61,7 @@ public class UserControllerUnitTest {
     void chargePoints() throws Exception {
 
         // given
-        PointChargeRequestDTO request = createPointChargeRequestDTO(point);
+        PointChargeRequest request = createPointChargeRequestDTO(point);
 
         // 1. 사용자 포인트 충전 요청 메퍼 준비
         UserFacadeRequest.PointCharge facadePointCharge = new UserFacadeRequest.PointCharge(userId, point);
@@ -72,8 +72,8 @@ public class UserControllerUnitTest {
         given(userFacade.chargeUserPoints(facadePointCharge)).willReturn(pointCharge);
 
         // 3. 사용자 포인트 충전 응답 매퍼 준비
-        UserResponseDTO responseDTO = new UserResponseDTO(userId, userName, point);
-        given(responseMapper.toUserResponseDTO(pointCharge)).willReturn(responseDTO);
+        UserResponse responseDTO = new UserResponse(userId, userName, point);
+        given(responseMapper.toUserResponse(pointCharge)).willReturn(responseDTO);
 
         // when // then
         mockMvc.perform(
@@ -97,7 +97,7 @@ public class UserControllerUnitTest {
     void chargePointsPositive() throws Exception {
 
         // given
-        PointChargeRequestDTO request = createPointChargeRequestDTO(new BigDecimal("-100000"));
+        PointChargeRequest request = createPointChargeRequestDTO(new BigDecimal("-100000"));
 
         // 1. 사용자 포인트 충전 요청 메퍼 준비
         UserFacadeRequest.PointCharge facadePointCharge = new UserFacadeRequest.PointCharge(userId, point);
@@ -125,7 +125,7 @@ public class UserControllerUnitTest {
 
         // given
         userId = -1;
-        PointChargeRequestDTO request = createPointChargeRequestDTO(point);
+        PointChargeRequest request = createPointChargeRequestDTO(point);
 
         // 1. 사용자 포인트 충전 요청 메퍼 준비
         UserFacadeRequest.PointCharge facadePointCharge = new UserFacadeRequest.PointCharge(userId, point);
@@ -147,8 +147,8 @@ public class UserControllerUnitTest {
             );
     }
 
-    private PointChargeRequestDTO createPointChargeRequestDTO(BigDecimal point) {
-        return new PointChargeRequestDTO(point);
+    private PointChargeRequest createPointChargeRequestDTO(BigDecimal point) {
+        return new PointChargeRequest(point);
     }
 
     private UserFacadeResponse.PointCharge createPointCharge(Long userId, String userName, BigDecimal point) {

@@ -1,18 +1,11 @@
 package com.hhplus.commerce.spring.api.order.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
 
 import com.hhplus.commerce.spring.domain.order.service.OrderService;
-import com.hhplus.commerce.spring.old.api.order.service.request.CreateOrderServiceRequest;
-import com.hhplus.commerce.spring.old.api.order.service.request.OrderServiceRequest;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
 import com.hhplus.commerce.spring.domain.order.repository.OrderRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
-import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
-import java.util.List;
-import java.util.Optional;
+import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
     @Mock
-    UserRepository userRepository;
+    UserQueryRepository userQueryRepository;
     @Mock
     ProductRepository productRepository;
     @Mock

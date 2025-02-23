@@ -1,7 +1,7 @@
-package com.hhplus.commerce.spring.infrastructure.user.database;
+package com.hhplus.commerce.spring.infrastructure.user.repository;
 
 import com.hhplus.commerce.spring.domain.user.entity.User;
-import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
+import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Repository
-public class UserRepositoryImpl implements UserRepository {
+public class UserQueryRepositoryImpl implements UserQueryRepository {
 
     private final UserJpaRepository jpaRepository;
 

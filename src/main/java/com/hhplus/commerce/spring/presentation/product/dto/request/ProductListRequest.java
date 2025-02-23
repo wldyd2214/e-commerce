@@ -9,6 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ProductListRequest {
 
+    @Schema(hidden = true)
     private final Integer DEFAULT_PAGE_COUNT = 10;
 
     @Schema(description = "요청 개수")

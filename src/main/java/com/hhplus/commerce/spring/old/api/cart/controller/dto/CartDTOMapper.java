@@ -7,7 +7,7 @@ import com.hhplus.commerce.spring.old.api.cart.model.Cart;
 import com.hhplus.commerce.spring.old.api.cart.service.response.CartItemProductRes;
 import com.hhplus.commerce.spring.old.api.cart.service.response.CartItemServiceRes;
 import com.hhplus.commerce.spring.old.api.cart.service.response.CartServiceRes;
-import com.hhplus.commerce.spring.old.api.product.controller.dto.ProductDTO;
+import com.hhplus.commerce.spring.presentation.order.controller.dto.ProductDTO;
 import com.hhplus.commerce.spring.old.api.cart.service.request.CartItemRegister;
 import com.hhplus.commerce.spring.old.api.cart.service.request.CartRegisterRequest;
 import com.hhplus.commerce.spring.old.api.cart.model.CartItem;

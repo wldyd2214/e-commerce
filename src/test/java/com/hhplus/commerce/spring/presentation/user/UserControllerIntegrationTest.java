@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.presentation.user.controller;
+package com.hhplus.commerce.spring.presentation.user;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -7,10 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.domain.user.entity.User;
-import com.hhplus.commerce.spring.infrastructure.user.database.UserJpaRepository;
+import com.hhplus.commerce.spring.infrastructure.user.repository.UserJpaRepository;
 import com.hhplus.commerce.spring.presentation.common.exception.ErrorCode;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
-import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequestDTO;
+import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequest;
 import java.math.BigDecimal;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,13 +43,12 @@ public class UserControllerIntegrationTest {
 
     private long userId;
     private String userName;
-    private BigDecimal defaultPoint;
     private BigDecimal chargePoint;
 
     @BeforeEach
     void setUp() {
         userName = "제리";
-        defaultPoint = new BigDecimal("0");
+        BigDecimal defaultPoint = new BigDecimal("0");
         chargePoint = new BigDecimal("100000");
 
         // 테스트 사용자 정보 준비
@@ -63,7 +62,7 @@ public class UserControllerIntegrationTest {
     void chargePoints() throws Exception {
 
         // given
-        PointChargeRequestDTO request = createPointChargeRequestDTO(chargePoint);
+        PointChargeRequest request = createPointChargeRequestDTO(chargePoint);
 
         // when, then
         // when // then
@@ -89,7 +88,7 @@ public class UserControllerIntegrationTest {
 
         //given
         BigDecimal positivePoint = new BigDecimal("-1000000");
-        PointChargeRequestDTO request = createPointChargeRequestDTO(positivePoint);
+        PointChargeRequest request = createPointChargeRequestDTO(positivePoint);
 
         // when // then
         mockMvc.perform(
@@ -109,7 +108,7 @@ public class UserControllerIntegrationTest {
 
         // given
         userId = -1;
-        PointChargeRequestDTO request = createPointChargeRequestDTO(chargePoint);
+        PointChargeRequest request = createPointChargeRequestDTO(chargePoint);
 
         // when // then
         mockMvc.perform(
@@ -123,8 +122,8 @@ public class UserControllerIntegrationTest {
             );
     }
 
-    private PointChargeRequestDTO createPointChargeRequestDTO(BigDecimal point) {
-        return new PointChargeRequestDTO(point);
+    private PointChargeRequest createPointChargeRequestDTO(BigDecimal point) {
+        return new PointChargeRequest(point);
     }
 
     // 공통 예외 응답 검증 메서드
