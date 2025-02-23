@@ -7,7 +7,7 @@ import com.hhplus.commerce.spring.old.api.cart.infrastructure.database.CartJpaRe
 import com.hhplus.commerce.spring.old.api.cart.service.CartService;
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
-import com.hhplus.commerce.spring.infrastructure.user.database.UserJpaRepository;
+import com.hhplus.commerce.spring.infrastructure.user.repository.UserJpaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

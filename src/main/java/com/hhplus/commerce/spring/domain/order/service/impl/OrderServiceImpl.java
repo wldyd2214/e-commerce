@@ -9,7 +9,7 @@ import com.hhplus.commerce.spring.domain.order.service.OrderService;
 import com.hhplus.commerce.spring.infrastructure.order.client.DataPlatformClient;
 import com.hhplus.commerce.spring.domain.product.entity.Product;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
-import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
+import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OrderServiceImpl implements OrderService {
     private final DataPlatformClient dataPlatformClient;
-    private final UserRepository userRepository;
+    private final UserQueryRepository userQueryRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final ApplicationEventPublisher eventPublisher;

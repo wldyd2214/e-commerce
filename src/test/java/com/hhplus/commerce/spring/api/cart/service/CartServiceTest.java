@@ -7,7 +7,7 @@ import com.hhplus.commerce.spring.old.api.cart.service.CartService;
 import com.hhplus.commerce.spring.old.api.cart.repository.CartItemRepository;
 import com.hhplus.commerce.spring.old.api.cart.repository.CartRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
-import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
+import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,7 +22,7 @@ import org.mockito.quality.Strictness;
 public class CartServiceTest {
 
     @Mock
-    UserRepository userRepository;
+    UserQueryRepository userQueryRepository;
     @Mock
     CartRepository cartRepository;
     @Mock

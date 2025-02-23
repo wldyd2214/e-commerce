@@ -4,7 +4,7 @@ import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
 import com.hhplus.commerce.spring.domain.user.entity.User;
 import com.hhplus.commerce.spring.domain.user.mapper.UserMapper;
-import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
+import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
@@ -26,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 public class UserServiceImplUnitTest {
 
     @Mock
-    UserRepository userRepository;
+    UserQueryRepository userQueryRepository;
     @Mock
     UserMapper userMapper;
 
@@ -51,7 +51,7 @@ public class UserServiceImplUnitTest {
         User user = createUser(userId, userName, chargePoint);
         UserInfo userInfo = createUserInfo(userId, userName, chargePoint);
 
-        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        given(userQueryRepository.findById(userId)).willReturn(Optional.of(user));
         given(userMapper.toUserInfo(user)).willReturn(userInfo);
 
         // when
@@ -69,7 +69,7 @@ public class UserServiceImplUnitTest {
         // given
         userId = -1;
 
-        given(userRepository.findById(userId)).willReturn(Optional.empty());
+        given(userQueryRepository.findById(userId)).willReturn(Optional.empty());
 
         // when, then
         assertThatThrownBy(() -> userService.findUserInfoById(userId))
@@ -87,7 +87,7 @@ public class UserServiceImplUnitTest {
 
         UserCommand.PointCharge command = createPointChargeCommand(userId, chargePoint);
 
-        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        given(userQueryRepository.findById(userId)).willReturn(Optional.of(user));
         given(userMapper.toUserInfo(user)).willReturn(userInfo);
 
         // when

@@ -22,7 +22,8 @@ public class ProductOldController {
     )
     @GetMapping(value = "")
     public ApiResponse<ProductsResponse> getProducts() {
-        return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productOldService.getProducts()));
+//        ProductDTOMapper.toProductsResponse(productOldService.getProducts());
+        return ApiResponse.ok(null);
     }
 
     @Operation(
@@ -31,7 +32,8 @@ public class ProductOldController {
     )
     @GetMapping(value = "/popular")
     public ApiResponse<ProductsResponse> getPopulars() {
-        return ApiResponse.ok(ProductDTOMapper.toProductsResponse(productOldService.getPopulars()));
+//        ProductDTOMapper.toProductsResponse(productOldService.getPopulars());
+        return ApiResponse.ok(null);
     }
 
 }

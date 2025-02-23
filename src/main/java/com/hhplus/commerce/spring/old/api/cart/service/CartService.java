@@ -8,12 +8,10 @@ import com.hhplus.commerce.spring.old.api.cart.repository.CartItemRepository;
 import com.hhplus.commerce.spring.old.api.cart.repository.CartRepository;
 import com.hhplus.commerce.spring.old.api.cart.service.response.CartServiceRes;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
-import com.hhplus.commerce.spring.presentation.common.exception.CustomForbiddenException;
 import com.hhplus.commerce.spring.domain.product.entity.Product;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
-import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
+import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
-import com.hhplus.commerce.spring.presentation.common.exception.code.ForbiddenErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class CartService {
 
-    private final UserRepository userRepository;
+    private final UserQueryRepository userQueryRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;

@@ -4,7 +4,7 @@ import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
 import com.hhplus.commerce.spring.domain.user.entity.User;
 import com.hhplus.commerce.spring.domain.user.mapper.UserMapper;
-import com.hhplus.commerce.spring.domain.user.repository.UserRepository;
+import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomConflictException;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
@@ -20,13 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final UserQueryRepository userQueryRepository;
 
     private final UserMapper userMapper;
 
     private User findUserById(Long userId) {
-        return userRepository.findById(userId)
-                             .orElseThrow(() -> new CustomBadRequestException(BadRequestErrorCode.USER_BAD_REQUEST));
+        return userQueryRepository.findById(userId)
+                                  .orElseThrow(() -> new CustomBadRequestException(BadRequestErrorCode.USER_BAD_REQUEST));
     }
 
     public UserInfo findUserInfoById(Long userId) {

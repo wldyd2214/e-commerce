@@ -3,7 +3,6 @@ package com.hhplus.commerce.spring.infrastructure.order.repository;
 //import static com.hhplus.commerce.spring.domain.order.model.QOrder.order;
 //import static com.hhplus.commerce.spring.domain.order.model.QOrderItem.orderItem;
 
-import com.hhplus.commerce.spring.domain.order.model.OrderItem;
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
 import com.hhplus.commerce.spring.domain.product.entity.Product;
 import java.util.List;
@@ -21,12 +20,6 @@ import java.time.LocalDate;
 public class OrderItemRepositoryImpl implements OrderItemRepository {
     private final OrderItemJPARepository jpaRepository;
     private final JPAQueryFactory jpaQueryFactory;
-
-    @Override
-    public List<OrderItem> saveAll(List<OrderItem> orderItems) {
-//        return jpaRepository.saveAll(orderItems);
-        return null;
-    }
 
     @Override
     public List<Product> selectPopularOrderItems() {

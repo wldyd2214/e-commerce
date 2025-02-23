@@ -14,15 +14,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ProductResponseMapper {
 
-    @Mapping(source = "price", target = "consumerPrice")
-    ProductDTO toProductDTO(ProductInfo productInfo);
-
-    List<ProductDTO> toProductDTOList(List<ProductInfo> productInfoList);
-
     default ProductsResponse toProductsResponse(List<ProductInfo> productInfoList) {
         return ProductsResponse.builder()
-            .products(toProductDTOList(productInfoList))
-            .build();
+                               .products(toProductDTOList(productInfoList))
+                               .build();
     }
 
     default ProductListResponse toProductListResponse(ProductInfoPage productInfoPage) {
@@ -30,12 +25,17 @@ public interface ProductResponseMapper {
         int totalPageCount = productInfoPage.getTotalCount();
         int currentPage = productInfoPage.getCurrentPage();
         List<ProductDTO> productDTOList = productInfoPage.getProductInfoList()
-            .stream()
-            .map(this::toProductDTO)
-            .collect(Collectors.toList());
+                                                         .stream()
+                                                         .map(this::toProductDTO)
+                                                         .collect(Collectors.toList());
 
         return createProductListResponse(totalPageCount, currentPage, productDTOList);
     }
+
+    @Mapping(source = "price", target = "consumerPrice")
+    ProductDTO toProductDTO(ProductInfo productInfo);
+
+    List<ProductDTO> toProductDTOList(List<ProductInfo> productInfoList);
 
     ProductListResponse createProductListResponse(int totalCount, int currentPage, List<ProductDTO> products);
 }

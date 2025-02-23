@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.infrastructure.user.database;
+package com.hhplus.commerce.spring.infrastructure.user.repository;
 
 
 import com.hhplus.commerce.spring.domain.user.entity.User;

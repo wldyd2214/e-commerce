@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.presentation.product.response;
 
-import com.hhplus.commerce.spring.presentation.order.controller.dto.ProductDTO;
+import com.hhplus.commerce.spring.presentation.product.dto.ProductDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
