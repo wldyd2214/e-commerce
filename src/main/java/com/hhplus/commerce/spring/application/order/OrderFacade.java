@@ -10,6 +10,7 @@ import com.hhplus.commerce.spring.domain.order.service.OrderService;
 import com.hhplus.commerce.spring.domain.product.dto.ProductDeductInfo;
 import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand;
 import com.hhplus.commerce.spring.domain.product.service.ProductService;
+import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -41,11 +42,12 @@ public class OrderFacade {
         OrderCommand.Create orderCommand = requestMapper.toCreate(create);
         OrderInfo orderInfo = orderService.create(orderCommand, productDeductInfo);
 
-        // 4. 사용자 포인트 차감
-        int rewardPoints = 0;
-        userService.useRewardPoints(create.getUserId(), rewardPoints);
+        // 3. 사용자 포인트 차감
+        int rewardPoints = productDeductInfo.getTotalAmount();
+        UserCommand.RewardPoint userCommand = requestMapper.toUserCommandReward(create.getUserId(), rewardPoints);
+        userService.useRewardPoints(userCommand);
 
-        // 5. 외부 시스템 주문 생성 이벤트 발행
+        // 4. 외부 시스템 주문 생성 이벤트 발행
 //        eventPublisher.publishEvent(new OrderEvent(user.getId(), saveOrder.getId()));
 
         // 5. 도메인 서비스 응답 객체 변환

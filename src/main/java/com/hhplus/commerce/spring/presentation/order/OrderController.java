@@ -28,10 +28,7 @@ public class OrderController {
     private final OrderRequestMapper requestMapper;
     private final OrderResponseMapper responseMapper;
 
-    @Operation(
-        summary = "상품 주문 API",
-        description = "상품을 주문합니다."
-    )
+    @Operation(summary = "상품 주문 API", description = "상품을 주문합니다.")
     @PostMapping(value = "")
     public ApiResponse<OrderResponse> createOrder(@RequestBody @Valid OrderRequest request) {
 

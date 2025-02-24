@@ -36,13 +36,19 @@ public class OrderItem extends BaseEntity {
     @Column(name = "order_product_count", nullable = false)
     private Integer orderProductCount;
 
-    public OrderItem(Order order, Long productId, int orderProductCount) {
+    public OrderItem(Order order, Long productId, String orderProductName,
+        Integer orderProductPrice,
+        Integer orderProductCount) {
         this.order = order;
         this.productId = productId;
+        this.orderProductName = orderProductName;
+        this.orderProductPrice = orderProductPrice;
         this.orderProductCount = orderProductCount;
     }
 
-    public static OrderItem create(Order order, Long productId, int orderProductCount) {
-        return new OrderItem(order, productId, orderProductCount);
+    public static OrderItem create(Order order, Long productId, String orderProductName,
+        Integer orderProductPrice,
+        Integer orderProductCount) {
+        return new OrderItem(order, productId, orderProductName, orderProductPrice, orderProductCount);
     }
 }

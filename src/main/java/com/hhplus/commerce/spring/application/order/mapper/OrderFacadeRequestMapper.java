@@ -5,6 +5,8 @@ import com.hhplus.commerce.spring.application.order.dto.request.OrderFacadeReque
 import com.hhplus.commerce.spring.domain.order.dto.request.OrderCommand;
 import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand;
 import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand.DeductProduct;
+import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
+import com.hhplus.commerce.spring.domain.user.dto.UserCommand.RewardPoint;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,4 +25,6 @@ public interface OrderFacadeRequestMapper {
     ProductCommand.DeductProduct mapOrderToProduct(OrderFacadeDTO order);
 
     OrderCommand.Create toCreate(OrderFacadeRequest.Create request);
+
+    UserCommand.RewardPoint toUserCommandReward(long userId, int deductionPoints);
 }

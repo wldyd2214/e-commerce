@@ -61,9 +61,9 @@ public class UserService {
     /**
      * 1. 사용자 포인트 차감시 동시성 문제를 위해 낙관적 락 적용
      */
-    public void useRewardPoints(Long userId, int rewardPoints) {
+    public void useRewardPoints(UserCommand.RewardPoint command) {
         // 사용자 포인트 낙관적 락 적용
-//        User user = userRepository.findByIdWithLock(command.getUserId())
+//        User user = userQueryRepository.findByIdWithLock(command.getUserId())
 //                                  .orElseThrow(() -> new CustomBadRequestException(
 //                                          BadRequestErrorCode.USER_BAD_REQUEST));
 

@@ -41,7 +41,7 @@ public class OrderService {
         Map<Long, Create.OrderItem> orderItemMap = createOrderItemMap(command.getOrders());
         Map<Long, ProductInfo> productItemMap = createProductItemMap(productDeductInfo.getProductInfos());
 
-        List<OrderItem> orderItems = createOrderItems(order, orderItemMap, productDeductInfo);
+        List<OrderItem> orderItems = createOrderItems(order, orderItemMap, productItemMap);
         orderItemCommandRepository.saveAll(orderItems);
 
         // 3. 주문 엔티티 주문 아이템 업데이트
@@ -61,13 +61,16 @@ public class OrderService {
             .collect(Collectors.toMap(Create.OrderItem::getProductId, o -> o));
     }
 
-    private List<OrderItem> createOrderItems(Order order, Map<Long, Create.OrderItem> orderItemMap, ProductDeductInfo productDeductInfo) {
+    private List<OrderItem> createOrderItems(Order order, Map<Long, Create.OrderItem> orderItemMap, Map<Long, ProductInfo> productItemMap) {
 
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (Long productId : orderItemMap.keySet()) {
             int orderCount = orderItemMap.get(productId).getOrderCount();
-            OrderItem orderItem = OrderItem.create(order, productId, orderCount);
+            String productName = productItemMap.get(productId).getName();
+            int productPrice = productItemMap.get(productId).getPrice();
+
+            OrderItem orderItem = OrderItem.create(order, productId, productName, productPrice, orderCount);
             orderItems.add(orderItem);
         }
 

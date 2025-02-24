@@ -4,7 +4,7 @@ import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
 import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
 import com.hhplus.commerce.spring.domain.product.service.ProductService;
-import com.hhplus.commerce.spring.presentation.product.response.ProductsResponse;
+import com.hhplus.commerce.spring.presentation.product.dto.response.ProductsResponse;
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
 import com.hhplus.commerce.spring.presentation.product.dto.request.ProductListRequest;
 import com.hhplus.commerce.spring.presentation.product.dto.response.ProductListResponse;
