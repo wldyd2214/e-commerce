@@ -2,14 +2,12 @@ package com.hhplus.commerce.spring.api.order.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.hhplus.commerce.spring.domain.order.service.OrderService;
-import com.hhplus.commerce.spring.domain.order.repository.OrderRepository;
+import com.hhplus.commerce.spring.domain.order.repository.OrderCommandRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -21,11 +19,11 @@ class OrderServiceTest {
     @Mock
     ProductRepository productRepository;
     @Mock
-    OrderRepository orderRepository;
+    OrderCommandRepository orderCommandRepository;
 //    @Mock
 //    DataPlatformService dataPlatformService;
-    @InjectMocks
-    OrderService orderService;
+//    @InjectMocks
+//    OrderService orderService;
 
     @DisplayName("유효하지 않은 사용자의 경우 주문에 실패한다.")
     @Test

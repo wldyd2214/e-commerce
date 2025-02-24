@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderResponseDTO {
+public class OrderResponse {
 
     @Schema(description = "주문 아이디", example = "1")
     private Long id;

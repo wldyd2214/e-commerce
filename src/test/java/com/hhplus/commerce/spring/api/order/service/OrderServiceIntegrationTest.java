@@ -1,7 +1,6 @@
 package com.hhplus.commerce.spring.api.order.service;
 
 import com.hhplus.commerce.spring.infrastructure.order.repository.OrderJpaRepository;
-import com.hhplus.commerce.spring.domain.order.service.OrderService;
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
 import com.hhplus.commerce.spring.infrastructure.user.repository.UserJpaRepository;
 
@@ -22,8 +21,8 @@ public class OrderServiceIntegrationTest {
     @Autowired
     private ProductQueryRepository productQueryRepository;
 
-    @Autowired
-    private OrderService orderService;
+//    @Autowired
+//    private OrderService orderService;
     @Autowired
     private OrderJpaRepository orderJpaRepository;
 

@@ -57,4 +57,20 @@ public class UserService {
 
         return userMapper.toUserInfo(entity);
     }
+
+    /**
+     * 1. 사용자 포인트 차감시 동시성 문제를 위해 낙관적 락 적용
+     */
+    public void useRewardPoints(Long userId, int rewardPoints) {
+        // 사용자 포인트 낙관적 락 적용
+//        User user = userRepository.findByIdWithLock(command.getUserId())
+//                                  .orElseThrow(() -> new CustomBadRequestException(
+//                                          BadRequestErrorCode.USER_BAD_REQUEST));
+
+//        try {
+//            user.deductUserPoint(totalPrice);
+//        } catch (OptimisticLockException e) {
+//            throw new CustomConflictException(ConflictErrorCode.USER_POINT_DEDUCTION_CONFLICT);
+//        }
+    }
 }

@@ -13,9 +13,9 @@ public interface ProductQueryRepository {
 
     List<Product> findAllByQuery(ProductQuery.List query);
 
-    List<Product> findAllByIdIn(List<Long> productKeys);
+    List<Product> findAllByIdIn(List<Long> productIds);
 
-    Optional<Product> findByIdWithPessimisticLock(Long productId);
+    List<Product> findAllByIdWithPessimisticLock(List<Long> productKeys);
 
     Long selectProductTotalCount(ProductQuery.List query);
 }

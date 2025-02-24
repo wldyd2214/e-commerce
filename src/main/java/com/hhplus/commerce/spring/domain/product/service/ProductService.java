@@ -1,12 +1,17 @@
 package com.hhplus.commerce.spring.domain.product.service;
 
-import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
+import com.hhplus.commerce.spring.domain.order.repository.OrderItemQueryRepository;
+import com.hhplus.commerce.spring.domain.product.dto.ProductDeductInfo;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
 import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
+import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand;
+import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand.DeductProduct;
 import com.hhplus.commerce.spring.domain.product.mapper.ProductInfoMapper;
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
 import com.hhplus.commerce.spring.domain.product.entity.Product;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -19,7 +24,7 @@ import java.util.List;
 public class ProductService {
 
     private final ProductQueryRepository productQueryRepository;
-    private final OrderItemRepository orderItemRepository;
+    private final OrderItemQueryRepository orderItemRepository;
 
     private final ProductInfoMapper productInfoMapper;
 
@@ -47,5 +52,49 @@ public class ProductService {
 
         // 2. 응답 객체 변환
         return productInfoMapper.toProductInfoList(populars);
+    }
+
+    @Transactional
+    public ProductDeductInfo deductProductQuantities(ProductCommand.Deduct command) {
+
+        // 1. 주문된 상품 조회
+        List<Long> productIds =
+            command.getProducts().stream().map(DeductProduct::getId).toList();
+
+        Map<Long, DeductProduct> deductProductMap = createDeductProductMap(command.getProducts());
+        Map<Long, Product> productMap = createProductMap(productIds);
+
+        // 2. 상품 재고 차감
+        int totalAmount = 0;
+
+        for (Long productId : productMap.keySet()) {
+            Product product = productMap.get(productId);
+            int deductCount = deductProductMap.get(productId).getCount();
+            product.deductQuantity(deductCount);
+
+            totalAmount += (product.getPrice() * deductCount);
+        }
+
+        return productInfoMapper.toProductDeductInfo(totalAmount, productMap);
+    }
+
+    private Map<Long, DeductProduct> createDeductProductMap(List<DeductProduct> products) {
+        return products.stream()
+            .collect(Collectors.toMap(product -> product.getId(), p -> p));
+    }
+
+    /**
+     * 재고 감소 -> 동시성 고민
+     * optimistic lock / pessimistic lock / ...
+     * 동시의 여러개의 주문이 들어오는 경우
+     * 재고 10개 <- 1번 주문 재고 9개 구매, 2번 주문 재고 2개 구매인 경우
+     */
+    private Map<Long, Product> createProductMap(List<Long> productIds) {
+
+        List<Product> products =
+            productQueryRepository.findAllByIdWithPessimisticLock(productIds);
+
+        return products.stream()
+            .collect(Collectors.toMap(product -> product.getId(), p -> p));
     }
 }

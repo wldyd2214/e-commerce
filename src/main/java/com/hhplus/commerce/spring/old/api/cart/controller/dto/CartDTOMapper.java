@@ -7,7 +7,7 @@ import com.hhplus.commerce.spring.old.api.cart.model.Cart;
 import com.hhplus.commerce.spring.old.api.cart.service.response.CartItemProductRes;
 import com.hhplus.commerce.spring.old.api.cart.service.response.CartItemServiceRes;
 import com.hhplus.commerce.spring.old.api.cart.service.response.CartServiceRes;
-import com.hhplus.commerce.spring.presentation.order.controller.dto.ProductDTO;
+//import com.hhplus.commerce.spring.presentation.order.controller.dto.ProductDTO;
 import com.hhplus.commerce.spring.old.api.cart.service.request.CartItemRegister;
 import com.hhplus.commerce.spring.old.api.cart.service.request.CartRegisterRequest;
 import com.hhplus.commerce.spring.old.api.cart.model.CartItem;
@@ -33,19 +33,19 @@ public class CartDTOMapper {
     public static CartItemDTO toCartItemDTO(CartItem cartItem) {
         return CartItemDTO.builder()
                           .id(cartItem.getId())
-                          .product(toProductDTO(cartItem.getProduct()))
+//                          .product(toProductDTO(cartItem.getProduct()))
                           .orderCount(cartItem.getCartItemProductCount())
                           .build();
     }
 
-    public static ProductDTO toProductDTO(Product product) {
-        return ProductDTO.builder()
-                         .id(product.getId())
-                         .name(product.getName())
-                         .consumerPrice(product.getPrice())
-                         .stockCount(product.getCount())
-                         .build();
-    }
+//    public static ProductDTO toProductDTO(Product product) {
+//        return ProductDTO.builder()
+//                         .id(product.getId())
+//                         .name(product.getName())
+//                         .consumerPrice(product.getPrice())
+//                         .stockCount(product.getCount())
+//                         .build();
+//    }
 
     public static CartRegisterRequest toCartRegisterRequest(
         CartItemsRegisterRequest cartItemsRegisterRequest) {
@@ -81,17 +81,17 @@ public class CartDTOMapper {
     public static CartItemDTO toCartItemDTO(CartItemServiceRes cartItemServiceRes) {
         return CartItemDTO.builder()
                           .id(cartItemServiceRes.getId())
-                          .product(toProductDTO(cartItemServiceRes.getProduct()))
+//                          .product(toProductDTO(cartItemServiceRes.getProduct()))
                           .orderCount(cartItemServiceRes.getAddProductCount())
                           .build();
     }
 
-    public static ProductDTO toProductDTO(CartItemProductRes cartItemProductRes) {
-        return ProductDTO.builder()
-                         .id(cartItemProductRes.getId())
-                         .name(cartItemProductRes.getName())
-                         .consumerPrice(cartItemProductRes.getPrice())
-                         .stockCount(cartItemProductRes.getCount())
-                         .build();
-    }
+//    public static ProductDTO toProductDTO(CartItemProductRes cartItemProductRes) {
+//        return ProductDTO.builder()
+//                         .id(cartItemProductRes.getId())
+//                         .name(cartItemProductRes.getName())
+//                         .consumerPrice(cartItemProductRes.getPrice())
+//                         .stockCount(cartItemProductRes.getCount())
+//                         .build();
+//    }
 }

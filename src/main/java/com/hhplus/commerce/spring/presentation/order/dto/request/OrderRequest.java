@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderRequestDTO {
+public class OrderRequest {
 
     @Schema(description = "사용자 아이디", example = "1")
     @Positive(message = "사용자 아이디 값은 양수여야 합니다.")

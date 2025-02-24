@@ -29,28 +29,28 @@ public class Order extends BaseEntity {
     @Column(name = "order_id", nullable = false)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Long userId;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "order_status", nullable = false)
     private OrderProcessStatus orderProcessStatus;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItem = new ArrayList<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
 
-    @Builder
-    public Order(User user, OrderProcessStatus orderProcessStatus) {
-        this.user = user;
+    public Order(long userId, OrderProcessStatus orderProcessStatus) {
+        this.userId = userId;
         this.orderProcessStatus = orderProcessStatus;
     }
 
-    public static Order create(User user) {
-        return Order.builder()
-                    .user(user)
-//                          .orderStatus(State.INIT)
-                    .build();
+    public static Order create(long userId) {
+        return new Order(userId, OrderProcessStatus.INIT);
+    }
+
+    public void updateOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public void orderStatusPaymentFail() {
