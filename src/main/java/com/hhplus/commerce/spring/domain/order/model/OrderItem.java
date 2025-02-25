@@ -1,12 +1,10 @@
 package com.hhplus.commerce.spring.domain.order.model;
 
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
-@Setter
 @AttributeOverrides({
     @AttributeOverride(name = "createdDateTime", column = @Column(name = "reg_date")),
     @AttributeOverride(name = "modifiedDateTime", column = @Column(name = "mod_date"))
@@ -25,9 +23,9 @@ public class OrderItem extends BaseEntity {
     @JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Product product;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Long productId;
 
     @Column(name = "order_product_name", nullable = false)
     private String orderProductName;
@@ -38,33 +36,19 @@ public class OrderItem extends BaseEntity {
     @Column(name = "order_product_count", nullable = false)
     private Integer orderProductCount;
 
-    @Builder
-    public OrderItem(Order order, Product product, String orderProductName,
-                           Integer orderProductPrice,
-                           Integer orderProductCount) {
+    public OrderItem(Order order, Long productId, String orderProductName,
+        Integer orderProductPrice,
+        Integer orderProductCount) {
         this.order = order;
-        this.product = product;
+        this.productId = productId;
         this.orderProductName = orderProductName;
         this.orderProductPrice = orderProductPrice;
         this.orderProductCount = orderProductCount;
     }
 
-    public static OrderItem create(Order order, Product product, int orderCount) {
-        return OrderItem.builder()
-                        .order(order)
-                        .product(product)
-                        .orderProductName(product.getName())
-                        .orderProductPrice(product.getPrice())
-                        .orderProductCount(orderCount)
-                        .build();
-    }
-
-    public static OrderItem create(Product product, int orderCount) {
-        return OrderItem.builder()
-                        .product(product)
-                        .orderProductName(product.getName())
-                        .orderProductPrice(product.getPrice())
-                        .orderProductCount(orderCount)
-                        .build();
+    public static OrderItem create(Order order, Long productId, String orderProductName,
+        Integer orderProductPrice,
+        Integer orderProductCount) {
+        return new OrderItem(order, productId, orderProductName, orderProductPrice, orderProductCount);
     }
 }

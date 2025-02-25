@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.old.api.product.service;
 
 import com.hhplus.commerce.spring.domain.product.entity.Product;
-import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
+import com.hhplus.commerce.spring.domain.order.repository.OrderItemQueryRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProductOldService {
     private final ProductRepository productRepository;
-    private final OrderItemRepository orderItemRepository;
+    private final OrderItemQueryRepository orderItemRepository;
 
     public List<Product> getProducts() {
         return productRepository.findAllByOrderByIdDesc();

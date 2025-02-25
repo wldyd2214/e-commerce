@@ -21,5 +21,5 @@ public class OrderItemDTO {
     private Integer productPrice;
 
     @Schema(description = "주문 상품 갯수", example = "1")
-    private Integer count;
+    private Integer orderCount;
 }

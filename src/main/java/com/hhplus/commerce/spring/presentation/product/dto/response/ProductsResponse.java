@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.presentation.product.response;
+package com.hhplus.commerce.spring.presentation.product.dto.response;
 
 import com.hhplus.commerce.spring.presentation.product.dto.ProductDTO;
 import io.swagger.v3.oas.annotations.media.Schema;

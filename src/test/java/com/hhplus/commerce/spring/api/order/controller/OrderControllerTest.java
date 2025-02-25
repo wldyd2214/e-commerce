@@ -7,18 +7,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhplus.commerce.spring.presentation.order.controller.OrderController;
-import com.hhplus.commerce.spring.presentation.order.dto.OrderPaymentDTO;
-import com.hhplus.commerce.spring.presentation.order.dto.request.OrderRequestDTO;
+import com.hhplus.commerce.spring.presentation.order.OrderController;
+import com.hhplus.commerce.spring.presentation.order.dto.request.OrderItemRequest;
+import com.hhplus.commerce.spring.presentation.order.dto.request.OrderRequest;
 import com.hhplus.commerce.spring.domain.order.model.Order;
-import com.hhplus.commerce.spring.domain.order.service.OrderService;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,8 +29,8 @@ class OrderControllerTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
-    @MockBean
-    protected OrderService orderService;
+//    @MockBean
+//    protected OrderService orderService;
 
     @DisplayName("유효하지 않은 사용자의 경우 주문을 실패한다.")
     @Test
@@ -42,9 +40,9 @@ class OrderControllerTest {
 
         int orderCount = 1;
         long productId = 1;
-        OrderPaymentDTO orderPayment1 = createOrderPaymentDTO(orderCount, productId);
+        OrderItemRequest orderPayment1 = createOrderPaymentDTO(orderCount, productId);
 
-        OrderRequestDTO request = OrderRequestDTO.builder()
+        OrderRequest request = OrderRequest.builder()
                                                  .userId(userId)
                                                  .orderItems(List.of(orderPayment1))
                                                  .build();
@@ -71,9 +69,9 @@ class OrderControllerTest {
 
         int orderCount = 1;
         long productId = -1;
-        OrderPaymentDTO orderPayment1 = createOrderPaymentDTO(orderCount, productId);
+        OrderItemRequest orderPayment1 = createOrderPaymentDTO(orderCount, productId);
 
-        OrderRequestDTO request = OrderRequestDTO.builder()
+        OrderRequest request = OrderRequest.builder()
                                                  .userId(userId)
                                                  .orderItems(List.of(orderPayment1))
                                                  .build();
@@ -99,9 +97,9 @@ class OrderControllerTest {
 
         int orderCount = -1;
         long productId = 1;
-        OrderPaymentDTO orderPayment1 = createOrderPaymentDTO(orderCount, productId);
+        OrderItemRequest orderPayment1 = createOrderPaymentDTO(orderCount, productId);
 
-        OrderRequestDTO request = OrderRequestDTO.builder()
+        OrderRequest request = OrderRequest.builder()
                                                  .userId(userId)
                                                  .orderItems(List.of(orderPayment1))
                                                  .build();
@@ -128,10 +126,10 @@ class OrderControllerTest {
 
         long orderId = 1;
 
-        OrderPaymentDTO orderPayment1 = createOrderPaymentDTO(1, 1);
-        OrderPaymentDTO orderPayment2 = createOrderPaymentDTO(1, 2);
+        OrderItemRequest orderPayment1 = createOrderPaymentDTO(1, 1);
+        OrderItemRequest orderPayment2 = createOrderPaymentDTO(1, 2);
 
-        OrderRequestDTO request = OrderRequestDTO.builder()
+        OrderRequest request = OrderRequest.builder()
                                                  .userId(userId)
                                                  .orderItems(List.of(orderPayment1, orderPayment2))
                                                  .build();
@@ -154,8 +152,8 @@ class OrderControllerTest {
 //               );
     }
 
-    private OrderPaymentDTO createOrderPaymentDTO(int orderCount, long productId) {
-        return OrderPaymentDTO.builder()
+    private OrderItemRequest createOrderPaymentDTO(int orderCount, long productId) {
+        return OrderItemRequest.builder()
                               .orderCount(orderCount)
                               .productId(productId)
                               .build();

@@ -1,6 +1,5 @@
 package com.hhplus.commerce.spring.presentation.order.dto.request;
 
-import com.hhplus.commerce.spring.presentation.order.dto.OrderPaymentDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderRequestDTO {
+public class OrderRequest {
 
     @Schema(description = "사용자 아이디", example = "1")
     @Positive(message = "사용자 아이디 값은 양수여야 합니다.")
@@ -24,5 +23,5 @@ public class OrderRequestDTO {
     @Schema(description = "주문 정보 목록")
     @NotNull
     @Valid
-    private List<OrderPaymentDTO> orderItems;
+    private List<OrderItemRequest> orderItems;
 }

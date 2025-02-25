@@ -5,38 +5,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.domain.product.service.ProductService;
 import com.hhplus.commerce.spring.presentation.product.mapper.ProductRequestMapper;
 import com.hhplus.commerce.spring.presentation.product.mapper.ProductResponseMapper;
+import com.hhplus.commerce.spring.support.ControllerIntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
-@ActiveProfiles("test")
-@AutoConfigureMockMvc
-@Transactional
-@SpringBootTest
-class ProductControllerIntegrationTest {
+class ProductControllerIntegrationTest extends ControllerIntegrationTestSupport {
 
     @Autowired
-    protected MockMvc mockMvc;
-    @Autowired
-    protected ObjectMapper objectMapper;
+    private ProductService productService;
 
     @Autowired
-    ProductService productService;
-
+    private ProductRequestMapper requestMapper;
     @Autowired
-    ProductRequestMapper requestMapper;
-    @Autowired
-    ProductResponseMapper responseMapper;
+    private ProductResponseMapper responseMapper;
 
     @DisplayName("상품 목록 조회 - 성공")
     @Test

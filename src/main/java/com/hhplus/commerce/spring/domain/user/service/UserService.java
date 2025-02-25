@@ -9,6 +9,8 @@ import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequest
 import com.hhplus.commerce.spring.presentation.common.exception.CustomConflictException;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.presentation.common.exception.code.ConflictErrorCode;
+import jakarta.persistence.OptimisticLockException;
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -56,5 +58,23 @@ public class UserService {
         }
 
         return userMapper.toUserInfo(entity);
+    }
+
+    /**
+     * 1. 사용자 포인트 차감시 동시성 문제를 위해 낙관적 락 적용
+     */
+    @Transactional
+    public void useRewardPoints(UserCommand.RewardPoint command) {
+
+        // 사용자 포인트 낙관적 락 적용
+        User user = userQueryRepository.findByIdWithLock(command.getUserId())
+                                  .orElseThrow(() -> new CustomBadRequestException(
+                                          BadRequestErrorCode.USER_BAD_REQUEST));
+
+        try {
+            user.deductPoint(new BigDecimal(command.getDeductionPoints()));
+        } catch (OptimisticLockException e) {
+            throw new CustomConflictException(ConflictErrorCode.USER_POINT_DEDUCTION_CONFLICT);
+        }
     }
 }

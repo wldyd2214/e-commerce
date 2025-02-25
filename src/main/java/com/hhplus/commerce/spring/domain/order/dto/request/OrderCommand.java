@@ -1,19 +1,19 @@
 package com.hhplus.commerce.spring.domain.order.dto.request;
 
 import java.util.List;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class OrderCommand {
 
     @Getter
-    @Builder
-    public static class Order {
+    @AllArgsConstructor
+    public static class Create {
         private Long userId;
         private List<OrderItem> orders;
 
         @Getter
-        @Builder
+        @AllArgsConstructor
         public static class OrderItem {
             private Long productId;
             private Integer orderCount;

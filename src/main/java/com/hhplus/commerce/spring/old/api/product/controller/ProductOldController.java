@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.old.api.product.controller;
 
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
-import com.hhplus.commerce.spring.presentation.product.response.ProductsResponse;
+import com.hhplus.commerce.spring.presentation.product.dto.response.ProductsResponse;
 import com.hhplus.commerce.spring.old.api.product.service.ProductOldService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

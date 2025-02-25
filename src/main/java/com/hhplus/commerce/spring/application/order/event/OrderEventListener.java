@@ -1,7 +1,6 @@
-package com.hhplus.commerce.spring.domain.order.service;
+package com.hhplus.commerce.spring.application.order.event;
 
 import com.hhplus.commerce.spring.infrastructure.order.client.DataPlatformClient;
-import com.hhplus.commerce.spring.old.api.order.service.request.OrderEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -16,10 +15,13 @@ public class OrderEventListener {
 
     private final DataPlatformClient dataPlatformClient;
 
+    /**
+     * 성능 최적화를 위한 Async 어노테이션 선언
+     */
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void sendOrderData(OrderEvent orderEvent) {
-        boolean dataResult = dataPlatformClient.sendOrderData(orderEvent.getUserId(), orderEvent.getOrderId());
-        log.info("데이터 플랫폼 전송 결과 : {} ", dataResult);
+    public void sendOrderData(OrderCreateEvent createEvent) {
+        boolean dataResult = dataPlatformClient.sendOrderData(createEvent.getUserId(), createEvent.getOrderId());
+        log.info("[OrderEventListener.sendOrderData()] - 데이터 플랫폼 전송 결과 : {} ", dataResult);
     }
 }

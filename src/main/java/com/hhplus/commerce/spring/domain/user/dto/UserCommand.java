@@ -9,10 +9,16 @@ import lombok.Setter;
 public class UserCommand {
 
     @Getter
-    @Setter
     @AllArgsConstructor
     public static class PointCharge {
         private Long userId;
         private BigDecimal chargePoint;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class RewardPoint {
+        private Long userId;
+        private Integer deductionPoints;
     }
 }

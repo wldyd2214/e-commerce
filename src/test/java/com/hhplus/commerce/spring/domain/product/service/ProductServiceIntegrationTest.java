@@ -2,18 +2,14 @@ package com.hhplus.commerce.spring.domain.product.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
-import static org.mockito.BDDMockito.given;
 
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
 import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
 import com.hhplus.commerce.spring.domain.product.entity.Product;
-import com.hhplus.commerce.spring.domain.order.repository.OrderItemRepository;
+import com.hhplus.commerce.spring.domain.order.repository.OrderItemQueryRepository;
 import com.hhplus.commerce.spring.domain.product.repository.ProductCommandRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +27,7 @@ class ProductServiceIntegrationTest {
     ProductCommandRepository productCommandRepository;
 
     @Autowired
-    OrderItemRepository orderItemRepository;
+    OrderItemQueryRepository orderItemRepository;
 
     @Autowired
     ProductService productService;

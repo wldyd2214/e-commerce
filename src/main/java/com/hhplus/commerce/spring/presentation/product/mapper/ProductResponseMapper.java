@@ -2,7 +2,7 @@ package com.hhplus.commerce.spring.presentation.product.mapper;
 
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
-import com.hhplus.commerce.spring.presentation.product.response.ProductsResponse;
+import com.hhplus.commerce.spring.presentation.product.dto.response.ProductsResponse;
 import com.hhplus.commerce.spring.presentation.product.dto.ProductDTO;
 import com.hhplus.commerce.spring.presentation.product.dto.response.ProductListResponse;
 import java.util.stream.Collectors;
