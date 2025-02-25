@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.presentation.order.dto;
+package com.hhplus.commerce.spring.presentation.order.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderPaymentDTO {
+public class OrderItemRequest {
 
     @Schema(description = "상품 아이디", example = "1")
     @Positive(message = "상품 아이디는 양수여야 합니다.")

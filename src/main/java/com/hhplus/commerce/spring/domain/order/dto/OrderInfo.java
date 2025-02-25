@@ -16,7 +16,8 @@ public class OrderInfo {
     @AllArgsConstructor
     public static class OrderItemInfo {
         private Long id;
-        private Long productId;
-        private Integer orderProductCount;
+        private String productName;
+        private Integer productPrice;
+        private Integer orderCount;
     }
 }

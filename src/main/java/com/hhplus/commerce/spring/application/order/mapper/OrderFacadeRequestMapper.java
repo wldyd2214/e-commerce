@@ -26,5 +26,5 @@ public interface OrderFacadeRequestMapper {
 
     OrderCommand.Create toCreate(OrderFacadeRequest.Create request);
 
-    UserCommand.RewardPoint toUserCommandReward(long userId, int deductionPoints);
+    UserCommand.RewardPoint toUserCommandReward(Long userId, Integer deductionPoints);
 }

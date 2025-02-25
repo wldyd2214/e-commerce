@@ -1,7 +1,9 @@
 package com.hhplus.commerce.spring.application.order;
 
+import com.hhplus.commerce.spring.application.order.event.OrderCreateEvent;
 import com.hhplus.commerce.spring.application.order.dto.request.OrderFacadeRequest;
 import com.hhplus.commerce.spring.application.order.dto.response.OrderFacadeResponse;
+import com.hhplus.commerce.spring.application.order.event.OrderEventProducer;
 import com.hhplus.commerce.spring.application.order.mapper.OrderFacadeRequestMapper;
 import com.hhplus.commerce.spring.application.order.mapper.OrderFacadeResponseMapper;
 import com.hhplus.commerce.spring.domain.order.dto.OrderInfo;
@@ -26,6 +28,7 @@ public class OrderFacade {
     private final UserService userService;
 
     private final ApplicationEventPublisher eventPublisher;
+    private final OrderEventProducer orderEventProducer;
 
     private final OrderFacadeRequestMapper requestMapper;
     private final OrderFacadeResponseMapper responseMapper;
@@ -33,7 +36,7 @@ public class OrderFacade {
     @Transactional
     public OrderFacadeResponse.Create orderCreate(OrderFacadeRequest.Create create) {
 
-        // 1. 올바른 상품 확인 및 재고 감소
+        // 1. 상품 확인/재고 감소
         // 상품 아이디, 이름, 가격 정보
         ProductCommand.Deduct productCommand = requestMapper.toProductCommandDeduct(create);
         ProductDeductInfo productDeductInfo = productService.deductProductQuantities(productCommand);
@@ -48,7 +51,11 @@ public class OrderFacade {
         userService.useRewardPoints(userCommand);
 
         // 4. 외부 시스템 주문 생성 이벤트 발행
-//        eventPublisher.publishEvent(new OrderEvent(user.getId(), saveOrder.getId()));
+        OrderCreateEvent orderEvent = OrderCreateEvent.create(create.getUserId(), orderInfo.getId());
+        // 카프카 이벤트
+        orderEventProducer.sendOrderCreateEvent(orderEvent);
+        // 애플리케이션 이벤트
+//        eventPublisher.publishEvent(orderEvent);
 
         // 5. 도메인 서비스 응답 객체 변환
         return responseMapper.toCreate(orderInfo);

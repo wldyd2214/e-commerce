@@ -1,6 +1,5 @@
 package com.hhplus.commerce.spring.presentation.order.dto.request;
 
-import com.hhplus.commerce.spring.presentation.order.dto.OrderPaymentDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -24,5 +23,5 @@ public class OrderRequest {
     @Schema(description = "주문 정보 목록")
     @NotNull
     @Valid
-    private List<OrderPaymentDTO> orderItems;
+    private List<OrderItemRequest> orderItems;
 }

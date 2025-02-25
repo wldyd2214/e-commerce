@@ -62,12 +62,14 @@ public class User extends BaseEntity {
         return this.point;
     }
 
-    public BigDecimal deductPoint(BigDecimal point) {
+    public BigDecimal deductPoint(BigDecimal deductionPoints) {
 
-        if (this.point.compareTo(point) < 0) {
+        if (this.point.compareTo(deductionPoints) < 0) {
             throw new CustomBadRequestException(BadRequestErrorCode.USER_INSUFFICIENT_BALANCE_BAD_REQUEST);
         }
 
-        return this.point.subtract(point);
+        this.point = this.point.subtract(deductionPoints);
+
+        return this.point;
     }
 }

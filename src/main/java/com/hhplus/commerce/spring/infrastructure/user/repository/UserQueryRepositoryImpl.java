@@ -15,4 +15,9 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
 
     @Override
     public  Optional<User> findById(Long userId) { return jpaRepository.findById(userId); }
+
+    @Override
+    public Optional<User> findByIdWithLock(Long userId) {
+        return jpaRepository.findByIdWithLock(userId);
+    }
 }

@@ -66,9 +66,9 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (Long productId : orderItemMap.keySet()) {
-            int orderCount = orderItemMap.get(productId).getOrderCount();
             String productName = productItemMap.get(productId).getName();
             int productPrice = productItemMap.get(productId).getPrice();
+            int orderCount = orderItemMap.get(productId).getOrderCount();
 
             OrderItem orderItem = OrderItem.create(order, productId, productName, productPrice, orderCount);
             orderItems.add(orderItem);
