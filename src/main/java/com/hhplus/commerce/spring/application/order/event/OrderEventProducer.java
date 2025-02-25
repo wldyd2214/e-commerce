@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 public class OrderEventProducer {
 
     private final KafkaTemplate<String, OrderCreateEvent> kafkaTemplate;
-    private static final String TOPIC = "order-created-topic";
 
     public void sendOrderCreateEvent(OrderCreateEvent event) {
-        kafkaTemplate.send(TOPIC, event);
-        log.info("📤 Kafka 이벤트 발행 완료: userId({}), orderId({})", event.getUserId(), event.getOrderId());
+        kafkaTemplate.send(OrderTopicType.ORDER_CREATED_TOPIC.getTopic(), event);
+        log.info("📤 Kafka 이벤트 발행 완료: topic({}), userId({}), orderId({})",
+            OrderTopicType.ORDER_CREATED_TOPIC.getTopic(), event.getUserId(), event.getOrderId());
     }
 }
