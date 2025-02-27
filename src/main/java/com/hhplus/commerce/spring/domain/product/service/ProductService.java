@@ -10,9 +10,11 @@ import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand.Dedu
 import com.hhplus.commerce.spring.domain.product.mapper.ProductInfoMapper;
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
 import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.hhplus.commerce.spring.infrastructure.product.repository.ProductJpaRepository;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,8 @@ public class ProductService {
     private final OrderItemQueryRepository orderItemRepository;
 
     private final ProductInfoMapper productInfoMapper;
+
+    private final ProductJpaRepository jpaRepository;
 
     public ProductInfoPage getProducts(ProductQuery.List query) {
 
@@ -95,6 +99,6 @@ public class ProductService {
             productQueryRepository.findAllByIdWithPessimisticLock(productIds);
 
         return products.stream()
-            .collect(Collectors.toMap(product -> product.getId(), p -> p));
+            .collect(Collectors.toMap(Product::getId, p -> p));
     }
 }

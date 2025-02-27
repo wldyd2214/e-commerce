@@ -66,6 +66,7 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (Long productId : orderItemMap.keySet()) {
+            // TODO: Map 데이터가 존재하지 않으면 null 발생 수정 필요
             String productName = productItemMap.get(productId).getName();
             int productPrice = productItemMap.get(productId).getPrice();
             int orderCount = orderItemMap.get(productId).getOrderCount();
