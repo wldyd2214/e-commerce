@@ -52,9 +52,9 @@ public class OrderFacade {
 
         // 4. 외부 시스템 주문 생성 이벤트 발행
         OrderCreateEvent orderEvent = OrderCreateEvent.create(create.getUserId(), orderInfo.getId());
-        // 카프카 이벤트
+        // 카프카 이벤트 (개선 후)
         orderEventProducer.sendOrderCreateEvent(orderEvent);
-        // 애플리케이션 이벤트
+        // 어플리케이션 이벤트 (개선 전)
 //        eventPublisher.publishEvent(orderEvent);
 
         // 5. 도메인 서비스 응답 객체 변환
