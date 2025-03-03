@@ -66,7 +66,7 @@ class ProductServiceIntegrationTest {
 
     @DisplayName("상품 목록 조회 - 성공")
     @Test
-    void getProducts() {
+    void getPagedProducts() {
 
         int pageCount = 10;
 
@@ -77,7 +77,7 @@ class ProductServiceIntegrationTest {
                                                    .build();
 
         // when // then
-        ProductInfoPage result = productService.getProducts(query);
+        ProductInfoPage result = productService.getPagedProducts(query);
 
         assertThat(result).isNotNull();
         assertThat(result.getProductInfoList()).hasSize(pageCount)

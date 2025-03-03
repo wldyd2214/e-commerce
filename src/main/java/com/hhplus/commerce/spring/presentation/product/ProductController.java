@@ -33,7 +33,7 @@ public class ProductController {
 
     @Operation(summary = "상품 목록 조회 API", description = "상품 목록 정보를 반환합니다.")
     @GetMapping(value = "")
-    public ApiResponse<ProductListResponse> getProducts(
+    public ApiResponse<ProductListResponse> getPagedProducts(
         @ParameterObject @ModelAttribute ProductListRequest request) {
 
         // 0. 유효성 검증
@@ -43,7 +43,7 @@ public class ProductController {
         ProductQuery.List query = requestMapper.toProductQueryList(request);
 
         // 2. 상품 목록 조회
-        ProductInfoPage productInfoPage = productService.getProducts(query);
+        ProductInfoPage productInfoPage = productService.getPagedProducts(query);
 
         // 3. 응답 객체 변환
         ProductListResponse response = responseMapper.toProductListResponse(productInfoPage);

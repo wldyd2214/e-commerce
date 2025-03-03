@@ -32,7 +32,8 @@ public class ProductService {
 
     private final ProductJpaRepository jpaRepository;
 
-    public ProductInfoPage getProducts(ProductQuery.List query) {
+    @Transactional(readOnly = true)
+    public ProductInfoPage getPagedProducts(ProductQuery.List query) {
 
         // 1. 상품 목록 정보 조회
         List<Product> products = productQueryRepository.findAllByQuery(query);
@@ -80,6 +81,14 @@ public class ProductService {
         }
 
         return productInfoMapper.toProductDeductInfo(totalAmount, productMap);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductInfo> getProducts(List<Long> productIds) {
+
+        List<Product> products = productQueryRepository.findAllByIdIn(productIds);
+
+        return productInfoMapper.toProductInfoList(products);
     }
 
     private Map<Long, DeductProduct> createDeductProductMap(List<DeductProduct> products) {

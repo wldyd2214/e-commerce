@@ -3,9 +3,9 @@ package com.hhplus.commerce.spring.api.cart.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
-import com.hhplus.commerce.spring.old.api.cart.service.CartService;
-import com.hhplus.commerce.spring.old.api.cart.repository.CartItemRepository;
-import com.hhplus.commerce.spring.old.api.cart.repository.CartRepository;
+import com.hhplus.commerce.spring.domain.cart.CartService;
+import com.hhplus.commerce.spring.domain.cart.repository.CartItemRepository;
+import com.hhplus.commerce.spring.domain.cart.repository.command.CartCommandRepository;
 import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +24,7 @@ public class CartServiceTest {
     @Mock
     UserQueryRepository userQueryRepository;
     @Mock
-    CartRepository cartRepository;
+    CartCommandRepository cartCommandRepository;
     @Mock
     CartItemRepository cartItemRepository;
     @Mock

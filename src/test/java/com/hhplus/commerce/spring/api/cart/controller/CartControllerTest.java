@@ -2,19 +2,13 @@ package com.hhplus.commerce.spring.api.cart.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.old.api.cart.controller.CartController;
-import com.hhplus.commerce.spring.old.api.cart.controller.request.CartItemRegisterRequest;
-import com.hhplus.commerce.spring.old.api.cart.controller.request.CartItemRemoveRequest;
-import com.hhplus.commerce.spring.old.api.cart.controller.request.CartItemsRegisterRequest;
-import com.hhplus.commerce.spring.old.api.cart.service.CartService;
+import com.hhplus.commerce.spring.domain.cart.CartService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
