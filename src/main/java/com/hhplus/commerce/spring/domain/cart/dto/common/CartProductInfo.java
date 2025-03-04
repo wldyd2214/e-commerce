@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.domain.cart.dto;
+package com.hhplus.commerce.spring.domain.cart.dto.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

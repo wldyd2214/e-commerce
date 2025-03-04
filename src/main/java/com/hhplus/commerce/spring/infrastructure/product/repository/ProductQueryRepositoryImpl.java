@@ -1,11 +1,11 @@
 package com.hhplus.commerce.spring.infrastructure.product.repository;
 
-import static com.hhplus.commerce.spring.domain.product.entity.QProduct.product;
+import static com.hhplus.commerce.spring.domain.product.model.QProduct.product;
 import static org.springframework.util.StringUtils.hasText;
 
 import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.hhplus.commerce.spring.domain.product.model.Product;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

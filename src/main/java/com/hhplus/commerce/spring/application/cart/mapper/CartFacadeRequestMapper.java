@@ -1,8 +1,7 @@
 package com.hhplus.commerce.spring.application.cart.mapper;
 
-import com.hhplus.commerce.spring.application.cart.dto.CartItemFacadeDTO;
-import com.hhplus.commerce.spring.domain.cart.dto.request.CartCommand;
-import com.hhplus.commerce.spring.domain.cart.dto.request.CartCommand.AddItem;
+import com.hhplus.commerce.spring.application.cart.dto.common.CartItemFacadeDTO;
+import com.hhplus.commerce.spring.domain.cart.dto.CartCommand;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
 import java.util.List;
@@ -19,6 +18,15 @@ public interface CartFacadeRequestMapper {
                         .collect(Collectors.toList());
     }
 
+    default CartCommand.AddItem toCartCommandAddItem(UserInfo userInfo, List<ProductInfo> productInfos,
+        List<CartItemFacadeDTO> cartItems) {
+
+        List<CartCommand.CartItem> cartItemInfos =
+            cartItems.stream().map(this::toCartItemFacadeDTO).collect(Collectors.toList());
+
+        return new CartCommand.AddItem(userInfo, productInfos, cartItemInfos);
+    }
+
     @Mapping(source = "orderCount", target = "cartQuantity")
-    CartCommand.AddItem toCartCommandAddItem(UserInfo userInfo, List<ProductInfo> productInfos, List<CartItemFacadeDTO> cartItems);
+    CartCommand.CartItem toCartItemFacadeDTO(CartItemFacadeDTO dto);
 }

@@ -1,6 +1,7 @@
 package com.hhplus.commerce.spring.domain.cart.model;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,17 +11,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartProduct {
 
-    private Long productId;
+    private Long id;
+    @Transient
     private String name;
-    private int price;
+    @Transient
+    private Integer price;
 
-    public CartProduct(Long productId, String name, int price) {
-        this.productId = productId;
+    public CartProduct(Long id, String name, Integer price) {
+        this.id = id;
         this.name = name;
         this.price = price;
     }
 
-    public static CartProduct create(Long productId, String name, int price) {
-        return new CartProduct(productId, name, price);
+    public static CartProduct create(Long id, String name, Integer price) {
+        return new CartProduct(id, name, price);
     }
 }

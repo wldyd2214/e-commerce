@@ -32,6 +32,9 @@ public class CartItem extends BaseEntity {
 //    @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 //    private Product product;
     @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "id", column = @Column(name = "product_id"))
+    })
     private CartProduct product;
 
     @Column(name = "cart_item_product_count", nullable = false)

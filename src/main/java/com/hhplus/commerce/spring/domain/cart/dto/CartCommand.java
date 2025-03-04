@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.domain.cart.dto.request;
+package com.hhplus.commerce.spring.domain.cart.dto;
 
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import com.hhplus.commerce.spring.domain.user.dto.UserInfo;

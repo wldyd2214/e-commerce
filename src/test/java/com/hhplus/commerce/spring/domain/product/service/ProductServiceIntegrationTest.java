@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
 import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.hhplus.commerce.spring.domain.product.model.Product;
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemQueryRepository;
 import com.hhplus.commerce.spring.domain.product.repository.ProductCommandRepository;
 import java.util.ArrayList;

@@ -4,5 +4,5 @@ import com.hhplus.commerce.spring.domain.cart.model.Cart;
 
 public interface CartCommandRepository {
 
-    Cart save(Cart saveCart);
+    Cart save(Cart cart);
 }

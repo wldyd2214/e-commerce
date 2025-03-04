@@ -1,12 +1,12 @@
 package com.hhplus.commerce.spring.presentation.cart;
 
 import com.hhplus.commerce.spring.application.cart.CartFacade;
-import com.hhplus.commerce.spring.application.cart.dto.request.CartFacadeRequest;
-import com.hhplus.commerce.spring.domain.cart.dto.CartInfo;
-import com.hhplus.commerce.spring.domain.cart.mapper.CartResponseMapper;
-import com.hhplus.commerce.spring.presentation.cart.dto.request.CartRequest;
-import com.hhplus.commerce.spring.presentation.cart.dto.response.CartResponse;
+import com.hhplus.commerce.spring.application.cart.dto.CartFacadeRequest;
+import com.hhplus.commerce.spring.domain.cart.dto.common.CartInfo;
+import com.hhplus.commerce.spring.presentation.cart.dto.CartRequest;
+import com.hhplus.commerce.spring.presentation.cart.dto.CartResponse;
 import com.hhplus.commerce.spring.presentation.cart.mapper.CartRequestMapper;
+import com.hhplus.commerce.spring.presentation.cart.mapper.CartResponseMapper;
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,7 +37,7 @@ public class CartController {
         description = "사용자의 장바구니 목록 정보를 반환 합니다."
     )
     @PostMapping(value = "/{userId}/item")
-    public ApiResponse<CartResponse.CartInfo> addCartItems(
+    public ApiResponse<CartResponse.AddCartItem> addCartItems(
         @PathVariable @Valid @Positive Long userId,
         @RequestBody CartRequest.AddItem request) {
 
@@ -48,7 +48,7 @@ public class CartController {
         CartInfo cartInfo = cartFacade.processAddCartItems(facadeRequest);
 
         // 3. Facade 응답 객체 변환
-        CartResponse.CartInfo response = responseMapper.toCartInfo(cartInfo);
+        CartResponse.AddCartItem response = responseMapper.toAddCartIem(cartInfo);
 
         return ApiResponse.ok(response);
     }

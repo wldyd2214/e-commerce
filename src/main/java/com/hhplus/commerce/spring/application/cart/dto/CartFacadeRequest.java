@@ -1,6 +1,6 @@
-package com.hhplus.commerce.spring.application.cart.dto.request;
+package com.hhplus.commerce.spring.application.cart.dto;
 
-import com.hhplus.commerce.spring.application.cart.dto.CartItemFacadeDTO;
+import com.hhplus.commerce.spring.application.cart.dto.common.CartItemFacadeDTO;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

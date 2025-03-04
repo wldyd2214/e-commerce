@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.domain.order.repository;
 
-import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.hhplus.commerce.spring.domain.product.model.Product;
 import java.util.List;
 
 public interface OrderItemQueryRepository {

@@ -2,7 +2,7 @@ package com.hhplus.commerce.spring.domain.cart.dto.response;
 
 import com.hhplus.commerce.spring.domain.cart.model.Cart;
 import com.hhplus.commerce.spring.domain.cart.model.CartItem;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.hhplus.commerce.spring.domain.product.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class CartServiceRes {
     public static CartItemServiceRes toCartItemServiceRes(CartItem cartItem) {
         return CartItemServiceRes.builder()
                                  .id(cartItem.getId())
-                                 .product(toCartItemProductRes(cartItem.getProduct()))
+//                                 .product(toCartItemProductRes(cartItem.getProduct()))
                                  .addProductCount(cartItem.getCartItemProductCount())
                                  .build();
     }

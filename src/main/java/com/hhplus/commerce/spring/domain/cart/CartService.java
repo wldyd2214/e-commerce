@@ -1,23 +1,18 @@
 package com.hhplus.commerce.spring.domain.cart;
 
-import com.hhplus.commerce.spring.domain.cart.dto.CartInfo;
-import com.hhplus.commerce.spring.domain.cart.dto.request.CartCommand;
-import com.hhplus.commerce.spring.domain.cart.dto.request.CartItemRegister;
-import com.hhplus.commerce.spring.domain.cart.dto.request.CartRegisterRequest;
-import com.hhplus.commerce.spring.domain.cart.mapper.CartResponseMapper;
+import com.hhplus.commerce.spring.domain.cart.dto.common.CartInfo;
+import com.hhplus.commerce.spring.domain.cart.dto.CartCommand;
+import com.hhplus.commerce.spring.domain.cart.mapper.CartServiceResponseMapper;
 import com.hhplus.commerce.spring.domain.cart.model.Cart;
 import com.hhplus.commerce.spring.domain.cart.model.CartItem;
 import com.hhplus.commerce.spring.domain.cart.model.CartProduct;
 import com.hhplus.commerce.spring.domain.cart.model.CartUser;
-import com.hhplus.commerce.spring.domain.cart.repository.CartItemRepository;
+import com.hhplus.commerce.spring.domain.cart.repository.command.CartItemCommandRepository;
 import com.hhplus.commerce.spring.domain.cart.repository.command.CartCommandRepository;
 import com.hhplus.commerce.spring.domain.cart.dto.response.CartServiceRes;
 import com.hhplus.commerce.spring.domain.cart.repository.query.CartQueryRepository;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
-import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
-import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +26,9 @@ public class CartService {
 
     private final CartCommandRepository cartCommandRepository;
     private final CartQueryRepository cartQueryRepository;
-    private final CartItemRepository cartItemRepository;
+    private final CartItemCommandRepository cartItemCommandRepository;
 
-    private final CartResponseMapper responseMapper;
+    private final CartServiceResponseMapper responseMapper;
 
 //    @Transactional
 //    public CartServiceRes getCart(Long userId) {
@@ -61,7 +56,7 @@ public class CartService {
 
     private Cart createCart(UserInfo userInfo) {
 
-        CartUser cartUser = CartUser.create(userInfo.getId(), userInfo.getName());
+        CartUser cartUser = CartUser.create(userInfo.getId());
 
         Cart cart = Cart.create(cartUser);
         cartCommandRepository.save(cart);
@@ -78,11 +73,11 @@ public class CartService {
 
         for (ProductInfo productInfo : productInfos) {
             CartProduct product = CartProduct.create(productInfo.getId(), productInfo.getName(), productInfo.getPrice());
-            CartCommand.CartItem item = cartItemMap.get(product.getProductId());
+            CartCommand.CartItem item = cartItemMap.get(product.getId());
             cartItems.add(CartItem.create(cart, product, item.getCartQuantity()));
         }
 
-        return cartItemRepository.saveAll(cartItems);
+        return cartItemCommandRepository.saveAll(cartItems);
     }
 
     private Map<Long, CartCommand.CartItem> createCartItemMap(List<CartCommand.CartItem> commandCartItems) {

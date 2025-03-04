@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.domain.product.entity;
+package com.hhplus.commerce.spring.domain.product.model;
 
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;

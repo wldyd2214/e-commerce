@@ -1,7 +1,8 @@
-package com.hhplus.commerce.spring.infrastructure.cart.repository;
+package com.hhplus.commerce.spring.infrastructure.cart.repository.command;
 
 import com.hhplus.commerce.spring.domain.cart.model.Cart;
 import com.hhplus.commerce.spring.domain.cart.repository.command.CartCommandRepository;
+import com.hhplus.commerce.spring.infrastructure.cart.repository.CartJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CartCommandRepositoryImpl implements CartCommandRepository {
 
+    private final CartJpaRepository jpaRepository;
+
     @Override
-    public Cart save(Cart saveCart) {
-        return null;
+    public Cart save(Cart cart) {
+        return jpaRepository.save(cart);
     }
 }

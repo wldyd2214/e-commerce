@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.tuple;
 import com.hhplus.commerce.spring.application.order.dto.OrderFacadeDTO;
 import com.hhplus.commerce.spring.application.order.dto.request.OrderFacadeRequest;
 import com.hhplus.commerce.spring.application.order.dto.response.OrderFacadeResponse.Create;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.hhplus.commerce.spring.domain.product.model.Product;
 import com.hhplus.commerce.spring.domain.product.repository.ProductCommandRepository;
 import com.hhplus.commerce.spring.domain.user.entity.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserCommandRepository;
@@ -42,7 +42,7 @@ public class OrderFacadeIntegrationTest extends IntegrationTestSupport {
     void setUp() {
         // 1. 상품 정보 저장
         productCommandRepository.saveAll(List.of(product));
-        productCommandRepository.flush();
+//        productCommandRepository.flush();
     }
 
     /**

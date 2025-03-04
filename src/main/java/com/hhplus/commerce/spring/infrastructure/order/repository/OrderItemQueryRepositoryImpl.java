@@ -1,15 +1,12 @@
 package com.hhplus.commerce.spring.infrastructure.order.repository;
 
 import static com.hhplus.commerce.spring.domain.order.model.QOrder.order;
-import static com.hhplus.commerce.spring.domain.order.model.QOrderItem.orderItem;
 
 import com.hhplus.commerce.spring.domain.order.model.type.OrderProcessStatus;
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemQueryRepository;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
-import com.querydsl.core.Tuple;
+import com.hhplus.commerce.spring.domain.product.model.Product;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;

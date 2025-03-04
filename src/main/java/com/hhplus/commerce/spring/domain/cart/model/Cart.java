@@ -30,6 +30,9 @@ public class Cart extends BaseEntity {
 //    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 //    private User user;
     @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "id", column = @Column(name = "user_id"))
+    })
     private CartUser user;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

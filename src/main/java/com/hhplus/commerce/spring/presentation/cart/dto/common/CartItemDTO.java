@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.presentation.cart.dto;
+package com.hhplus.commerce.spring.presentation.cart.dto.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
