@@ -1,9 +1,11 @@
 package com.hhplus.commerce.spring.application.cart;
 
+import com.hhplus.commerce.spring.application.cart.dto.CartItemFacadeDTO;
 import com.hhplus.commerce.spring.application.cart.dto.request.CartFacadeRequest;
 import com.hhplus.commerce.spring.application.cart.dto.response.CartFacadeResponse;
 import com.hhplus.commerce.spring.application.cart.mapper.CartFacadeRequestMapper;
 import com.hhplus.commerce.spring.domain.cart.CartService;
+import com.hhplus.commerce.spring.domain.cart.dto.CartInfo;
 import com.hhplus.commerce.spring.domain.cart.dto.request.CartCommand;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import com.hhplus.commerce.spring.domain.product.service.ProductService;
@@ -23,7 +25,7 @@ public class CartFacade {
 
     private final CartFacadeRequestMapper requestMapper;
 
-    public CartFacadeResponse.AddItem processAddCartItems(CartFacadeRequest.AddItem request) {
+    public CartInfo processAddCartItems(CartFacadeRequest.AddItem request) {
 
         // 1. 사용자 정보 조회
         UserInfo userInfo = userService.findUserInfoById(request.getUserId());
@@ -32,16 +34,10 @@ public class CartFacade {
         List<Long> productIds = requestMapper.toProductIds(request.getCartItems());
         List<ProductInfo> productInfos = productService.getProducts(productIds);
 
-        // 3. 장바구니 리스트 추가
-        // 조회된 상품을 기반으로 장바구니에 담은 갯수 셋팅해서 내려줘야함.
-
+        // 3. 장바구니 조회
         CartCommand.AddItem command = requestMapper.toCartCommandAddItem(userInfo, productInfos, request.getCartItems());
-        cartService.addCartItems(command);
+        CartInfo cartInfo = cartService.addCartItems(command);
 
-        // 상품아이디
-        // 상품명
-        // 상품금액
-        // 주문갯수
-        return null;
+        return cartInfo;
     }
 }

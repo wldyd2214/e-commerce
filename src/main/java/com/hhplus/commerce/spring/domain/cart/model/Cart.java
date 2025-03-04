@@ -1,12 +1,10 @@
 package com.hhplus.commerce.spring.domain.cart.model;
 
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
-import com.hhplus.commerce.spring.domain.user.entity.User;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,17 +29,17 @@ public class Cart extends BaseEntity {
 //    @OneToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 //    private User user;
-    @Column(name = "user_id")
-    private Long userId;
+    @Embedded
+    private CartUser user;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 
-    public Cart(Long userId) {
-        this.userId = userId;
+    public Cart(CartUser user) {
+        this.user = user;
     }
 
-    public static Cart create(Long userId) {
-        return new Cart(userId);
+    public static Cart create(CartUser user) {
+        return new Cart(user);
     }
 }

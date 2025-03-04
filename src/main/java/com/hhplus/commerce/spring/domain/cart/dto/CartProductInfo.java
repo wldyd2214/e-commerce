@@ -8,6 +8,5 @@ import lombok.Getter;
 public class CartProductInfo {
     private Long id;
     private String name;
-    private String desc;
     private Integer price;
 }

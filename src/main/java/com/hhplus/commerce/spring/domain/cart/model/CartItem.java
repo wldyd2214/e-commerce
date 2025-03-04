@@ -1,10 +1,8 @@
 package com.hhplus.commerce.spring.domain.cart.model;
 
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,25 +28,22 @@ public class CartItem extends BaseEntity {
     @JoinColumn(name = "cart_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Product product;
+    //    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+//    private Product product;
+    @Embedded
+    private CartProduct product;
 
     @Column(name = "cart_item_product_count", nullable = false)
     private Integer cartItemProductCount;
 
-    @Builder
-    public CartItem(Cart cart, Product product, Integer cartItemProductCount) {
+    public CartItem(Cart cart, CartProduct product, Integer cartItemProductCount) {
         this.cart = cart;
         this.product = product;
         this.cartItemProductCount = cartItemProductCount;
     }
 
-    public static CartItem create(Cart cart, Product product, Integer cartItemCount) {
-        return CartItem.builder()
-                       .cart(cart)
-                       .product(product)
-                       .cartItemProductCount(cartItemCount)
-                       .build();
+    public static CartItem create(Cart cart, CartProduct product, Integer cartItemCount) {
+        return new CartItem(cart, product, cartItemCount);
     }
 }

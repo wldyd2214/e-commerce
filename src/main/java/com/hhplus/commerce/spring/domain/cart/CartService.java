@@ -1,14 +1,20 @@
 package com.hhplus.commerce.spring.domain.cart;
 
+import com.hhplus.commerce.spring.domain.cart.dto.CartInfo;
 import com.hhplus.commerce.spring.domain.cart.dto.request.CartCommand;
 import com.hhplus.commerce.spring.domain.cart.dto.request.CartItemRegister;
 import com.hhplus.commerce.spring.domain.cart.dto.request.CartRegisterRequest;
+import com.hhplus.commerce.spring.domain.cart.mapper.CartResponseMapper;
 import com.hhplus.commerce.spring.domain.cart.model.Cart;
 import com.hhplus.commerce.spring.domain.cart.model.CartItem;
+import com.hhplus.commerce.spring.domain.cart.model.CartProduct;
+import com.hhplus.commerce.spring.domain.cart.model.CartUser;
 import com.hhplus.commerce.spring.domain.cart.repository.CartItemRepository;
 import com.hhplus.commerce.spring.domain.cart.repository.command.CartCommandRepository;
 import com.hhplus.commerce.spring.domain.cart.dto.response.CartServiceRes;
 import com.hhplus.commerce.spring.domain.cart.repository.query.CartQueryRepository;
+import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
+import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.domain.product.entity.Product;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
@@ -27,6 +33,8 @@ public class CartService {
     private final CartQueryRepository cartQueryRepository;
     private final CartItemRepository cartItemRepository;
 
+    private final CartResponseMapper responseMapper;
+
 //    @Transactional
 //    public CartServiceRes getCart(Long userId) {
 //
@@ -38,41 +46,48 @@ public class CartService {
 //    }
 
     @Transactional
-    public Cart addCartItems(CartCommand.AddItem command) {
+    public CartInfo addCartItems(CartCommand.AddItem command) {
 
-        Long userId = command.getUserId();
+        Long userId = command.getUserInfo().getId();
 
         Cart cart = cartQueryRepository.findByUserId(userId)
-                                       .orElse(createCart(userId));
+                                       .orElse(createCart(command.getUserInfo()));
 
-        List<CartItem> cartItems = insertCartItem(cart, cartRegRequest);
-//        cart.getCartItems().addAll(cartItems);
-//
-//        return cart;
-        return null;
+        List<CartItem> cartItems = insertCartItem(cart, command.getProductInfos(), command.getCartItems());
+        cart.getCartItems().addAll(cartItems);
+
+        return responseMapper.toCartInfo(cart);
     }
 
-    private Cart createCart(Long userId) {
-        Cart cart = Cart.create(userId);
+    private Cart createCart(UserInfo userInfo) {
+
+        CartUser cartUser = CartUser.create(userInfo.getId(), userInfo.getName());
+
+        Cart cart = Cart.create(cartUser);
         cartCommandRepository.save(cart);
 
         return cart;
     }
 
-    private List<CartItem> insertCartItem(Cart cart, CartRegisterRequest cartRegRequest) {
+    private List<CartItem> insertCartItem(Cart cart, List<ProductInfo> productInfos, List<CartCommand.CartItem> commandCartItems) {
+
+
         List<CartItem> cartItems = new ArrayList<>();
 
-        for (CartItemRegister cartItemRegister : cartRegRequest.getCartItems()) {
-            Product product =
-                productRepository.findById(cartItemRegister.getProductId())
-                                 .orElseThrow(() -> new CustomBadRequestException(
-                                     BadRequestErrorCode.PRODUCT_BAD_REQUEST));
+        Map<Long, CartCommand.CartItem> cartItemMap = createCartItemMap(commandCartItems);
 
-            CartItem cartItem = CartItem.create(cart, product, cartItemRegister.getOrderCount());
-            cartItems.add(cartItem);
+        for (ProductInfo productInfo : productInfos) {
+            CartProduct product = CartProduct.create(productInfo.getId(), productInfo.getName(), productInfo.getPrice());
+            CartCommand.CartItem item = cartItemMap.get(product.getProductId());
+            cartItems.add(CartItem.create(cart, product, item.getCartQuantity()));
         }
 
         return cartItemRepository.saveAll(cartItems);
+    }
+
+    private Map<Long, CartCommand.CartItem> createCartItemMap(List<CartCommand.CartItem> commandCartItems) {
+        return commandCartItems.stream()
+            .collect(Collectors.toMap(CartCommand.CartItem::getProductId, i -> i));
     }
 
     @Transactional
