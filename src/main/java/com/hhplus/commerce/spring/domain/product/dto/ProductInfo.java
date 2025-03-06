@@ -1,12 +1,12 @@
 package com.hhplus.commerce.spring.domain.product.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
+@AllArgsConstructor
 public class ProductInfo {
     private Long id;
     private String name;

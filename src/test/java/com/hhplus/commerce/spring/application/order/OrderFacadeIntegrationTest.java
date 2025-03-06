@@ -6,13 +6,11 @@ import static org.assertj.core.api.Assertions.tuple;
 import com.hhplus.commerce.spring.application.order.dto.OrderFacadeDTO;
 import com.hhplus.commerce.spring.application.order.dto.request.OrderFacadeRequest;
 import com.hhplus.commerce.spring.application.order.dto.response.OrderFacadeResponse.Create;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.hhplus.commerce.spring.domain.product.model.Product;
 import com.hhplus.commerce.spring.domain.product.repository.ProductCommandRepository;
-import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.entity.User;
 import com.hhplus.commerce.spring.domain.user.repository.UserCommandRepository;
 import com.hhplus.commerce.spring.infrastructure.product.repository.ProductJpaRepository;
-import com.hhplus.commerce.spring.old.api.product.repository.ProductRepository;
 import com.hhplus.commerce.spring.support.IntegrationTestSupport;
 import java.math.BigDecimal;
 import java.util.List;
@@ -44,6 +42,7 @@ public class OrderFacadeIntegrationTest extends IntegrationTestSupport {
     void setUp() {
         // 1. 상품 정보 저장
         productCommandRepository.saveAll(List.of(product));
+//        productCommandRepository.flush();
     }
 
     /**
@@ -71,11 +70,11 @@ public class OrderFacadeIntegrationTest extends IntegrationTestSupport {
             .map(CompletableFuture::join)
             .toList();
 
+        executorService.shutdown();
+
         // 모든 결과가 성공(true)인지 검증
         assertThat(product).extracting("id", "count")
             .containsExactlyInAnyOrder(tuple(product.getId(), 0));
-
-        executorService.shutdown();
     }
 
     private User createUser(int i) {

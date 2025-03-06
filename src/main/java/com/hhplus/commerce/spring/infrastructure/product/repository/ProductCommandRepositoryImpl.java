@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.infrastructure.product.repository;
 
-import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.hhplus.commerce.spring.domain.product.model.Product;
 import com.hhplus.commerce.spring.domain.product.repository.ProductCommandRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

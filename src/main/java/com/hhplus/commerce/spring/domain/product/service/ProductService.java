@@ -9,12 +9,11 @@ import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand;
 import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand.DeductProduct;
 import com.hhplus.commerce.spring.domain.product.mapper.ProductInfoMapper;
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.hhplus.commerce.spring.domain.product.model.Product;
 import com.hhplus.commerce.spring.infrastructure.product.repository.ProductJpaRepository;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +31,8 @@ public class ProductService {
 
     private final ProductJpaRepository jpaRepository;
 
-    public ProductInfoPage getProducts(ProductQuery.List query) {
+    @Transactional(readOnly = true)
+    public ProductInfoPage getPagedProducts(ProductQuery.List query) {
 
         // 1. 상품 목록 정보 조회
         List<Product> products = productQueryRepository.findAllByQuery(query);
@@ -80,6 +80,14 @@ public class ProductService {
         }
 
         return productInfoMapper.toProductDeductInfo(totalAmount, productMap);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductInfo> getProducts(List<Long> productIds) {
+
+        List<Product> products = productQueryRepository.findAllByIdIn(productIds);
+
+        return productInfoMapper.toProductInfoList(products);
     }
 
     private Map<Long, DeductProduct> createDeductProductMap(List<DeductProduct> products) {

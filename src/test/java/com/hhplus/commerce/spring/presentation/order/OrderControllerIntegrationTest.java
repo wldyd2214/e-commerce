@@ -6,11 +6,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.hhplus.commerce.spring.application.order.OrderFacade;
-import com.hhplus.commerce.spring.domain.product.entity.Product;
+import com.hhplus.commerce.spring.domain.product.model.Product;
 import com.hhplus.commerce.spring.domain.product.repository.ProductCommandRepository;
-import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.entity.User;
-import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
 import com.hhplus.commerce.spring.infrastructure.user.repository.UserCommandRepositoryImpl;
 import com.hhplus.commerce.spring.presentation.order.dto.request.OrderItemRequest;
 import com.hhplus.commerce.spring.presentation.order.dto.request.OrderRequest;

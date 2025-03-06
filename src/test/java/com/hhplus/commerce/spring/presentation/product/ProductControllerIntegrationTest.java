@@ -26,7 +26,7 @@ class ProductControllerIntegrationTest extends ControllerIntegrationTestSupport 
 
     @DisplayName("상품 목록 조회 - 성공")
     @Test
-    void getProducts() throws Exception {
+    void getPagedProducts() throws Exception {
         // when // then
         mockMvc.perform(get("/products"))
                .andDo(print())
