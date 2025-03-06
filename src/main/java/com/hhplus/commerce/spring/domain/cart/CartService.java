@@ -13,6 +13,9 @@ import com.hhplus.commerce.spring.domain.cart.dto.response.CartServiceRes;
 import com.hhplus.commerce.spring.domain.cart.repository.query.CartQueryRepository;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
+import com.hhplus.commerce.spring.presentation.common.exception.CustomBadGateWayException;
+import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,15 @@ public class CartService {
     private final CartItemCommandRepository cartItemCommandRepository;
 
     private final CartServiceResponseMapper responseMapper;
+
+    @Transactional(readOnly = true)
+    public CartInfo getCartInfoByUserId(Long userId) {
+
+        Cart cart = cartQueryRepository.findByUserId(userId)
+                                       .orElseThrow(() -> new CustomBadRequestException(BadRequestErrorCode.CART_BAD_REQUEST));
+
+        return responseMapper.toCartInfo(cart);
+    }
 
 //    @Transactional
 //    public CartServiceRes getCart(Long userId) {
