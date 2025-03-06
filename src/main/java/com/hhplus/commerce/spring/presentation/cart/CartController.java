@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,14 +54,18 @@ public class CartController {
         return ApiResponse.ok(response);
     }
 
-//    @Operation(
-//        summary = "장바구니 목록 조회 API",
-//        description = "사용자의 장바구니 목록 정보를 반환 합니다."
-//    )
-//    @GetMapping(value = "/{userId}")
-//    public ApiResponse<CartResponse> getCart(@PathVariable @Valid @Positive Long userId) {
-//        return ApiResponse.ok(CartDTOMapper.toCartResponse(cartService.getCart(userId)));
-//    }
+    @Operation(
+        summary = "장바구니 목록 조회 API",
+        description = "사용자의 장바구니 목록 정보를 반환 합니다."
+    )
+    @GetMapping(value = "/{userId}")
+    public ApiResponse<CartResponse.Cart> getCart(@PathVariable @Valid @Positive Long userId) {
+
+        // 1. 장바구니 목록 조회
+//        CartDTOMapper.toCartResponse(cartService.getCart(userId));
+
+        return ApiResponse.ok(null);
+    }
 //
 //    @Operation(
 //        summary = "장바구니 목록 삭제 API",
