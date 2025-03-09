@@ -1,7 +1,7 @@
 package com.hhplus.commerce.spring.application.cart.mapper;
 
 import com.hhplus.commerce.spring.application.cart.dto.common.CartItemFacadeDTO;
-import com.hhplus.commerce.spring.domain.cart.dto.CartCommand;
+import com.hhplus.commerce.spring.domain.cart.dto.request.CartCommand;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
 import java.util.List;

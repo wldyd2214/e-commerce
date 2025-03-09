@@ -26,9 +26,6 @@ public class Cart extends BaseEntity {
     @Column(name = "cart_id", nullable = false)
     private Long id;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-//    private User user;
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "id", column = @Column(name = "user_id"))
@@ -44,5 +41,16 @@ public class Cart extends BaseEntity {
 
     public static Cart create(CartUser user) {
         return new Cart(user);
+    }
+
+
+    public void updateCartItems(List<CartItem> newCartItems) {
+        this.cartItems.clear(); // 기존 리스트 초기화
+        newCartItems.forEach(item -> item.assignCart(this)); // CartItem의 cart 설정
+        this.cartItems.addAll(newCartItems);
+    }
+
+    public void removeCartItems(List<Long> cartItemIds) {
+        this.cartItems.removeIf(cartItem -> cartItemIds.contains(cartItem.getId()));
     }
 }

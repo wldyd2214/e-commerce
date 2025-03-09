@@ -25,12 +25,9 @@ public class CartItem extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
-    //    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-//    private Product product;
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "id", column = @Column(name = "product_id"))
@@ -48,5 +45,9 @@ public class CartItem extends BaseEntity {
 
     public static CartItem create(Cart cart, CartProduct product, Integer cartItemCount) {
         return new CartItem(cart, product, cartItemCount);
+    }
+
+    public void assignCart(Cart cart) {
+        this.cart = cart;
     }
 }
