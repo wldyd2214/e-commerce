@@ -29,7 +29,10 @@ public interface CartResponseMapper {
     }
 
     default CartItemDetailDTO toCartItemDTO(CartItemInfo cartItemInfo) {
-        return new CartItemDetailDTO(cartItemInfo.getProductInfo().getId(), cartItemInfo.getProductInfo().getName(),
+        return new CartItemDetailDTO(
+            cartItemInfo.getId(),
+            cartItemInfo.getProductInfo().getId(),
+            cartItemInfo.getProductInfo().getName(),
             cartItemInfo.getOrderCount());
     }
 }

@@ -20,6 +20,7 @@ public class CartQueryRepositoryImpl implements CartQueryRepository {
     @Override
     public Optional<Cart> findByUserId(Long userId) {
         return Optional.ofNullable(queryFactory.selectFrom(cart)
-                                               .where(cart.user.id.eq(userId)).fetchOne());
+                                               .where(cart.user.id.eq(userId))
+                                               .fetchOne());
     }
 }

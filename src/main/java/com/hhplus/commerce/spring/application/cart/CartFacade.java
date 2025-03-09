@@ -4,7 +4,7 @@ import com.hhplus.commerce.spring.application.cart.dto.CartFacadeRequest;
 import com.hhplus.commerce.spring.application.cart.mapper.CartFacadeRequestMapper;
 import com.hhplus.commerce.spring.domain.cart.CartService;
 import com.hhplus.commerce.spring.domain.cart.dto.common.CartInfo;
-import com.hhplus.commerce.spring.domain.cart.dto.CartCommand;
+import com.hhplus.commerce.spring.domain.cart.dto.request.CartCommand;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import com.hhplus.commerce.spring.domain.product.service.ProductService;
 import com.hhplus.commerce.spring.domain.user.dto.UserInfo;

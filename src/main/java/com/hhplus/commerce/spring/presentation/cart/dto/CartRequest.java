@@ -24,7 +24,7 @@ public class CartRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public class RemoveItem {
+    public static class RemoveItem {
         @Size(min = 1, message = "아이템 ID 목록은 최소 1개 이상이어야 합니다.")
         @NotNull(message = "아이템 ID 목록은 필수입니다.")
         @ElementCollection
