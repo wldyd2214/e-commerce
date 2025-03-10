@@ -1,5 +1,7 @@
 package com.hhplus.commerce.spring.domain.order.model;
 
+import com.hhplus.commerce.spring.application.order.event.OrderCreateEvent;
+import com.hhplus.commerce.spring.common.Events;
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
 import com.hhplus.commerce.spring.domain.order.model.type.OrderProcessStatus;
 import com.hhplus.commerce.spring.domain.user.entity.User;
@@ -46,6 +48,9 @@ public class Order extends BaseEntity {
     }
 
     public static Order create(long userId) {
+        // 이벤트 생성 예시
+//        Order order = new Order(userId, OrderProcessStatus.INIT);
+//        Events.raise(new OrderCreateEvent(...));
         return new Order(userId, OrderProcessStatus.INIT);
     }
 
