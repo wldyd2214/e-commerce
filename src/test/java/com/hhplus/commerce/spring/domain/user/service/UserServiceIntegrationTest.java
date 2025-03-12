@@ -6,7 +6,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
 import com.hhplus.commerce.spring.domain.user.entity.User;
-import com.hhplus.commerce.spring.domain.user.service.UserService;
 import com.hhplus.commerce.spring.infrastructure.user.repository.UserJpaRepository;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;

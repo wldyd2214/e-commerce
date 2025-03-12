@@ -1,6 +1,5 @@
 package com.hhplus.commerce.spring.application.user;
 
-import com.hhplus.commerce.spring.application.user.UserFacade;
 import com.hhplus.commerce.spring.application.user.dto.UserFacadeRequest;
 import com.hhplus.commerce.spring.application.user.mapper.UserFacadeRequestMapper;
 import com.hhplus.commerce.spring.application.user.mapper.UserFacadeResponseMapper;
