@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ProductInfoPage {
+public class ProductInfoPaged {
 
     private Integer totalCount;
     private Integer currentPage;

@@ -10,5 +10,5 @@ import org.springframework.stereotype.Component;
 @Mapper(componentModel="spring")
 public interface ProductRequestMapper {
 
-    ProductQuery.List toProductQueryList(ProductListRequest request);
+    ProductQuery.Paged toProductQueryList(ProductListRequest request);
 }

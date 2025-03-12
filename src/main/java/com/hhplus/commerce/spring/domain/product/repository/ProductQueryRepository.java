@@ -11,11 +11,11 @@ public interface ProductQueryRepository {
 
     List<Product> findAllByOrderByIdDesc();
 
-    List<Product> findAllByQuery(ProductQuery.List query);
+    List<Product> findAllByQuery(ProductQuery.Paged query);
 
     List<Product> findAllByIdIn(List<Long> productIds);
 
     List<Product> findAllByIdWithPessimisticLock(List<Long> productKeys);
 
-    Long selectProductTotalCount(ProductQuery.List query);
+    Long selectProductTotalCount(ProductQuery.Paged query);
 }

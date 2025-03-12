@@ -1,13 +1,12 @@
 package com.hhplus.commerce.spring.presentation.product;
 
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
-import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
+import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPaged;
 import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
 import com.hhplus.commerce.spring.domain.product.service.ProductService;
-import com.hhplus.commerce.spring.presentation.product.dto.response.ProductsResponse;
+import com.hhplus.commerce.spring.presentation.product.dto.response.ProductResponse;
 import com.hhplus.commerce.spring.presentation.common.ApiResponse;
 import com.hhplus.commerce.spring.presentation.product.dto.request.ProductListRequest;
-import com.hhplus.commerce.spring.presentation.product.dto.response.ProductListResponse;
 import com.hhplus.commerce.spring.presentation.product.mapper.ProductRequestMapper;
 import com.hhplus.commerce.spring.presentation.product.mapper.ProductResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,20 +32,18 @@ public class ProductController {
 
     @Operation(summary = "상품 목록 조회 API", description = "상품 목록 정보를 반환합니다.")
     @GetMapping(value = "")
-    public ApiResponse<ProductListResponse> getPagedProducts(
+    public ApiResponse<ProductResponse.PagedProduct> getPagedProducts(
         @ParameterObject @ModelAttribute ProductListRequest request) {
 
-        // 0. 유효성 검증
+        // 1. 유효성 검증
         request.defaultValueSetting();
 
-        // 1. 요청 객체 변환
-        ProductQuery.List query = requestMapper.toProductQueryList(request);
-
         // 2. 상품 목록 조회
-        ProductInfoPage productInfoPage = productService.getPagedProducts(query);
+        ProductQuery.Paged query = requestMapper.toProductQueryList(request);
+        ProductInfoPaged productInfoPaged = productService.getPagedProducts(query);
 
         // 3. 응답 객체 변환
-        ProductListResponse response = responseMapper.toProductListResponse(productInfoPage);
+        ProductResponse.PagedProduct response = responseMapper.toPagedProduct(productInfoPaged);
 
         return ApiResponse.ok(response);
     }
@@ -56,13 +53,13 @@ public class ProductController {
             description = "최근 3일간 가장 많이 판매된 상위 5개 상품 목록 정보를 반환합니다."
     )
     @GetMapping(value = "/popular")
-    public ApiResponse<ProductsResponse> getPopulars() {
+    public ApiResponse<ProductResponse.PopularProduct> getPopulars() {
 
         // 1. 인기 상품 목록 조회
         List<ProductInfo> productInfoList = productService.getPopulars();
 
         // 2. 응답 객체 변환
-        ProductsResponse response = responseMapper.toProductsResponse(productInfoList);
+        ProductResponse.PopularProduct response = responseMapper.toPopularProduct(productInfoList);
 
         return ApiResponse.ok(response);
     }
