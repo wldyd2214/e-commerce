@@ -3,7 +3,7 @@ package com.hhplus.commerce.spring.domain.product.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
+import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPaged;
 import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
 import com.hhplus.commerce.spring.domain.product.model.Product;
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemQueryRepository;
@@ -70,14 +70,10 @@ class ProductServiceIntegrationTest {
 
         int pageCount = 10;
 
-        ProductQuery.List query = ProductQuery.List.builder()
-                                                   .count(pageCount)
-                                                   .page(1)
-                                                   .name("테스트")
-                                                   .build();
+        ProductQuery.Paged query = new ProductQuery.Paged(pageCount, 1, "테스트");
 
         // when // then
-        ProductInfoPage result = productService.getPagedProducts(query);
+        ProductInfoPaged result = productService.getPagedProducts(query);
 
         assertThat(result).isNotNull();
         assertThat(result.getProductInfoList()).hasSize(pageCount)
