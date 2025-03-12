@@ -5,7 +5,6 @@ import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
 import com.hhplus.commerce.spring.domain.user.entity.User;
 import com.hhplus.commerce.spring.domain.user.mapper.UserMapper;
 import com.hhplus.commerce.spring.domain.user.repository.UserQueryRepository;
-import com.hhplus.commerce.spring.domain.user.service.UserService;
 import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import java.math.BigDecimal;
