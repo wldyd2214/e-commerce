@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class PaymentService {
+
     private final PaymentSystemClient client;
 
     public String sendPayment(PaymentCommand.Payment command) {

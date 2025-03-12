@@ -26,11 +26,6 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    private User findUserById(Long userId) {
-        return userQueryRepository.findById(userId)
-                                  .orElseThrow(() -> new CustomBadRequestException(BadRequestErrorCode.USER_BAD_REQUEST));
-    }
-
     public UserInfo findUserInfoById(Long userId) {
         User entity = findUserById(userId);
         return userMapper.toUserInfo(entity);
@@ -76,5 +71,10 @@ public class UserService {
         } catch (OptimisticLockException e) {
             throw new CustomConflictException(ConflictErrorCode.USER_POINT_DEDUCTION_CONFLICT);
         }
+    }
+
+    private User findUserById(Long userId) {
+        return userQueryRepository.findById(userId)
+            .orElseThrow(() -> new CustomBadRequestException(BadRequestErrorCode.USER_BAD_REQUEST));
     }
 }
