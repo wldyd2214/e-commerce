@@ -2,7 +2,7 @@ package com.hhplus.commerce.spring.domain.product.mapper;
 
 import com.hhplus.commerce.spring.domain.product.dto.ProductDeductInfo;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
-import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
+import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPaged;
 import com.hhplus.commerce.spring.domain.product.model.Product;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +15,11 @@ import org.mapstruct.Named;
 public interface ProductInfoMapper {
 
     default List<ProductInfo> toProductInfoList(List<Product> products) {
+
+        if (products == null) {
+            return List.of();
+        }
+
         return products.stream()
                        .map(this::toProductInfo)
                        .toList();
@@ -23,7 +28,7 @@ public interface ProductInfoMapper {
     @Mapping(source = "count", target = "stockCount")
     ProductInfo toProductInfo(Product product);
 
-    ProductInfoPage toProductInfoPage(int totalCount, int currentPage, List<ProductInfo> productInfoList);
+    ProductInfoPaged toProductInfoPage(int totalCount, int currentPage, List<ProductInfo> productInfoList);
 
     @Mapping(target = "productInfos", source = "productMap", qualifiedByName = "mapToProductInfoList")
     ProductDeductInfo toProductDeductInfo(int totalAmount, Map<Long, Product> productMap);

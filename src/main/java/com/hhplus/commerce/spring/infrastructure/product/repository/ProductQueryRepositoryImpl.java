@@ -32,11 +32,11 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
     }
 
     @Override
-    public List<Product> findAllByQuery(ProductQuery.List query) {
+    public List<Product> findAllByQuery(ProductQuery.Paged query) {
         return queryFactory.selectFrom(product)
                            .where(nameLike(query.getName()))
                            .orderBy(product.id.desc())
-                           .offset((query.getPage() - 1) * query.getCount())
+                           .offset((long) (query.getPage() - 1) * query.getCount())
                            .limit(query.getCount())
                            .fetch();
     }
@@ -52,7 +52,7 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
     }
 
     @Override
-    public Long selectProductTotalCount(ProductQuery.List query) {
+    public Long selectProductTotalCount(ProductQuery.Paged query) {
         return queryFactory.selectFrom(product)
                            .where(nameLike(query.getName()))
                            .fetchCount();

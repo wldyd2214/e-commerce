@@ -3,7 +3,7 @@ package com.hhplus.commerce.spring.domain.product.service;
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemQueryRepository;
 import com.hhplus.commerce.spring.domain.product.dto.ProductDeductInfo;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
-import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPage;
+import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPaged;
 import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
 import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand;
 import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand.DeductProduct;
@@ -32,7 +32,7 @@ public class ProductService {
     private final ProductJpaRepository jpaRepository;
 
     @Transactional(readOnly = true)
-    public ProductInfoPage getPagedProducts(ProductQuery.List query) {
+    public ProductInfoPaged getPagedProducts(ProductQuery.Paged query) {
 
         // 1. 상품 목록 정보 조회
         List<Product> products = productQueryRepository.findAllByQuery(query);
