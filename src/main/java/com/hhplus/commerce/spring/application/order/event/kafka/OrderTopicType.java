@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.application.order.event;
+package com.hhplus.commerce.spring.application.order.event.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

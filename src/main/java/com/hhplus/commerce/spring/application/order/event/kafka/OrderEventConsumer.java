@@ -1,5 +1,6 @@
-package com.hhplus.commerce.spring.application.order.event;
+package com.hhplus.commerce.spring.application.order.event.kafka;
 
+import com.hhplus.commerce.spring.application.order.event.OrderCreateEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

@@ -32,14 +32,12 @@ public class OrderController {
     @PostMapping(value = "")
     public ApiResponse<OrderResponse> createOrder(@RequestBody @Valid OrderRequest request) {
 
-        // 1. 파사드 레이어로 요청하기 위한 요청 객체 변환
-        OrderFacadeRequest.Create createRequest = requestMapper.toOrderCreate(request);
+        // 1. 주문 생성 요청
+        OrderFacadeRequest.Create command = requestMapper.toOrderCreateCommand(request);
+        OrderFacadeResponse.Create facadeResponse = orderFacade.orderCreate(command);
 
-        // 2. 파사드 레이어 주문 요청
-        OrderFacadeResponse.Create facadeResponse = orderFacade.orderCreate(createRequest);
-
-        // 3. 응답 규격 변환
-        OrderResponse response = responseMapper.toOrderCreate(facadeResponse);
+        // 2. 응답 규격 변환
+        OrderResponse response = responseMapper.toOrderCreateCommand(facadeResponse);
 
         return ApiResponse.ok(response);
     }

@@ -4,7 +4,6 @@ import com.hhplus.commerce.spring.application.order.event.OrderCreateEvent;
 import com.hhplus.commerce.spring.common.Events;
 import com.hhplus.commerce.spring.domain.common.model.BaseEntity;
 import com.hhplus.commerce.spring.domain.order.model.type.OrderProcessStatus;
-import com.hhplus.commerce.spring.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,8 +30,7 @@ public class Order extends BaseEntity {
     @Column(name = "order_id", nullable = false)
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Enumerated(value = EnumType.STRING)
@@ -48,10 +46,15 @@ public class Order extends BaseEntity {
     }
 
     public static Order create(long userId) {
-        // 이벤트 생성 예시
-//        Order order = new Order(userId, OrderProcessStatus.INIT);
-//        Events.raise(new OrderCreateEvent(...));
-        return new Order(userId, OrderProcessStatus.INIT);
+
+        Order order = new Order(userId, OrderProcessStatus.INIT);
+
+        // 1. 상품 재고 차감
+        // 2. 사용자 포인트 차감
+        // 3. 외부 시스템 주문 생성 이벤트 발행
+//        Events.raise(new OrderCreateEvent());
+
+        return order;
     }
 
     public void updateOrderItems(List<OrderItem> orderItems) {

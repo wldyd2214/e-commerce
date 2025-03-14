@@ -8,6 +8,7 @@ import com.hhplus.commerce.spring.domain.product.dto.request.ProductCommand.Dedu
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
 import com.hhplus.commerce.spring.domain.user.dto.UserCommand.RewardPoint;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -27,4 +28,8 @@ public interface OrderFacadeRequestMapper {
     OrderCommand.Create toCreate(OrderFacadeRequest.Create request);
 
     UserCommand.RewardPoint toUserCommandReward(Long userId, Integer deductionPoints);
+
+    default List<Long> toProductIdList(List<OrderFacadeDTO> orders) {
+        return orders.stream().map(OrderFacadeDTO::getProductId).collect(Collectors.toList());
+    }
 }

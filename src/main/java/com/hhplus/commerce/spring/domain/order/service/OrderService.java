@@ -8,7 +8,6 @@ import com.hhplus.commerce.spring.domain.order.model.Order;
 import com.hhplus.commerce.spring.domain.order.model.OrderItem;
 import com.hhplus.commerce.spring.domain.order.repository.OrderCommandRepository;
 import com.hhplus.commerce.spring.domain.order.repository.OrderItemCommandRepository;
-import com.hhplus.commerce.spring.domain.product.dto.ProductDeductInfo;
 import com.hhplus.commerce.spring.domain.product.dto.ProductInfo;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +28,13 @@ public class OrderService {
 
     private final OrderMapper orderMapper;
 
-    // TODO: 결제와 재고차감과 데이터플랫폼으로 주문데이터 전송은 주문 생성의 하나의 로직이라고 볼 수 있다.
     @Transactional
-    public OrderInfo create(OrderCommand.Create command, ProductDeductInfo productDeductInfo) {
+    public OrderInfo create(OrderCommand.Create command, List<ProductInfo> productInfos) {
+
+        /**
+         * 주문 하위 객체 생성 로직을 어디쪽으로 위치시키실것인가.
+         * 다시 되돌아보면
+         */
 
         // 1. 주문 생성
         Order order = Order.create(command.getUserId());
@@ -39,7 +42,7 @@ public class OrderService {
 
         // 2. 주문 아이템 생성
         Map<Long, Create.OrderItem> orderItemMap = createOrderItemMap(command.getOrders());
-        Map<Long, ProductInfo> productItemMap = createProductItemMap(productDeductInfo.getProductInfos());
+        Map<Long, ProductInfo> productItemMap = createProductItemMap(productInfos);
 
         List<OrderItem> orderItems = createOrderItems(order, orderItemMap, productItemMap);
         orderItemCommandRepository.saveAll(orderItems);
@@ -53,12 +56,12 @@ public class OrderService {
 
     private Map<Long, ProductInfo> createProductItemMap(List<ProductInfo> productInfos) {
         return productInfos.stream()
-            .collect(Collectors.toMap(ProductInfo::getId, p -> p));
+                           .collect(Collectors.toMap(ProductInfo::getId, p -> p));
     }
 
     private Map<Long, Create.OrderItem> createOrderItemMap(List<Create.OrderItem> orders) {
         return orders.stream()
-            .collect(Collectors.toMap(Create.OrderItem::getProductId, o -> o));
+                     .collect(Collectors.toMap(Create.OrderItem::getProductId, o -> o));
     }
 
     private List<OrderItem> createOrderItems(Order order, Map<Long, Create.OrderItem> orderItemMap, Map<Long, ProductInfo> productItemMap) {
@@ -66,7 +69,6 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (Long productId : orderItemMap.keySet()) {
-            // TODO: Map 데이터가 존재하지 않으면 null 발생 수정 필요
             String productName = productItemMap.get(productId).getName();
             int productPrice = productItemMap.get(productId).getPrice();
             int orderCount = orderItemMap.get(productId).getOrderCount();

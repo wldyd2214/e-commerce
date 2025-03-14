@@ -11,6 +11,8 @@ import com.hhplus.commerce.spring.domain.product.mapper.ProductInfoMapper;
 import com.hhplus.commerce.spring.domain.product.repository.ProductQueryRepository;
 import com.hhplus.commerce.spring.domain.product.model.Product;
 import com.hhplus.commerce.spring.infrastructure.product.repository.ProductJpaRepository;
+import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,25 @@ public class ProductService {
     private final ProductInfoMapper productInfoMapper;
 
     private final ProductJpaRepository jpaRepository;
+
+    @Transactional(readOnly = true)
+    public void verifyProducts(List<Long> productIds) {
+
+        List<Product> products = productQueryRepository.findAllByIdIn(productIds);
+
+        // 1. 요청, 조회 개수 일치 여부
+        if (products.size() != productIds.size()) {
+            throw new CustomBadRequestException(BadRequestErrorCode.PRODUCT_BAD_REQUEST);
+        }
+
+        // 2. 상품 재고 확인
+        for (Product product : products) {
+            if (product.getCount() <= 0) {
+                throw new CustomBadRequestException(BadRequestErrorCode.PRODUCT_STOCK_BAD_REQUEST);
+            }
+        }
+    }
+
 
     @Transactional(readOnly = true)
     public ProductInfoPaged getPagedProducts(ProductQuery.Paged query) {

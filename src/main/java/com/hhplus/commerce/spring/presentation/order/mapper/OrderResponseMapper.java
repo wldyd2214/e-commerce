@@ -12,5 +12,5 @@ import org.mapstruct.Mapping;
 public interface OrderResponseMapper {
 
     @Mapping(source = "orders", target = "orderItems")
-    OrderResponse toOrderCreate(OrderFacadeResponse.Create create);
+    OrderResponse toOrderCreateCommand(OrderFacadeResponse.Create create);
 }
