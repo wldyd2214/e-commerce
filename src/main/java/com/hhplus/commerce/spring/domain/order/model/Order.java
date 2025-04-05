@@ -11,8 +11,6 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
 @AttributeOverrides({
     /**
      * 공통 BaseTimeEntity의 각 필드를 테이블별로 다른 컬럼명으로 사용하기 위한 설정.
