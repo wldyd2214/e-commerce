@@ -1,0 +1,10 @@
+services:
+  redis:
+    image: redis:7.0.8-alpine
+    ports:
+      - "6389:6379"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes: # 마운트할 볼륨 설정
+      - /Users/park/Dev/JIYONG/docker_radis/data
+      - /Users/park/Dev/JIYONG/docker_radis:/usr/local/etc/redis/redis.conf
+    restart: always
