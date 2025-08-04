@@ -5,15 +5,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.hhplus.commerce.spring.application.order.OrderFacade;
-import com.hhplus.commerce.spring.domain.product.model.Product;
-import com.hhplus.commerce.spring.domain.product.repository.ProductCommandRepository;
-import com.hhplus.commerce.spring.domain.user.entity.User;
-import com.hhplus.commerce.spring.infrastructure.user.repository.UserCommandRepositoryImpl;
-import com.hhplus.commerce.spring.presentation.order.dto.request.OrderItemRequest;
-import com.hhplus.commerce.spring.presentation.order.dto.request.OrderRequest;
-import com.hhplus.commerce.spring.presentation.order.mapper.OrderRequestMapper;
-import com.hhplus.commerce.spring.presentation.order.mapper.OrderResponseMapper;
+import com.hhplus.commerce.spring.old.application.order.OrderFacade;
+import com.hhplus.commerce.spring.old.domain.product.model.Product;
+import com.hhplus.commerce.spring.old.domain.product.repository.ProductCommandRepository;
+import com.hhplus.commerce.spring.old.domain.user.entity.User;
+import com.hhplus.commerce.spring.old.infrastructure.user.repository.UserCommandRepositoryImpl;
+import com.hhplus.commerce.spring.old.presentation.order.dto.request.OrderItemRequest;
+import com.hhplus.commerce.spring.old.presentation.order.dto.request.OrderRequest;
+import com.hhplus.commerce.spring.old.presentation.order.mapper.OrderRequestMapper;
+import com.hhplus.commerce.spring.old.presentation.order.mapper.OrderResponseMapper;
 import com.hhplus.commerce.spring.support.ControllerIntegrationTestSupport;
 import java.math.BigDecimal;
 import java.util.ArrayList;

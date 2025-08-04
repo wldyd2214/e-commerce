@@ -7,17 +7,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.BDDMockito.given;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhplus.commerce.spring.application.user.UserFacade;
-import com.hhplus.commerce.spring.application.user.dto.UserFacadeRequest;
-import com.hhplus.commerce.spring.application.user.dto.UserFacadeResponse;
-import com.hhplus.commerce.spring.presentation.common.exception.CustomBadRequestException;
-import com.hhplus.commerce.spring.presentation.common.exception.ErrorCode;
-import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
-import com.hhplus.commerce.spring.presentation.user.UserController;
-import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequest;
-import com.hhplus.commerce.spring.presentation.user.dto.response.UserResponse;
-import com.hhplus.commerce.spring.presentation.user.mapper.UserRequestMapper;
-import com.hhplus.commerce.spring.presentation.user.mapper.UserResponseMapper;
+import com.hhplus.commerce.spring.old.application.user.UserFacade;
+import com.hhplus.commerce.spring.old.application.user.dto.UserFacadeRequest;
+import com.hhplus.commerce.spring.old.application.user.dto.UserFacadeResponse;
+import com.hhplus.commerce.spring.old.presentation.common.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.old.presentation.common.exception.ErrorCode;
+import com.hhplus.commerce.spring.old.presentation.common.exception.code.BadRequestErrorCode;
+import com.hhplus.commerce.spring.member.presentation.UserController;
+import com.hhplus.commerce.spring.old.presentation.user.dto.request.PointChargeRequest;
+import com.hhplus.commerce.spring.old.presentation.user.dto.response.UserResponse;
+import com.hhplus.commerce.spring.old.presentation.user.mapper.UserRequestMapper;
+import com.hhplus.commerce.spring.old.presentation.user.mapper.UserResponseMapper;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

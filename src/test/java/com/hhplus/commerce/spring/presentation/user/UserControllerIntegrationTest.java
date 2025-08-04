@@ -6,11 +6,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hhplus.commerce.spring.domain.user.entity.User;
-import com.hhplus.commerce.spring.infrastructure.user.repository.UserJpaRepository;
-import com.hhplus.commerce.spring.presentation.common.exception.ErrorCode;
-import com.hhplus.commerce.spring.presentation.common.exception.code.BadRequestErrorCode;
-import com.hhplus.commerce.spring.presentation.user.dto.request.PointChargeRequest;
+import com.hhplus.commerce.spring.old.domain.user.entity.User;
+import com.hhplus.commerce.spring.old.infrastructure.user.repository.UserJpaRepository;
+import com.hhplus.commerce.spring.old.presentation.common.exception.ErrorCode;
+import com.hhplus.commerce.spring.old.presentation.common.exception.code.BadRequestErrorCode;
+import com.hhplus.commerce.spring.old.presentation.user.dto.request.PointChargeRequest;
 import java.math.BigDecimal;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,7 +70,7 @@ public class UserControllerIntegrationTest {
                 post("/users/{userId}/charge", userId)
                     .content(objectMapper.writeValueAsString(request))
                     .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
+            .andDo(getPagedProducts))
             .andExpectAll(
                 status().isOk(),
                 jsonPath("$.code").value(HttpStatus.OK.value()),
