@@ -3,11 +3,12 @@ package com.hhplus.commerce.spring.domain.product.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-import com.hhplus.commerce.spring.domain.product.dto.ProductInfoPaged;
-import com.hhplus.commerce.spring.domain.product.dto.ProductQuery;
-import com.hhplus.commerce.spring.domain.product.model.Product;
-import com.hhplus.commerce.spring.domain.order.repository.OrderItemQueryRepository;
-import com.hhplus.commerce.spring.domain.product.repository.ProductCommandRepository;
+import com.hhplus.commerce.spring.old.domain.product.dto.ProductInfoPaged;
+import com.hhplus.commerce.spring.old.domain.product.dto.ProductQuery;
+import com.hhplus.commerce.spring.old.domain.product.model.Product;
+import com.hhplus.commerce.spring.old.domain.order.repository.OrderItemQueryRepository;
+import com.hhplus.commerce.spring.old.domain.product.repository.ProductCommandRepository;
+import com.hhplus.commerce.spring.old.domain.product.service.ProductService;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

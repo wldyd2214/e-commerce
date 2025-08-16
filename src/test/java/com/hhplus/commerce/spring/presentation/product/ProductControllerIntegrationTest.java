@@ -5,9 +5,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.hhplus.commerce.spring.domain.product.service.ProductService;
-import com.hhplus.commerce.spring.presentation.product.mapper.ProductRequestMapper;
-import com.hhplus.commerce.spring.presentation.product.mapper.ProductResponseMapper;
+import com.hhplus.commerce.spring.old.domain.product.service.ProductService;
+import com.hhplus.commerce.spring.old.presentation.product.mapper.ProductRequestMapper;
+import com.hhplus.commerce.spring.old.presentation.product.mapper.ProductResponseMapper;
 import com.hhplus.commerce.spring.support.ControllerIntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,13 +1,14 @@
 package com.hhplus.commerce.spring.application.user;
 
-import com.hhplus.commerce.spring.application.user.dto.UserFacadeRequest;
-import com.hhplus.commerce.spring.application.user.mapper.UserFacadeRequestMapper;
-import com.hhplus.commerce.spring.application.user.mapper.UserFacadeResponseMapper;
-import com.hhplus.commerce.spring.domain.payment.dto.PaymentCommand;
-import com.hhplus.commerce.spring.domain.payment.service.PaymentService;
-import com.hhplus.commerce.spring.domain.user.dto.UserCommand;
-import com.hhplus.commerce.spring.domain.user.dto.UserInfo;
-import com.hhplus.commerce.spring.domain.user.service.UserService;
+import com.hhplus.commerce.spring.old.application.user.UserFacade;
+import com.hhplus.commerce.spring.old.application.user.dto.UserFacadeRequest;
+import com.hhplus.commerce.spring.old.application.user.mapper.UserFacadeRequestMapper;
+import com.hhplus.commerce.spring.old.application.user.mapper.UserFacadeResponseMapper;
+import com.hhplus.commerce.spring.old.domain.payment.dto.PaymentCommand;
+import com.hhplus.commerce.spring.old.domain.payment.service.PaymentService;
+import com.hhplus.commerce.spring.old.domain.user.dto.UserCommand;
+import com.hhplus.commerce.spring.old.domain.user.dto.UserInfo;
+import com.hhplus.commerce.spring.old.domain.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.junit.jupiter.api.DisplayName;
