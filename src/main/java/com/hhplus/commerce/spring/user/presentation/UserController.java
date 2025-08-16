@@ -21,7 +21,7 @@ public class UserController {
 
     @Operation(summary = "사용자 잔액 충전/조회 API", description = "사용자 잔액을 충전합니다.")
     @PostMapping("/{userId}/points")
-    public ApiResponse<UserSummaryInfo> chargePoints(@PathVariable Long userId, @RequestBody @Valid UserPointChargeRequest request) {
+    public ApiResponse<UserSummaryInfo> chargePoints(@PathVariable("userId") Long userId, @RequestBody @Valid UserPointChargeRequest request) {
         return ApiResponse.ok(userService.chargeUserPoints(request.toCommand(userId)));
     }
 }

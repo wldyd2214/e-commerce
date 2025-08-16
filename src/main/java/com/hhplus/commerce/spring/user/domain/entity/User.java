@@ -1,6 +1,8 @@
 package com.hhplus.commerce.spring.user.domain.entity;
 
 import com.hhplus.commerce.spring.common.domain.entity.BaseEntity;
+import com.hhplus.commerce.spring.common.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.common.exception.code.BadRequestErrorCode;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -13,6 +15,7 @@ import jakarta.persistence.Version;
 import java.math.BigDecimal;
 import java.util.Objects;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,6 +46,20 @@ public class User extends BaseEntity {
     @Version
     private Long version;
 
+    @Builder(access = AccessLevel.PRIVATE)
+    private User(String name, BigDecimal point, Long version) {
+        this.name = name;
+        this.point = point;
+        this.version = version;
+    }
+
+    public static User create(String name) {
+        return User.builder()
+                   .name(name)
+                   .point(BigDecimal.ZERO)
+                   .build();
+    }
+
     /**
      * 사용자 포인트 충전
      * @param point
@@ -50,8 +67,8 @@ public class User extends BaseEntity {
      */
     public BigDecimal chargePoint(BigDecimal point) {
 
-        if (Objects.isNull(point) || point.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("충전 포인트 금액은 0 보다 커야 합니다.");
+        if (Objects.isNull(point) || point.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new CustomBadRequestException(BadRequestErrorCode.AMOUNT_MUST_BE_POSITIVE);
         }
 
         this.point = this.point.add(point);
