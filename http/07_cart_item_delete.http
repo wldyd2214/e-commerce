@@ -1,7 +1,0 @@
-### 장바구니 삭제
-DELETE localhost:8081/carts/1/item
-Content-Type: application/json
-
-{
-  "cartItemIds" : [ 13, 14 ]
-}
