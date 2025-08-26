@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.hhplus.commerce.spring.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.common.exception.code.BadRequestErrorCode;
+import com.hhplus.commerce.spring.user.domain.command.UserCommand;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +17,8 @@ class UserTest {
 
     @BeforeEach
     void setUp() {
-        user = User.create("박지용");
+        var command = UserCommand.Register.of("jypark@commerce.app", "박지용", "verysecret");
+        user = User.create(command);
     }
 
     @DisplayName("사용자 포인트 충전 - 실패")

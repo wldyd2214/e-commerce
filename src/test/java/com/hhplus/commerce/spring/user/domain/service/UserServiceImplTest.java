@@ -31,9 +31,11 @@ public record UserServiceImplTest(UserService userService) {
     @Test
     void chargeUserPoints() {
         // given
-        Long userId = 1L;
+        var registerCommand = UserCommand.Register.of("jypark@commerce.app", "박지용", "verysecret");
+        UserSummaryInfo userRegisterInfo = userService.register(registerCommand);
+
         BigDecimal chargePoint = BigDecimal.valueOf(100);
-        var command = UserCommand.ChargePoint.of(userId, chargePoint);
+        var command = UserCommand.ChargePoint.of(userRegisterInfo.getId(), chargePoint);
 
         // when
         UserSummaryInfo userInfo = userService.chargeUserPoints(command);
