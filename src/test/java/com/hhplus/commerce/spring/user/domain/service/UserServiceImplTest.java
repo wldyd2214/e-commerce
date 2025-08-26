@@ -14,6 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @Transactional
 public record UserServiceImplTest(UserService userService) {
+
+    @Test
+    void register() {
+        // given
+        var command = UserCommand.Register.of("jypark@commerce.app", "박지용", "verysecret");
+
+        // when
+        UserSummaryInfo userInfo = userService.register(command);
+
+        // that
+        assertThat(userInfo.getId()).isNotNull();
+        assertThat(userInfo.getEmail()).isEqualTo(command.getEmail());
+    }
     
     @Test
     void chargeUserPoints() {
@@ -29,5 +42,4 @@ public record UserServiceImplTest(UserService userService) {
         assertThat(userInfo.getId()).isNotNull();
         assertThat(userInfo.getPoint()).isEqualTo(command.getChargePoint());
     }
-
 }
