@@ -1,11 +1,13 @@
 package com.hhplus.commerce.spring.user.domain.service;
 
 import com.hhplus.commerce.spring.common.exception.CustomNotFoundException;
+import com.hhplus.commerce.spring.common.exception.DuplicateEmailException;
 import com.hhplus.commerce.spring.common.exception.code.NotFoundErrorCode;
 import com.hhplus.commerce.spring.user.domain.command.UserCommand;
 import com.hhplus.commerce.spring.user.domain.dto.UserSummaryInfo;
 import com.hhplus.commerce.spring.user.domain.entity.User;
 import com.hhplus.commerce.spring.user.infrastructure.repository.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,25 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    /**
+     * 사용자 정보 등록 (회원 가입)
+     * @param command
+     * @return
+     */
+    @Override
+    public UserSummaryInfo register(UserCommand.Register command) {
+        // 중복 이메일 조회
+        Optional<User> optional = userRepository.findByEmail(command.getEmail());
+        if (optional.isPresent()) throw new DuplicateEmailException("이미 사용중인 이메일입니다: " + command.getEmail());
+
+        // 회원 정보 등록
+        User user = User.create(command);
+        userRepository.save(user);
+
+        // 회원 정보 리턴
+        return UserSummaryInfo.of(user);
+    }
 
     /**
      * 사용자 포인트 충전
@@ -35,6 +56,6 @@ public class UserServiceImpl implements UserService {
 
     private User getUser(Long userId) {
         return userRepository.findById(userId)
-                             .orElseThrow(() -> new CustomNotFoundException(NotFoundErrorCode.USER_NOT_FOUNT));
+            .orElseThrow(() -> new CustomNotFoundException(NotFoundErrorCode.USER_NOT_FOUNT));
     }
 }

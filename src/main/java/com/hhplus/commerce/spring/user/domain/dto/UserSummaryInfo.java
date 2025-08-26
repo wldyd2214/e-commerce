@@ -10,14 +10,16 @@ import lombok.Getter;
 @Builder(access = AccessLevel.PRIVATE)
 public class UserSummaryInfo {
     private Long id;
+    private String email;
     private String name;
     private BigDecimal point;
 
     public static UserSummaryInfo of(User user) {
         return UserSummaryInfo.builder()
-                              .id(user.getId())
-                              .name(user.getName())
-                              .point(user.getPoint())
-                              .build();
+            .id(user.getId())
+            .email(user.getEmail())
+            .name(user.getName())
+            .point(user.getPoint())
+            .build();
     }
 }

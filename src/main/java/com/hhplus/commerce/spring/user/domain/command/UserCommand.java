@@ -8,6 +8,28 @@ import lombok.Getter;
 public class UserCommand {
 
     @Getter
+    public static class Register {
+        private String email;
+        private String name;
+        private String password;
+
+        @Builder(access = AccessLevel.PRIVATE)
+        private Register(String email, String name, String password) {
+            this.email = email;
+            this.name = name;
+            this.password = password;
+        }
+
+        public static Register of(String email, String name, String password) {
+            return Register.builder()
+                .email(email)
+                .name(name)
+                .password(password)
+                .build();
+        }
+    }
+
+    @Getter
     public static class ChargePoint {
         private Long userId;
         private BigDecimal chargePoint;
@@ -18,7 +40,7 @@ public class UserCommand {
             this.chargePoint = chargePoint;
         }
 
-        public static UserCommand.ChargePoint of(Long userId, BigDecimal chargePoint) {
+        public static ChargePoint of(Long userId, BigDecimal chargePoint) {
             return ChargePoint.builder()
                               .userId(userId)
                               .chargePoint(chargePoint)

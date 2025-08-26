@@ -3,6 +3,7 @@ package com.hhplus.commerce.spring.user.domain.entity;
 import com.hhplus.commerce.spring.common.domain.entity.BaseEntity;
 import com.hhplus.commerce.spring.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.common.exception.code.BadRequestErrorCode;
+import com.hhplus.commerce.spring.user.domain.command.UserCommand;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -34,30 +35,40 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "user_balance_amount", nullable = false)
+    @Column(name = "point", nullable = false)
     private BigDecimal point;
 
     @Version
     private Long version;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private User(String name, BigDecimal point, Long version) {
+    private User(String email, String name, BigDecimal point, Long version) {
+        this.email = email;
         this.name = name;
         this.point = point;
         this.version = version;
     }
 
-    public static User create(String name) {
+    /**
+     * 회원 도메인 생성
+     * @param command
+     * @return
+     */
+    public static User create(UserCommand.Register command) {
         return User.builder()
-                   .name(name)
-                   .point(BigDecimal.ZERO)
-                   .build();
+            .email(command.getEmail())
+            .name(command.getName())
+            .point(BigDecimal.ZERO)
+            .build();
     }
 
     /**
