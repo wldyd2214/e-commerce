@@ -1,6 +1,8 @@
 package com.hhplus.commerce.spring.user.domain.service;
 
-import com.hhplus.commerce.spring.user.domain.command.UserCommand.ChargePoint;
+import com.hhplus.commerce.spring.common.exception.CustomNotFoundException;
+import com.hhplus.commerce.spring.common.exception.code.NotFoundErrorCode;
+import com.hhplus.commerce.spring.user.domain.command.UserCommand;
 import com.hhplus.commerce.spring.user.domain.dto.UserSummaryInfo;
 import com.hhplus.commerce.spring.user.domain.entity.User;
 import com.hhplus.commerce.spring.user.infrastructure.repository.UserRepository;
@@ -16,16 +18,16 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 사용자 포인트 충전
-     * @param toCommand
+     * @param command
      */
     @Override
     @Transactional
-    public UserSummaryInfo chargeUserPoints(ChargePoint toCommand) {
+    public UserSummaryInfo chargeUserPoints(UserCommand.ChargePoint command) {
         // 사용자 정보 조회
-        User user = getUser(toCommand.getUserId());
+        User user = getUser(command.getUserId());
 
         // 포인트 충전
-        user.chargePoint(toCommand.getChargePoint());
+        user.chargePoint(command.getChargePoint());
 
         // 사용자 포인트 충전 정보 리턴
         return UserSummaryInfo.of(user);
@@ -33,6 +35,6 @@ public class UserServiceImpl implements UserService {
 
     private User getUser(Long userId) {
         return userRepository.findById(userId)
-                             .orElseThrow(() -> new IllegalArgumentException("미존재 회원 정보"));
+                             .orElseThrow(() -> new CustomNotFoundException(NotFoundErrorCode.USER_NOT_FOUNT));
     }
 }
