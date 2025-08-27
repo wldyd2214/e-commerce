@@ -15,7 +15,7 @@ public class CustomBadRequestException extends CustomBaseException {
         this.errorCode = errorCode;
     }
 
-    public CustomBadRequestException(BadRequestErrorCode errorCode, Object args){
+    public CustomBadRequestException(BadRequestErrorCode errorCode, String args){
         super(MessageFormat.format(errorCode.getMessage(), args));
         this.errorCode = errorCode;
     }
