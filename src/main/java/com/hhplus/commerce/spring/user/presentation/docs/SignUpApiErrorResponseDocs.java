@@ -1,5 +1,7 @@
 package com.hhplus.commerce.spring.user.presentation.docs;
 
+import com.hhplus.commerce.spring.common.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.common.exception.CustomBaseException;
 import com.hhplus.commerce.spring.common.exception.CustomConflictException;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -16,6 +18,18 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @ApiResponses({
+    @ApiResponse(responseCode = "400", description = "잘못된 요청 파라미터",
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = CustomBadRequestException.class),
+            examples = {
+                @ExampleObject(
+                    name = "잘못된 요청 파라미터",
+                    value = "{\"code\":\"40000000\", \"message\":\"잘못된 요청 파라미터\", \"data\":null}"
+                ),
+            }
+        )
+    ),
     @ApiResponse(responseCode = "409", description = "이미 존재하는 회원",
         content = @Content(
             mediaType = "application/json",
