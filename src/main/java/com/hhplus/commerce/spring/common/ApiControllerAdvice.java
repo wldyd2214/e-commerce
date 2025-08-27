@@ -1,6 +1,7 @@
 package com.hhplus.commerce.spring.common;
 
 import com.hhplus.commerce.spring.common.exception.CustomBadRequestException;
+import com.hhplus.commerce.spring.common.exception.CustomConflictException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +24,16 @@ public class ApiControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CustomBadRequestException.class)
     public ApiResponse<Object> handleCustomBadRequestException(CustomBadRequestException e) {
+        return ApiResponse.of(
+            e.getErrorCode().getHttpStatus(),
+            e.getMessage(),
+            null
+        );
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(CustomConflictException.class)
+    public ApiResponse<Object> handleCustomConflictException(CustomConflictException e) {
         return ApiResponse.of(
             e.getErrorCode().getHttpStatus(),
             e.getMessage(),
