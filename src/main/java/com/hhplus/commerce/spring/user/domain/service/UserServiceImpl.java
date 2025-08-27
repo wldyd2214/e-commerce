@@ -9,13 +9,14 @@ import com.hhplus.commerce.spring.user.domain.entity.User;
 import com.hhplus.commerce.spring.user.infrastructure.repository.UserRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     /**
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
         if (optional.isPresent()) throw new DuplicateEmailException("이미 사용중인 이메일입니다: " + command.getEmail());
 
         // 회원 정보 등록
-        User user = User.create(command);
+        User user = User.create(command, passwordEncoder);
         userRepository.save(user);
 
         // 회원 정보 리턴
