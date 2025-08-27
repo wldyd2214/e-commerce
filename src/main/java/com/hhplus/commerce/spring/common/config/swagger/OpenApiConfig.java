@@ -1,22 +1,17 @@
-package com.hhplus.commerce.spring.common.config;
+package com.hhplus.commerce.spring.common.config.swagger;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.method.HandlerMethod;
 
 @Configuration
 public class OpenApiConfig {
@@ -42,9 +37,10 @@ public class OpenApiConfig {
     @Bean
     public GroupedOpenApi groupedOpenApi() {
         return GroupedOpenApi.builder()
-//            .group("public-apis")
+            .group("apis")
             .pathsToMatch("/**")
-            .pathsToExclude("/orders/webhooks/**")
+            // 스웨거 문서 제외
+//            .pathsToExclude("/orders/webhooks/**")
             .build();
     }
 
@@ -66,26 +62,7 @@ public class OpenApiConfig {
             """);
     }
 
-    private List<SecurityRequirement> getSecurityRequirement() {
-        List<SecurityRequirement> requirements = new ArrayList<>();
-        requirements.add(new SecurityRequirement().addList(TOKEN_TITLE));
-        return requirements;
-    }
-
     private SecurityRequirement getSecurityItem() {
         return new SecurityRequirement().addList(TOKEN_TITLE);
-    }
-
-    @Bean
-    public OperationCustomizer customize() {
-        return (Operation operation, HandlerMethod handlerMethod) -> {
-            DisableSwaggerSecurity methodAnnotation =
-                handlerMethod.getMethodAnnotation(DisableSwaggerSecurity.class);
-            // DisableSecurity 어노테이션 없을시 스웨거 시큐리티 설정 적용
-            if (methodAnnotation != null) {
-                operation.setSecurity(Collections.emptyList());
-            }
-            return operation;
-        };
     }
 }
