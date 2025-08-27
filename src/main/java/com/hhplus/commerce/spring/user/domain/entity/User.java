@@ -4,10 +4,13 @@ import com.hhplus.commerce.spring.common.domain.entity.BaseEntity;
 import com.hhplus.commerce.spring.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.user.domain.command.UserCommand;
+import com.hhplus.commerce.spring.user.domain.type.UserStatus;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -51,15 +54,20 @@ public class User extends BaseEntity {
     @Column(name = "point", nullable = false)
     private BigDecimal point;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private UserStatus status;
+
     @Version
     private Long version;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private User(String email, String passwordHash, String name, BigDecimal point, Long version) {
+    private User(String email, String passwordHash, String name, BigDecimal point, UserStatus status, Long version) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.name = name;
         this.point = point;
+        this.status = status;
         this.version = version;
     }
 
@@ -74,6 +82,7 @@ public class User extends BaseEntity {
             .passwordHash(passwordEncoder.encode(command.getPassword()))
             .name(command.getName())
             .point(BigDecimal.ZERO)
+            .status(UserStatus.ACTIVE)
             .build();
     }
 
