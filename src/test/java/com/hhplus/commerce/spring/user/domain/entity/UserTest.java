@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 import com.hhplus.commerce.spring.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.user.domain.command.UserCommand;
+import com.hhplus.commerce.spring.user.domain.type.UserStatus;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +24,12 @@ class UserTest {
 
         var command = UserCommand.Register.of("jypark@commerce.app", "박지용", "verysecret");
         user = User.create(command, passwordEncoder);
+    }
+
+    @Test
+    void registerUser() {
+        assertThat(user.getStatus()).isEqualTo(UserStatus.ACTIVE);
+        assertThat(user.getPoint()).isEqualTo(new BigDecimal(0));
     }
 
     @Test
