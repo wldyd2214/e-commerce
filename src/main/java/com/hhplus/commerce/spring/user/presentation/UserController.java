@@ -2,6 +2,7 @@ package com.hhplus.commerce.spring.user.presentation;
 
 import com.hhplus.commerce.spring.user.domain.dto.UserSummaryInfo;
 import com.hhplus.commerce.spring.user.domain.service.UserService;
+import com.hhplus.commerce.spring.user.presentation.docs.SignUpApiErrorResponseDocs;
 import com.hhplus.commerce.spring.user.presentation.request.UserPointChargeRequest;
 import com.hhplus.commerce.spring.common.ApiResponse;
 import com.hhplus.commerce.spring.user.presentation.request.UserSignUpRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+    @SignUpApiErrorResponseDocs
     @Operation(summary = "회원가입 API", description = "서비스를 이용하기 위한 회원 정보를 생성합니다.")
     @PostMapping("")
     public ApiResponse<UserSummaryInfo> signUp(@RequestBody @Valid UserSignUpRequest request) {
