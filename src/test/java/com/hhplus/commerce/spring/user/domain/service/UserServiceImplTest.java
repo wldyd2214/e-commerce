@@ -1,5 +1,6 @@
 package com.hhplus.commerce.spring.user.domain.service;
 
+import static com.hhplus.commerce.spring.user.domain.UserFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.hhplus.commerce.spring.user.domain.command.UserCommand;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @ActiveProfiles("test")
 @SpringBootTest
 @Transactional
@@ -18,7 +20,7 @@ public record UserServiceImplTest(UserService userService) {
     @Test
     void register() {
         // given
-        var command = UserCommand.Register.of("jypark@commerce.app", "박지용", "verysecret");
+        var command = createUserRegisterCommand();
 
         // when
         UserSummaryInfo userInfo = userService.register(command);
@@ -31,7 +33,7 @@ public record UserServiceImplTest(UserService userService) {
     @Test
     void chargeUserPoints() {
         // given
-        var registerCommand = UserCommand.Register.of("jypark@commerce.app", "박지용", "verysecret");
+        var registerCommand = createUserRegisterCommand();
         UserSummaryInfo userRegisterInfo = userService.register(registerCommand);
 
         BigDecimal chargePoint = BigDecimal.valueOf(100);
