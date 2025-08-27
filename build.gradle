@@ -35,7 +35,7 @@ dependencies {
 
     // kafka
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation 'com.fasterxml.jackson.core:jackson-databind' // kafka JSON 직렬화/역질렬화를 위한 추가 의존성
+    implementation 'com.fasterxml.jackson.core:jackson-databind' // kafka JSON 직렬화/역직렬화를 위한 추가 의존성
 
     // mysql
     runtimeOnly 'com.mysql:mysql-connector-j'
