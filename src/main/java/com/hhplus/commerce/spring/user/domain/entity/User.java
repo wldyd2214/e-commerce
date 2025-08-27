@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Table(name = "tb_user")
@@ -41,6 +42,9 @@ public class User extends BaseEntity {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "password", nullable = false)
+    private String passwordHash;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -51,8 +55,9 @@ public class User extends BaseEntity {
     private Long version;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private User(String email, String name, BigDecimal point, Long version) {
+    private User(String email, String passwordHash, String name, BigDecimal point, Long version) {
         this.email = email;
+        this.passwordHash = passwordHash;
         this.name = name;
         this.point = point;
         this.version = version;
@@ -63,12 +68,23 @@ public class User extends BaseEntity {
      * @param command
      * @return
      */
-    public static User create(UserCommand.Register command) {
+    public static User create(UserCommand.Register command, PasswordEncoder passwordEncoder) {
         return User.builder()
             .email(command.getEmail())
+            .passwordHash(passwordEncoder.encode(command.getPassword()))
             .name(command.getName())
             .point(BigDecimal.ZERO)
             .build();
+    }
+
+    /**
+     * 비밀번호 일치 여부 확인
+     * @param password
+     * @param passwordEncoder
+     * @return
+     */
+    public boolean verifyPassword(String password, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(password, passwordHash);
     }
 
     /**
