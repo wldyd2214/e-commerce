@@ -1,0 +1,8 @@
+spring:
+  docker:
+    compose:
+      enabled: true
+
+swagger:
+  server-url: http://localhost:8081
+  server-description: Local Server
