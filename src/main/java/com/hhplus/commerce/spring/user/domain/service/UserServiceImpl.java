@@ -1,7 +1,8 @@
 package com.hhplus.commerce.spring.user.domain.service;
 
+import com.hhplus.commerce.spring.common.exception.CustomConflictException;
 import com.hhplus.commerce.spring.common.exception.CustomNotFoundException;
-import com.hhplus.commerce.spring.common.exception.DuplicateEmailException;
+import com.hhplus.commerce.spring.common.exception.code.ConflictErrorCode;
 import com.hhplus.commerce.spring.common.exception.code.NotFoundErrorCode;
 import com.hhplus.commerce.spring.user.domain.command.UserCommand;
 import com.hhplus.commerce.spring.user.domain.dto.UserSummaryInfo;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
     public UserSummaryInfo register(UserCommand.Register command) {
         // 중복 이메일 조회
         Optional<User> optional = userRepository.findByEmail(command.getEmail());
-        if (optional.isPresent()) throw new DuplicateEmailException("이미 사용중인 이메일입니다: " + command.getEmail());
+        if (optional.isPresent()) throw new CustomConflictException(ConflictErrorCode.DUPLICATE_EMAIL, command.getEmail());
 
         // 회원 정보 등록
         User user = User.create(command, passwordEncoder);
