@@ -11,6 +11,11 @@ spring:
     hibernate:
       format_sql: true
 
+# JWT
+jwt:
+  secret-key: 7a78bfc16e0af6efa0b928fca27e797b8453f2abe5d6eb4dabbc49aba867ee78a291d276e848fd8be219a2b418775b51e8364826284177002fefee0e23676c30
+  access-token-expire-sec: 43200 # 43200초 -> 720분 -> 12시간
+
 management:
   tracing:
     enabled: false
