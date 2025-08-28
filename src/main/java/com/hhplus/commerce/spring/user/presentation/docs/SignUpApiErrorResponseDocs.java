@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
             examples = {
                 @ExampleObject(
                     name = "이미 사용중인 이메일",
-                    value = "{\"code\":\"40900001\", \"message\":\"이미 사용중인 이메일입니다: {0}\", \"data\":null}"
+                    value = "{\"code\":\"40900001\", \"message\":\"이미 사용중인 이메일입니다: jypark@gmail.com\", \"data\":null}"
                 ),
             }
         )
