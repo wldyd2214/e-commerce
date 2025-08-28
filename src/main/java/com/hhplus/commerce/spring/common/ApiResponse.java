@@ -1,6 +1,7 @@
 package com.hhplus.commerce.spring.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -8,11 +9,17 @@ import org.springframework.http.HttpStatus;
 public class ApiResponse<T> {
 
     @Schema(description = "응답 코드", example = "200")
+    @NotNull
     private int code;
+
     @Schema(description = "HttpStatus", example = "OK")
     private HttpStatus status;
+
     @Schema(description = "HttpMessage", example = "OK")
+    @NotNull
     private String message;
+
+    @NotNull
     private T data;
 
     public ApiResponse(HttpStatus status, String message, T data) {
