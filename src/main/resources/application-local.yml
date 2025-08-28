@@ -1,8 +1,14 @@
-spring:
-  docker:
-    compose:
-      enabled: true
+# local 프로필 활성화 시 적용되는 설정
+server:
+  port: 8081
 
+spring:
+  # JPA
+  jpa:
+    hibernate:
+      ddl-auto: create # DB 스키마 자동 생성
+
+# Swagger
 swagger:
   server-url: http://localhost:8081
   server-description: Local Server

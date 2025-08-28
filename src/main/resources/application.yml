@@ -1,6 +1,3 @@
-server:
-  port: 8081
-
 # Swagger
 springdoc:
   cache:
@@ -8,44 +5,12 @@ springdoc:
     disabled: true
 
 spring:
-  profiles:
-    default: local
-
-  # JPA
   jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+    show-sql: true # SQL 쿼리 로그 출력
+  profiles:
+    hibernate:
+      format_sql: true
 
 management:
   tracing:
     enabled: false
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: test
-
-  # DB
-  datasource:
-    url: jdbc:h2:mem:~/eCommerceApplication
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-
-  # JPA
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
-  # SQL
-  sql:
-    init:
-      mode: never
