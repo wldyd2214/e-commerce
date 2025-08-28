@@ -1,5 +1,6 @@
 package com.hhplus.commerce.spring.common.config.security.fliter;
 
+import com.hhplus.commerce.spring.common.exception.code.UnauthorizedErrorCode;
 import com.hhplus.commerce.spring.user.infrastructure.jwt.JwtProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -21,6 +22,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    public static final String HEADER_KEY = "exception";
+
     private final JwtProvider jwtProvider;
 
     @Override
@@ -38,13 +41,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (ExpiredJwtException e) {
             log.info("[JwtAuthenticationFilter.doFilterInternal] - 토큰 만료");
-//            request.setAttribute(HEADER_KEY, UnauthorizedErrorCode.UNAUTHORIZED_TOKEN_EXPIRED.getCode());
+            request.setAttribute(HEADER_KEY, UnauthorizedErrorCode.UNAUTHORIZED_TOKEN_EXPIRED.getCode());
         } catch (SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
             log.info("[JwtAuthenticationFilter.doFilterInternal] - 유효하지 않은 토큰");
-//            request.setAttribute(HEADER_KEY, UnauthorizedErrorCode.UNAUTHORIZED_TOKEN_ERROR.getCode());
+            request.setAttribute(HEADER_KEY, UnauthorizedErrorCode.UNAUTHORIZED_TOKEN_ERROR.getCode());
         } catch (JwtException e) {
             log.info("[JwtAuthenticationFilter.doFilterInternal] - 토큰 오류");
-//            request.setAttribute(HEADER_KEY, UnauthorizedErrorCode.UNAUTHORIZED_TOKEN_ERROR.getCode());
+            request.setAttribute(HEADER_KEY, UnauthorizedErrorCode.UNAUTHORIZED_TOKEN_ERROR.getCode());
         }
 
         filterChain.doFilter(request, response);
