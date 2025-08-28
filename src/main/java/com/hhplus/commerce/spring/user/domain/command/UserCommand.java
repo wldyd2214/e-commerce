@@ -30,6 +30,25 @@ public class UserCommand {
     }
 
     @Getter
+    public static class Login {
+        private String email;
+        private String password;
+
+        @Builder(access = AccessLevel.PRIVATE)
+        private Login(String email, String password) {
+            this.email = email;
+            this.password = password;
+        }
+
+        public static Login of(String email, String password) {
+            return Login.builder()
+                .email(email)
+                .password(password)
+                .build();
+        }
+    }
+
+    @Getter
     public static class ChargePoint {
         private Long userId;
         private BigDecimal chargePoint;

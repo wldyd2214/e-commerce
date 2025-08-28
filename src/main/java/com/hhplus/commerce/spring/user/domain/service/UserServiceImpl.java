@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -26,9 +27,10 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
+    @Transactional
     public UserSummaryInfo register(UserCommand.Register command) {
         // 중복 이메일 조회
-        Optional<User> optional = userRepository.findByEmail(command.getEmail());
+        Optional<User> optional = findUser(command.getEmail());
         if (optional.isPresent()) throw new CustomConflictException(ConflictErrorCode.DUPLICATE_EMAIL, command.getEmail());
 
         // 회원 정보 등록
@@ -59,5 +61,9 @@ public class UserServiceImpl implements UserService {
     private User getUser(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new CustomNotFoundException(NotFoundErrorCode.USER_NOT_FOUNT));
+    }
+
+    private Optional<User> findUser(String email) {
+        return userRepository.findByEmail(email);
     }
 }

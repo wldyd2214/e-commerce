@@ -1,21 +1,37 @@
 package com.hhplus.commerce.spring.common.config.security;
 
+import com.hhplus.commerce.spring.common.config.security.fliter.JwtAuthenticationFilter;
+import com.hhplus.commerce.spring.common.config.security.handler.JwtAccessDeniedHandler;
+import com.hhplus.commerce.spring.common.config.security.handler.JwtAuthenticationEntryPoint;
+import com.hhplus.commerce.spring.user.infrastructure.jwt.JwtProvider;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private static final String[] SWAGGER_PATH_WHITE_LIST = { "/actuator/health", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**" };
+
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtProvider jwtProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -34,17 +50,37 @@ public class SecurityConfig {
 
                     // 인증 불필요 API
                     .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
 
                     // 그 외에는 인증 필요
                     .anyRequest().authenticated()
-            );
-//            .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, jwtProperties, objectMapper, redisTemplate), UsernamePasswordAuthenticationFilter.class);
+            )
+            .exceptionHandling(handler -> handler
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+            )
+            .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    /**
+     * H2 Console에 대한 요청이 Spring Security 필터를 통과하지 않도록 처리
+     */
+    @Bean
+    @ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true")
+    public WebSecurityCustomizer configureH2ConsoleEnable() {
+        return web -> web.ignoring()
+            .requestMatchers(PathRequest.toH2Console());
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
