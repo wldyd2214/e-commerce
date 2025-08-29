@@ -12,3 +12,10 @@ spring:
 swagger:
   server-url: http://localhost:8081
   server-description: Local Server
+
+# PaymentGateway
+payment-gateway:
+  mid: paymentGatewayMid
+  client-key: paymentGatewayClientKey
+  secret-key: paymentGatewaySecretKey
+  base-url: https://localhost:8089/payment-gateway
