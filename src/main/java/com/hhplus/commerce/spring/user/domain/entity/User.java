@@ -1,9 +1,11 @@
 package com.hhplus.commerce.spring.user.domain.entity;
 
 import com.hhplus.commerce.spring.common.domain.entity.BaseEntity;
+import com.hhplus.commerce.spring.common.domain.event.DomainEvents;
 import com.hhplus.commerce.spring.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.user.domain.command.UserCommand;
+import com.hhplus.commerce.spring.user.domain.event.UserCreatedEvent;
 import com.hhplus.commerce.spring.user.domain.type.UserStatus;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -72,18 +74,25 @@ public class User extends BaseEntity {
     }
 
     /**
-     * 회원 도메인 생성
+     * 회원 엔티티 생성
      * @param command
      * @return
      */
     public static User create(UserCommand.Register command, PasswordEncoder passwordEncoder) {
-        return User.builder()
+        // 회원 엔티티 생성
+        User user = User.builder()
             .email(command.getEmail())
             .passwordHash(passwordEncoder.encode(command.getPassword()))
             .name(command.getName())
             .point(BigDecimal.ZERO)
             .status(UserStatus.ACTIVE)
             .build();
+
+        // 회원 생성 이벤트 발행
+        DomainEvents.raise(UserCreatedEvent.of(user.getEmail()));
+
+        // 회원 엔티티 리턴
+        return user;
     }
 
     /**

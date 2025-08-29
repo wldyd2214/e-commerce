@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Ticketbay Verification Code</title>
+</head>
+<body>
+<div style="font-family: Arial, sans-serif; padding: 20px;">
+
+  <h2 th:text="#{email.verification.title}"></h2>
+  <hr style="margin-top: 20px; margin-bottom: 20px; border: none; border-top: 2px solid #000;">
+
+  <p th:text="#{email.verification.content}"></p>
+
+  <br><br>
+
+  <h1 th:text="${code}" style="font-size: 36px;"></h1>
+
+  <br><br>
+
+  <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; color: #666; line-height: 1.6; text-align: left; padding-top: 24px; border-top: 1px solid #e0e0e0;">
+    <p th:text="#{email.verification.footer.notice.legal}" style="margin: 0 0 6px 0;"></p>
+    <p th:text="#{email.verification.footer.notice.noreply}" style="margin: 0 0 12px 0;"></p>
+
+    <p th:text="#{email.verification.footer.company.address}" style="margin: 0 0 4px 0;"></p>
+    <p th:text="#{email.verification.footer.company.contact}" style="margin: 0 0 12px 0;"></p>
+
+    <p th:text="#{email.verification.footer.copyright}" style="margin: 0; color: #999;"></p>
+  </div>
+</div>
+</body>
+</html>
