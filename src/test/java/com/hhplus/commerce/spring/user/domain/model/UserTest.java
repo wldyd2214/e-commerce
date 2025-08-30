@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.user.domain.entity;
+package com.hhplus.commerce.spring.user.domain.model;
 
 import static com.hhplus.commerce.spring.user.domain.UserFixture.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 import com.hhplus.commerce.spring.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.user.domain.command.UserCommand;
-import com.hhplus.commerce.spring.user.domain.type.UserStatus;
+import com.hhplus.commerce.spring.user.domain.model.type.UserStatus;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
