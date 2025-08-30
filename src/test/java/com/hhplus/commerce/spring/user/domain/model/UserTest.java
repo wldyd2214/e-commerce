@@ -1,6 +1,7 @@
 package com.hhplus.commerce.spring.user.domain.model;
 
 import static com.hhplus.commerce.spring.user.domain.UserFixture.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.*;
 
@@ -12,6 +13,8 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 class UserTest {
@@ -24,6 +27,20 @@ class UserTest {
 
         var command = UserCommand.Register.of("jypark@commerce.app", "박지용", "verysecret");
         user = User.create(command, passwordEncoder);
+    }
+
+    @ParameterizedTest(name = "이메일 유효성 체크 - 비정상")
+    @CsvSource({
+        "jyparkticketbay.co.kr",
+        "jypark@ticketbaycokr",
+        "jypark@ticketbaycom",
+        "jypark @ticketbay.co.kr",
+        "jypark @ticketbay.co.kr "
+    })
+    void registerUserFail(String email) {
+        var command = UserCommand.Register.of(email, "박지용", "verysecret");
+        assertThatThrownBy(() -> User.create(command, passwordEncoder))
+            .isInstanceOf(CustomBadRequestException.class);
     }
 
     @Test
