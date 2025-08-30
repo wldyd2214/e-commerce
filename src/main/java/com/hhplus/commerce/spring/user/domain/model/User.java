@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.user.domain.entity;
+package com.hhplus.commerce.spring.user.domain.model;
 
 import com.hhplus.commerce.spring.common.domain.entity.BaseEntity;
 import com.hhplus.commerce.spring.common.domain.event.DomainEvents;
@@ -6,7 +6,7 @@ import com.hhplus.commerce.spring.common.exception.CustomBadRequestException;
 import com.hhplus.commerce.spring.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.user.domain.command.UserCommand;
 import com.hhplus.commerce.spring.user.domain.event.UserCreatedEvent;
-import com.hhplus.commerce.spring.user.domain.type.UserStatus;
+import com.hhplus.commerce.spring.user.domain.model.type.UserStatus;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;

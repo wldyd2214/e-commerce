@@ -1,6 +1,6 @@
-package com.hhplus.commerce.spring.user.infrastructure.repository;
+package com.hhplus.commerce.spring.user.domain.repository;
 
-import com.hhplus.commerce.spring.user.domain.entity.User;
+import com.hhplus.commerce.spring.user.domain.model.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

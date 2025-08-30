@@ -1,6 +1,6 @@
 package com.hhplus.commerce.spring.user.infrastructure.jwt;
 
-import com.hhplus.commerce.spring.user.domain.entity.User;
+import com.hhplus.commerce.spring.user.domain.model.User;
 import java.util.Collection;
 import java.util.Collections;
 import lombok.AccessLevel;

@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.user.domain.type;
+package com.hhplus.commerce.spring.user.domain.model.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

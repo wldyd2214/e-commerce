@@ -1,10 +1,8 @@
 package com.hhplus.commerce.spring.user.domain.service;
 
-import com.hhplus.commerce.spring.common.exception.CustomNotFoundException;
-import com.hhplus.commerce.spring.common.exception.code.NotFoundErrorCode;
-import com.hhplus.commerce.spring.user.domain.entity.User;
+import com.hhplus.commerce.spring.user.domain.model.User;
 import com.hhplus.commerce.spring.user.infrastructure.jwt.UserDetailsImpl;
-import com.hhplus.commerce.spring.user.infrastructure.repository.UserRepository;
+import com.hhplus.commerce.spring.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
