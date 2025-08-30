@@ -7,9 +7,11 @@ import com.hhplus.commerce.spring.common.exception.code.BadRequestErrorCode;
 import com.hhplus.commerce.spring.user.domain.command.UserCommand;
 import com.hhplus.commerce.spring.user.domain.event.UserCreatedEvent;
 import com.hhplus.commerce.spring.user.domain.model.type.UserStatus;
+import com.hhplus.commerce.spring.user.domain.model.value.UserEmail;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -44,8 +46,12 @@ public class User extends BaseEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false, length = 100, unique = true)
-    private String email;
+    @Embedded
+    @AttributeOverride(
+        name = "address",
+        column = @Column(name = "email", nullable = false, length = 100, unique = true)
+    )
+    private UserEmail email;
 
     @Column(name = "password", nullable = false, length = 255)
     private String passwordHash;
@@ -64,7 +70,7 @@ public class User extends BaseEntity {
     private Long version;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private User(String email, String passwordHash, String name, BigDecimal point, UserStatus status, Long version) {
+    private User(UserEmail email, String passwordHash, String name, BigDecimal point, UserStatus status, Long version) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.name = name;
@@ -79,9 +85,12 @@ public class User extends BaseEntity {
      * @return
      */
     public static User create(UserCommand.Register command, PasswordEncoder passwordEncoder) {
+        // 이메일 값 객체
+        UserEmail email = UserEmail.create(command.getEmail());
+
         // 회원 엔티티 생성
         User user = User.builder()
-            .email(command.getEmail())
+            .email(email)
             .passwordHash(passwordEncoder.encode(command.getPassword()))
             .name(command.getName())
             .point(BigDecimal.ZERO)
@@ -89,7 +98,7 @@ public class User extends BaseEntity {
             .build();
 
         // 회원 생성 이벤트 발행
-        DomainEvents.raise(UserCreatedEvent.of(user.getEmail()));
+        DomainEvents.raise(UserCreatedEvent.of(email.getAddress()));
 
         // 회원 엔티티 리턴
         return user;

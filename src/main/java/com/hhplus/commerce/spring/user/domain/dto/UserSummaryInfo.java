@@ -31,7 +31,7 @@ public class UserSummaryInfo {
     public static UserSummaryInfo of(User user) {
         return UserSummaryInfo.builder()
             .id(user.getId())
-            .email(user.getEmail())
+            .email(user.getEmail().getAddress())
             .name(user.getName())
             .point(user.getPoint())
             .build();

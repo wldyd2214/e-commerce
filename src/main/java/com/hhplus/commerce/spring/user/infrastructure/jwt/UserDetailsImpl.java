@@ -23,7 +23,7 @@ public class UserDetailsImpl implements UserDetails {
     public static UserDetails of(User user) {
         return UserDetailsImpl.builder()
             .key(user.getId())
-            .email(user.getEmail())
+            .email(user.getEmail().getAddress())
             .name(user.getName())
             .password(user.getPasswordHash())
             .build();
