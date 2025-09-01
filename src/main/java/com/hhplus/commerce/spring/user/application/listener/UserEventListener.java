@@ -19,6 +19,6 @@ public class UserEventListener {
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void sendWelcomeEmail(UserCreatedEvent event) {
-        emailService.sendEmail(event.getEmail(), "e-commerce 회원 가입을 환영합니다.", "회원 가입 환영 이메일 내용");
+        emailService.sendWelcomeEmail(event.getEmail(), event.getUserName());
     }
 }

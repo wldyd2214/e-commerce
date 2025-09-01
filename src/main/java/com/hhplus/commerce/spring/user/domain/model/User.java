@@ -98,7 +98,7 @@ public class User extends BaseEntity {
             .build();
 
         // 회원 생성 이벤트 발행
-        DomainEvents.raise(UserCreatedEvent.of(email.getAddress()));
+        DomainEvents.raise(UserCreatedEvent.of(user.getEmail().getAddress(), user.getName()));
 
         // 회원 엔티티 리턴
         return user;

@@ -8,15 +8,18 @@ import lombok.Getter;
 public class UserCreatedEvent {
 
     private String email;
+    private String userName;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private UserCreatedEvent(String email) {
+    private UserCreatedEvent(String email, String userName) {
         this.email = email;
+        this.userName = userName;
     }
 
-    public static UserCreatedEvent of(String email) {
+    public static UserCreatedEvent of(String email, String userName) {
         return UserCreatedEvent.builder()
-                .email(email)
-                .build();
+            .email(email)
+            .userName(userName)
+            .build();
     }
 }

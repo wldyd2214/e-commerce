@@ -31,6 +31,6 @@ public class EmailSenderImpl implements EmailSender {
 //
 //        mailSender.send(mimeMessage);
 
-        return false;
+        return true;
     }
 }
