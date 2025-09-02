@@ -49,8 +49,8 @@ public class SecurityConfig {
                     .requestMatchers(SWAGGER_PATH_WHITE_LIST).permitAll()
 
                     // 인증 불필요 API
-                    .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
 
                     // 그 외에는 인증 필요
                     .anyRequest().authenticated()
