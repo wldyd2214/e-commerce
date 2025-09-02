@@ -1,5 +1,5 @@
 ### 1. 사용자 잔액 충전/조회
-POST localhost:8081/users/1/points
+POST localhost:8081/api/v1/users/1/points
 Content-Type: application/json
 
 {
