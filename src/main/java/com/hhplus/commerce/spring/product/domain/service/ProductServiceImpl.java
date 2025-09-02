@@ -1,4 +1,8 @@
 package com.hhplus.commerce.spring.product.domain.service;
 
-public class ProductServiceImpl {
+import org.springframework.stereotype.Service;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+
 }
