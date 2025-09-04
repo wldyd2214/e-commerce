@@ -2,6 +2,10 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
+
+    id 'org.jetbrains.kotlin.jvm' version '1.9.23' // Kotlin JVM 플러그인
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.23' apply false // Spring 사용 시
+    id 'org.jetbrains.kotlin.plugin.jpa' version '1.9.23' apply false // JPA 사용 시
 }
 
 group = 'com.hhplus.commerce'
@@ -32,6 +36,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // kotlin
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
 
     // jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
