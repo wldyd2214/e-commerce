@@ -9,5 +9,5 @@ public enum UserStatus {
     ACTIVE("등록 완료"),
     DEACTIVATE("탈퇴");
 
-    private String description;
+    private final String description;
 }
