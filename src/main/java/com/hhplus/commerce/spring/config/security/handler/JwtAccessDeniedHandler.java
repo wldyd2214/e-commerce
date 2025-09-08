@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.common.config.security.handler;
+package com.hhplus.commerce.spring.config.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.commerce.spring.common.ApiResponse;

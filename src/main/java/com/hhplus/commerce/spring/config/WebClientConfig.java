@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.common.config;
+package com.hhplus.commerce.spring.config;
 
 import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,8 +1,8 @@
-package com.hhplus.commerce.spring.common.config.security;
+package com.hhplus.commerce.spring.config.security;
 
-import com.hhplus.commerce.spring.common.config.security.fliter.JwtAuthenticationFilter;
-import com.hhplus.commerce.spring.common.config.security.handler.JwtAccessDeniedHandler;
-import com.hhplus.commerce.spring.common.config.security.handler.JwtAuthenticationEntryPoint;
+import com.hhplus.commerce.spring.support.filter.security.JwtAuthenticationFilter;
+import com.hhplus.commerce.spring.config.security.handler.JwtAccessDeniedHandler;
+import com.hhplus.commerce.spring.config.security.handler.JwtAuthenticationEntryPoint;
 import com.hhplus.commerce.spring.user.infrastructure.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

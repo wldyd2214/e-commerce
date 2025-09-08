@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.common.config.security.handler;
+package com.hhplus.commerce.spring.config.security.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

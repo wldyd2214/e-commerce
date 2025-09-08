@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.common.config;
+package com.hhplus.commerce.spring.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

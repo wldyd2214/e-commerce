@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.common.config;
+package com.hhplus.commerce.spring.config;
 
 import com.hhplus.commerce.spring.common.domain.event.DomainEvents;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.common.config.security;
+package com.hhplus.commerce.spring.config.security;
 
 import java.util.HashMap;
 import java.util.Map;

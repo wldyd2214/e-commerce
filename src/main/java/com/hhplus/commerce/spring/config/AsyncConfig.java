@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.common.config;
+package com.hhplus.commerce.spring.config;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;

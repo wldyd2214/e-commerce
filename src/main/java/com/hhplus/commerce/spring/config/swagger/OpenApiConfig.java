@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.common.config.swagger;
+package com.hhplus.commerce.spring.config.swagger;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
