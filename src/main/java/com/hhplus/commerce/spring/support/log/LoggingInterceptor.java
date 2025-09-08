@@ -32,12 +32,20 @@ public class LoggingInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // Method가 Get 방식의 경우 로깅 처리 제외
+        if (isGetRequest(request)) return;
+
         final ContentCachingRequestWrapper requestWrapper = (ContentCachingRequestWrapper) request;
         final ContentCachingResponseWrapper responseWrapper = (ContentCachingResponseWrapper) response;
+
 
         LogInfo logInfo = LogInfo.create(requestWrapper, responseWrapper, objectMapper);
         if (ex != null) logInfo.updateError(ex);
 
         log.info(objectMapper.writeValueAsString(logInfo));
+    }
+
+    private boolean isGetRequest(HttpServletRequest request) {
+        return request.getMethod().equalsIgnoreCase("GET");
     }
 }
