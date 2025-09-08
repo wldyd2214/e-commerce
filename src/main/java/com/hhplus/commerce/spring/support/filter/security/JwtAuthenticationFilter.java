@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.common.config.security.fliter;
+package com.hhplus.commerce.spring.support.filter.security;
 
 import com.hhplus.commerce.spring.common.exception.code.UnauthorizedErrorCode;
 import com.hhplus.commerce.spring.user.infrastructure.jwt.JwtProvider;
