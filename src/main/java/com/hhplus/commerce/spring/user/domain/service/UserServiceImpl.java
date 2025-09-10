@@ -30,8 +30,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserSummaryInfo register(UserCommand.Register command) {
         // 중복 이메일 조회
-        Optional<User> optional = findUser(command.getEmail());
-        if (optional.isPresent()) throw new CustomConflictException(ConflictErrorCode.DUPLICATE_EMAIL, command.getEmail());
+        validateDuplicateEmail(command.getEmail());
 
         // 회원 정보 등록
         User user = User.create(command, passwordEncoder);
@@ -58,12 +57,38 @@ public class UserServiceImpl implements UserService {
         return UserSummaryInfo.of(user);
     }
 
+    /**
+     * 사용자 ID로 사용자를 조회합니다.
+     * 이 메소드는 사용자가 반드시 존재해야 하는 경우에 사용됩니다.
+     *
+     * @param userId 조회할 사용자의 ID
+     * @return User 객체 (null이 아님을 보장)
+     * @throws CustomNotFoundException 사용자를 찾을 수 없는 경우
+     */
     private User getUser(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new CustomNotFoundException(NotFoundErrorCode.USER_NOT_FOUNT));
     }
 
+    /**
+     * 이메일 주소로 사용자를 조회합니다.
+     * 사용자가 존재하지 않을 수도 있는 경우에 사용합니다.
+     *
+     * @param email 조회할 사용자의 이메일 주소
+     * @return 사용자를 찾으면 해당 User 객체를 담은 Optional을,
+     *         찾지 못하면 빈 Optional을 반환합니다.
+     */
     private Optional<User> findUser(String email) {
         return userRepository.findByEmailAddress(email);
+    }
+
+    /**
+     * 중복 이메일이 존재하는 경우 예외를 발생시켜야 하는 경우에 사용합니다.
+     * @param email
+     */
+    private void validateDuplicateEmail(String email) {
+        findUser(email).ifPresent(user -> {
+            throw new CustomConflictException(ConflictErrorCode.DUPLICATE_EMAIL, email);
+        });
     }
 }
