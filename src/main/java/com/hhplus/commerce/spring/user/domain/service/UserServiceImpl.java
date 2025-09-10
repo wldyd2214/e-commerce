@@ -33,8 +33,7 @@ public class UserServiceImpl implements UserService {
         validateDuplicateEmail(command.getEmail());
 
         // 회원 정보 등록
-        User user = User.create(command, passwordEncoder);
-        userRepository.save(user);
+        User user = saveUser(command);
 
         // 회원 정보 리턴
         return UserSummaryInfo.of(user);
@@ -90,5 +89,15 @@ public class UserServiceImpl implements UserService {
         findUser(email).ifPresent(user -> {
             throw new CustomConflictException(ConflictErrorCode.DUPLICATE_EMAIL, email);
         });
+    }
+
+    /**
+     * 회원 정보 저장
+     * @param command
+     * @return
+     */
+    private User saveUser(UserCommand.Register command) {
+        User user = User.create(command, passwordEncoder);
+        return userRepository.save(user);
     }
 }
