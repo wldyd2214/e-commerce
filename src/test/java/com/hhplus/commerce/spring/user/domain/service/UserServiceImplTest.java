@@ -1,8 +1,10 @@
 package com.hhplus.commerce.spring.user.domain.service;
 
-import static com.hhplus.commerce.spring.user.domain.UserFixture.*;
+import static com.hhplus.commerce.spring.user.domain.UserFixture.createUserRegisterCommand;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import com.hhplus.commerce.spring.common.exception.CustomConflictException;
 import com.hhplus.commerce.spring.user.domain.command.UserCommand;
 import com.hhplus.commerce.spring.user.domain.dto.UserSummaryInfo;
 import java.math.BigDecimal;
@@ -28,6 +30,20 @@ public record UserServiceImplTest(UserService userService) {
         // that
         assertThat(userInfo.getId()).isNotNull();
         assertThat(userInfo.getEmail()).isEqualTo(command.getEmail());
+    }
+
+    @Test
+    void registerDuplicateEmail() {
+        // given - 회원 정보 등록
+        var givenCommand = createUserRegisterCommand();
+        userService.register(givenCommand);
+
+        // given - 중복된 회원 정보 데이터
+        var command = createUserRegisterCommand();
+
+        // when, that
+        assertThatThrownBy(() -> userService.register(command))
+            .isInstanceOf(CustomConflictException.class);
     }
     
     @Test
