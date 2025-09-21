@@ -3,10 +3,9 @@
 ---
 
 ## Domain
+- ####  [도메인 모델](docs/Domain.md)
 
 ---
-
-- ####  [도메인 모델](docs/Domain.md)
 
 ## Description
 - `e-커머스 상품 주문 서비스`를 구현해 봅니다.
