@@ -1,16 +1,17 @@
-# local 프로필 활성화 시 적용되는 설정
-server:
-  port: 8081
-
 spring:
   # JPA
   jpa:
+    show-sql: true
     hibernate:
-      ddl-auto: create # DB 스키마 자동 생성
+      ddl-auto: update
+  # Docker Compose
+  docker:
+    compose:
+      lifecycle-management: start_only
 
 # Swagger
 swagger:
-  server-url: http://localhost:8081
+  server-url: http://localhost:8080
   server-description: Local Server
 
 # PaymentGateway
