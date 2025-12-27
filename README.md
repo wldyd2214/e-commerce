@@ -32,18 +32,18 @@
               * ✅ Optimize imports (임포트 최적화) 활성화
            
 ## 3. 아키텍처 (Architecture)
-- ### 클린 + 레이어드 아키텍처
+- ### [Architecture Document](docs%2FArchitecture.md)
 
-## Domain
-- ####  [도메인 모델](docs/Domain.md)
+## 4. 도메인 (Domain)
+- ###  [Domain Document](docs/Domain.md)
 
-## Description
+## 5. 프로젝트 설명 (Description)
 - `e-커머스 상품 주문 서비스`를 구현해 봅니다.
 - 상품 주문에 필요한 메뉴 정보들을 구성하고 조회가 가능해야 합니다.
 - 사용자는 상품을 여러개 선택해 주문할 수 있고, 미리 충전한 잔액을 이용합니다.
 - 상품 주문 내역을 통해 판매량이 가장 높은 상품을 추천합니다.
 
-## Requirements
+## 6. 프로젝트 요구사항 (Requirements)
 - 아래 4가지 API 를 구현합니다.
     - 잔액 충전 / 조회 API
     - 상품 조회 API
@@ -54,7 +54,7 @@
 - 동시성 이슈를 고려하여 구현합니다.
 - 재고 관리에 문제 없도록 구현합니다.
 
-## API Specs
+## 7. API Specs
 ### 기본과제
 1️⃣ **`주요`** **잔액 충전 / 조회 API**
 - 결제에 사용될 금액을 충전하는 API 를 작성합니다.
@@ -81,13 +81,13 @@
 - 이 기능을 제공하기 위해 `장바구니에 상품 추가/삭제` API 와 `장바구니 조회` API 가 필요합니다.
 - 위 두 기능을 제공하기 위해 어떤 요구사항의 비즈니스 로직을 설계해야할 지 고민해 봅니다.
 
-## 설계 문서
+## 8. 설계 문서
 1. 마일스톤: https://github.com/users/wldyd2214/projects/1/views/1
 2. DB ERD 문서: https://github.com/wldyd2214/e-commerce/blob/feature/step06/design/db/DB_ERD.png
 3. API 명세 (swagger) : http://localhost:{port}/commerce/swagger.html
 
-## 동시성 문제
+## 9. 동시성 문제
 - [동시성 문제와 극복](https://jiyongpark-dev.tistory.com/113)
 
-## Query 분석 및 캐싱 전략 설계
+## 10. Query 분석 및 캐싱 전략 설계
 - [적은 부하로 트래픽 처리하기](https://jiyongpark-dev.tistory.com/116)
