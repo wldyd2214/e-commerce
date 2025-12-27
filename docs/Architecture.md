@@ -16,11 +16,3 @@
 
 > Presentation -> Application -> Domain <- Infrastructure
 - 위의 예시 처럼 의존성의 방향(화살표) 저수준 모듈(Presentation, Application, Infrastructure)에서 고수준 모듈(Domain) 향하도록 개발한다.
-
-## 패키지
-- 서비스 시스템 (content, member, mobilegiftcard, order, payment, product)
-  - controller
-  - application
-  - service, domain
-  - persistence
-- 외부 지원 시스템 (support)
