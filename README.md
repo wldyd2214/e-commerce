@@ -4,10 +4,10 @@
 
 ## 1. 기술 스택 (Tech Stack)
 * Language: Java (e.g., Java 17)
-* Framework: Spring Boot
+* Framework: Spring Boot (3.5.0 version)
 * Data Access: MyBatis, Spring Data JPA
 * Build Tool: Gradle
-* Deployment: Docker, Kubernetes
+* Deployment: Docker
 * Database: MySQL
 
 ## 2. 코드 컨벤션 (Coding Convention)
