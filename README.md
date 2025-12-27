@@ -30,6 +30,9 @@
               * ✅ Reformat code (코드 재정렬) 활성화
                 - All file types 선택 > XML, XML Document Type Definition 체크 비활성화 (MyBatis xml 코드가 깨지는 현상으로 인해)
               * ✅ Optimize imports (임포트 최적화) 활성화
+           
+## 3. 아키텍처 (Architecture)
+- ### 클린 + 레이어드 아키텍처
 
 ## Domain
 - ####  [도메인 모델](docs/Domain.md)
