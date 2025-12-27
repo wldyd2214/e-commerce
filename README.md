@@ -2,6 +2,35 @@
 
 ---
 
+## 1. 기술 스택 (Tech Stack)
+* Language: Java (e.g., Java 17)
+* Framework: Spring Boot
+* Data Access: MyBatis, Spring Data JPA
+* Build Tool: Gradle
+* Deployment: Docker, Kubernetes
+* Database: MySQL
+
+## 2. 코드 컨벤션 (Coding Convention)
+* 기본 원칙: Google Java Style Guide (https://google.github.io/styleguide/javaguide.html)를 따릅니다.
+* 자동 포맷팅: IDE의 Reformat Code 기능을 사용하여 항상 스타일 가이드를 준수하도록 합니다.
+   - 자동 포맷팅 적용 참고 사이트: https://systemdata.tistory.com/109
+   - Tab szie: 4 / Indent: 4
+* IntelliJ IDEA에서 저장 시 액션(Actions on Save) 설정을 활성화해 주시기 바랍니다.
+   - 설정 방법
+     아래 절차에 따라 설정을 활성화해 주세요. (약 1분 소요)
+      1. 설정(Settings/Preferences) 창 열기
+          * Windows/Linux: File > Settings (단축키: Ctrl + Alt + S)
+          * macOS: IntelliJ IDEA > Settings... (단축키: Cmd + ,)
+   
+      2. Actions on Save 메뉴로 이동
+          * 왼쪽 메뉴에서 Tools > Actions on Save를 선택합니다.
+   
+      3. 주요 액션 활성화
+          * 아래 두 항목의 체크박스를 반드시 활성화해주세요.
+              * ✅ Reformat code (코드 재정렬) 활성화
+                - All file types 선택 > XML, XML Document Type Definition 체크 비활성화 (MyBatis xml 코드가 깨지는 현상으로 인해)
+              * ✅ Optimize imports (임포트 최적화) 활성화
+
 ## Domain
 - ####  [도메인 모델](docs/Domain.md)
 
