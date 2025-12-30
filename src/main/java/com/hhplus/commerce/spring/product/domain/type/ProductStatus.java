@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ProductType {
+public enum ProductStatus {
     PENDING("등록 대기"),
     ACTIVE("등록 완료"),
     INACTIVE("비활성");

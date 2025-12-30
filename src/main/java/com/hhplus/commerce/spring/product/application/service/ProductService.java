@@ -1,6 +1,6 @@
-package com.hhplus.commerce.spring.product.domain.service;
+package com.hhplus.commerce.spring.product.application.service;
 
-import com.hhplus.commerce.spring.product.domain.dto.ProductSummaryInfo;
+import com.hhplus.commerce.spring.product.application.dto.ProductSummaryInfo;
 import com.hhplus.commerce.spring.product.domain.dto.query.ProductQuery;
 import org.springframework.data.domain.Page;
 

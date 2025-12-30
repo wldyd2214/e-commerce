@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.product.domain.model;
+package com.hhplus.commerce.spring.product.domain.entity;
 
 import com.hhplus.commerce.spring.common.domain.entity.BaseEntity;
 import jakarta.persistence.AttributeOverride;

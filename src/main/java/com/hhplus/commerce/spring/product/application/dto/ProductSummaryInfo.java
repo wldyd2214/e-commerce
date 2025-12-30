@@ -1,4 +1,4 @@
-package com.hhplus.commerce.spring.product.domain.dto;
+package com.hhplus.commerce.spring.product.application.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

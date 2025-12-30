@@ -8,17 +8,11 @@ import lombok.Getter;
 public class ProductQuery {
 
     @Getter
+    @Builder(access = AccessLevel.PRIVATE)
     public static class SummeryList {
         private String productName;
         private Integer page;
         private Integer size;
-
-        @Builder(access = AccessLevel.PRIVATE)
-        private SummeryList(String productName, Integer page, Integer size) {
-            this.productName = productName;
-            this.page = page;
-            this.size = size;
-        }
 
         public static SummeryList of(String productName, Integer page, Integer size) {
             if (Objects.isNull(page)) page = 0;

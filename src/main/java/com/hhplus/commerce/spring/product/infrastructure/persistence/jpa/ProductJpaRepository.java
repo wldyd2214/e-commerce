@@ -1,6 +1,6 @@
-package com.hhplus.commerce.spring.product.infrastructure;
+package com.hhplus.commerce.spring.product.infrastructure.persistence.jpa;
 
-import com.hhplus.commerce.spring.product.domain.model.Product;
+import com.hhplus.commerce.spring.product.domain.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductJpaRepository extends JpaRepository<Product, Long> {
